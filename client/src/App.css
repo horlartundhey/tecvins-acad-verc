@@ -1,0 +1,22 @@
+.main-content {
+    padding-top: 2rem; /* Adds space below navbar */
+    min-height: calc(100vh - 140px); /* Adjust based on your navbar and footer height */
+  }
+  
+  /* If your navbar is fixed to the top */
+  .main-content {
+    margin-top: 70px; /* Adjust this value to match your navbar height */
+    padding-top: 2rem; /* Additional padding for visual spacing */
+  }
+  
+  /* Alternative solution if you're using flexbox layout */
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding-top: 2rem; /* Space below navbar */
+  }

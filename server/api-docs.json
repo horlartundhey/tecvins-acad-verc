@@ -1,0 +1,283 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Tecvin Academy API",
+    "version": "1.0.0",
+    "description": "API documentation for Tecvin Academy application"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" },
+                  "role": { 
+                    "type": "string",
+                    "enum": ["admin", "editor"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Login user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/students/apply": {
+      "post": {
+        "summary": "Submit student application",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fullName": { "type": "string" },
+                  "email": { "type": "string" },
+                  "phoneNumber": { "type": "string" },
+                  "dateOfBirth": { "type": "string", "format": "date" },
+                  "gender": { 
+                    "type": "string",
+                    "enum": ["male", "female", "other"]
+                  },
+                  "course": { "type": "string" },
+                  "education": { "type": "string" },
+                  "currentOccupation": { "type": "string" },
+                  "address": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/trainers/apply": {
+      "post": {
+        "summary": "Submit trainer application",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fullName": { "type": "string" },
+                  "email": { "type": "string" },
+                  "phoneNumber": { "type": "string" },
+                  "expertise": { 
+                    "type": "array",
+                    "items": { "type": "string" }
+                  },
+                  "yearsOfExperience": { "type": "number" },
+                  "resume": { "type": "string", "format": "binary" },
+                  "portfolio": { "type": "string" },
+                  "linkedIn": { "type": "string" },
+                  "preferredCourses": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  },
+                  "availability": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/blogs": {
+      "get": {
+        "summary": "Get all published blogs"
+      },
+      "post": {
+        "summary": "Create new blog post",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "content": { "type": "string" },
+                  "tags": { 
+                    "type": "array",
+                    "items": { "type": "string" }
+                  },
+                  "featuredImage": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/admin/stats": {
+      "get": {
+        "summary": "Get dashboard statistics",
+        "security": [{ "bearerAuth": [] }]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "forms": {
+    "trainer": {
+      "model": {
+        "required_fields": {
+          "fullName": "String",
+          "email": "String",
+          "phoneNumber": "String",
+          "expertise": "Array of Strings",
+          "yearsOfExperience": "Number",
+          "resume": "String (file URL)",
+          "preferredCourses": "Array of Strings",
+          "availability": "String"
+        },
+        "optional_fields": {
+          "portfolio": "String (URL)",
+          "linkedIn": "String",
+          "status": "String (enum: pending, approved, rejected)"
+        }
+      },
+      "frontend_mismatches": [
+        "Course area selection is single value but backend expects array of preferredCourses",
+        "Missing expertise field in form",
+        "Missing availability field in form"
+      ],
+      "testing_procedure": {
+        "required_fields_test": {
+          "description": "Test all required fields validation",
+          "steps": [
+            "Submit form with empty required fields - should show validation errors",
+            "Submit form with invalid email format - should show email validation error",
+            "Submit form with valid data - should succeed"
+          ]
+        },
+        "file_upload_test": {
+          "description": "Test resume upload functionality",
+          "steps": [
+            "Try uploading non-PDF file - should reject",
+            "Try uploading file > 5MB - should reject",
+            "Upload valid PDF - should succeed"
+          ]
+        },
+        "api_endpoints": {
+          "submit": "POST /api/trainers/apply",
+          "get_all": "GET /api/trainers/applications",
+          "get_by_id": "GET /api/trainers/applications/:id",
+          "update_status": "PUT /api/trainers/applications/:id"
+        }
+      }
+    },
+    "student": {
+      "model": {
+        "required_fields": {
+          "fullName": "String",
+          "email": "String",
+          "phoneNumber": "String",
+          "dateOfBirth": "Date",
+          "gender": "String (enum: male, female, other)",
+          "course": "String",
+          "education": "String",
+          "address": "String"
+        },
+        "optional_fields": {
+          "currentOccupation": "String",
+          "status": "String (enum: pending, approved, rejected)"
+        }
+      },
+      "frontend_mismatches": [
+        "Missing dateOfBirth field in form",
+        "Missing gender selection in form",
+        "Missing education field in form"
+      ],
+      "testing_procedure": {
+        "required_fields_test": {
+          "description": "Test all required fields validation",
+          "steps": [
+            "Submit form with empty required fields - should show validation errors",
+            "Submit form with invalid email format - should show email validation error",
+            "Submit form with invalid phone format - should show phone validation error",
+            "Submit form with valid data - should succeed"
+          ]
+        },
+        "validation_rules": {
+          "email": "Must be valid email format",
+          "phoneNumber": "Must be valid Nigerian phone format",
+          "dateOfBirth": "Must be 16+ years old",
+          "gender": "Must be one of: male, female, other"
+        },
+        "api_endpoints": {
+          "submit": "POST /api/students/apply",
+          "get_all": "GET /api/students/applications",
+          "get_by_id": "GET /api/students/applications/:id",
+          "update_status": "PUT /api/students/applications/:id"
+        }
+      }
+    }
+  },
+  "general_testing_notes": {
+    "environment_setup": {
+      "development": {
+        "1": "Use .env.development for development testing",
+        "2": "Ensure MongoDB test database is running",
+        "3": "Run server in development mode: npm run dev"
+      },
+      "test": {
+        "1": "Use separate test database",
+        "2": "Run tests with: npm test"
+      }
+    },
+    "api_testing_tools": [
+      "Postman",
+      "Jest for unit tests",
+      "React Testing Library for frontend tests"
+    ],
+    "security_testing": {
+      "csrf": "Ensure CSRF token is required for authenticated routes",
+      "rate_limiting": "Test rate limiting on public routes",
+      "file_upload": "Validate file type and size restrictions"
+    }
+  }
+}
