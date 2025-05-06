@@ -7,7 +7,7 @@ import Blog from './pages/Blog';
 import Contact from './pages/Contact';
 import Courses from './pages/Courses';
 import Enrollment from './pages/Enrollment';
-import Product_Manage from './pages/Product_Manage';
+import Product_Manage from './pages/Product_manage';
 import Product_develop from './pages/Product_develop';
 import Job_readiness from './pages/Job_readiness';
 import Creative_des from './pages/Creative_des';
