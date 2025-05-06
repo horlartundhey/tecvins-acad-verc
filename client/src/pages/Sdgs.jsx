@@ -5,7 +5,7 @@ import { HiOutlineRocketLaunch   } from "react-icons/hi2";
 import { HiOutlinePlayCircle } from "react-icons/hi2";
 import { Link } from 'react-router-dom';
 import Metrics from '../components/Metrics';
-import Testimonials from '../components/testimonials';
+import Testimonials from '../components/Testimonials';
 import TestimonialModal from '../components/TesimonialModal';
 
 const Sdgs = () => {

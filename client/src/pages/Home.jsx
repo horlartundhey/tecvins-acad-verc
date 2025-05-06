@@ -4,7 +4,7 @@ import Whoweare from '../components/Whoweare'
 import WhyTecvinson from '../components/WhyTecvinson'
 import OurPartners from '../components/OurPartners'
 import Metrics from '../components/Metrics'
-import Testimonials from '../components/testimonials'
+import Testimonials from '../components/Testimonials'
 import Faq from '../components/Faq'
 
 const Home = () => {
