@@ -5,7 +5,8 @@ const { protect, checkRole } = require('../middleware/auth');
 const {
     submitContact,
     getContacts,
-    updateContactStatus
+    updateContactStatus,
+    deleteContact
 } = require('../controllers/contactController');
 
 // Public routes
@@ -15,5 +16,7 @@ router.post('/', submitContact);
 router.get('/', protect, checkRole(['admin']), getContacts);
 
 router.put('/:id', protect, checkRole(['admin']), updateContactStatus);
+
+router.delete('/:id', protect, checkRole(['admin']), deleteContact);
 
 module.exports = router;

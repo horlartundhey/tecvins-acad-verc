@@ -3,17 +3,27 @@
   "info": {
     "title": "Tecvin Academy API",
     "version": "1.0.0",
-    "description": "API documentation for Tecvin Academy application"
+    "description": "API documentation for Tecvin Academy"
   },
   "servers": [
     {
       "url": "http://localhost:5000",
-      "description": "Development server"
+      "description": "Local development server"
     }
   ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
   "paths": {
     "/api/auth/register": {
       "post": {
+        "tags": ["Auth"],
         "summary": "Register a new user",
         "requestBody": {
           "required": true,
@@ -23,21 +33,31 @@
                 "type": "object",
                 "properties": {
                   "name": { "type": "string" },
-                  "email": { "type": "string" },
-                  "password": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string", "format": "password" },
                   "role": { 
                     "type": "string",
                     "enum": ["admin", "editor"]
                   }
-                }
+                },
+                "required": ["name", "email", "password"]
               }
             }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully"
+          },
+          "400": {
+            "description": "Bad request - Invalid user data or email already exists"
           }
         }
       }
     },
     "/api/auth/login": {
       "post": {
+        "tags": ["Auth"],
         "summary": "Login user",
         "requestBody": {
           "required": true,
@@ -46,18 +66,86 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "email": { "type": "string" },
-                  "password": { "type": "string" }
+                  "email": { 
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": { 
+                    "type": "string",
+                    "format": "password"
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "email": { "type": "string" },
+                    "role": { "type": "string" },
+                    "token": { "type": "string" }
+                  }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid credentials"
           }
         }
       }
     },
-    "/api/students/apply": {
+    "/api/auth/profile": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get user profile",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "User profile retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "email": { "type": "string" },
+                    "role": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        }
+      }
+    },
+    "/api/blogs": {
+      "get": {
+        "tags": ["Blogs"],
+        "summary": "Get all published blogs",
+        "responses": {
+          "200": {
+            "description": "List of blogs retrieved successfully"
+          }
+        }
+      },
       "post": {
-        "summary": "Submit student application",
+        "tags": ["Blogs"],
+        "summary": "Create new blog post",
+        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -65,27 +153,216 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "fullName": { "type": "string" },
-                  "email": { "type": "string" },
-                  "phoneNumber": { "type": "string" },
-                  "dateOfBirth": { "type": "string", "format": "date" },
-                  "gender": { 
-                    "type": "string",
-                    "enum": ["male", "female", "other"]
+                  "title": { "type": "string" },
+                  "content": { "type": "string" },
+                  "tags": { 
+                    "type": "array",
+                    "items": { "type": "string" }
                   },
-                  "course": { "type": "string" },
-                  "education": { "type": "string" },
-                  "currentOccupation": { "type": "string" },
-                  "address": { "type": "string" }
-                }
+                  "featuredImage": { "type": "string" }
+                },
+                "required": ["title", "content"]
               }
             }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Blog created successfully"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        }
+      }
+    },
+    "/api/blogs/post/{slug}": {
+      "get": {
+        "tags": ["Blogs"],
+        "summary": "Get blog by slug",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blog post retrieved successfully"
+          },
+          "404": {
+            "description": "Blog not found"
+          }
+        }
+      }
+    },
+    "/api/blogs/{id}": {
+      "put": {
+        "tags": ["Blogs"],
+        "summary": "Update blog",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blog updated successfully"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Blogs"],
+        "summary": "Delete blog",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blog deleted successfully"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        }
+      }
+    },
+    "/api/blogs/drafts": {
+      "get": {
+        "tags": ["Blogs"],
+        "summary": "Get draft blogs",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Draft blogs retrieved successfully"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        }
+      }
+    },
+    "/api/students/applications": {
+      "get": {
+        "tags": ["Students"],
+        "summary": "Get all student applications",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": ["pending", "approved", "rejected"]
+            }
+          },
+          {
+            "in": "query",
+            "name": "course",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Applications retrieved successfully"
+          },
+          "401": {
+            "description": "Not authorized"
+          }
+        }
+      }
+    },
+    "/api/students/applications/{id}": {
+      "get": {
+        "tags": ["Students"],
+        "summary": "Get application by ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Application retrieved successfully"
+          },
+          "404": {
+            "description": "Application not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Students"],
+        "summary": "Update application status",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["pending", "approved", "rejected"]
+                  }
+                },
+                "required": ["status"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Application status updated successfully"
+          },
+          "404": {
+            "description": "Application not found"
           }
         }
       }
     },
     "/api/trainers/apply": {
       "post": {
+        "tags": ["Trainers"],
         "summary": "Submit trainer application",
         "requestBody": {
           "required": true,
@@ -95,7 +372,7 @@
                 "type": "object",
                 "properties": {
                   "fullName": { "type": "string" },
-                  "email": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
                   "phoneNumber": { "type": "string" },
                   "expertise": { 
                     "type": "array",
@@ -110,174 +387,284 @@
                     "items": { "type": "string" }
                   },
                   "availability": { "type": "string" }
-                }
+                },
+                "required": [
+                  "fullName",
+                  "email",
+                  "phoneNumber",
+                  "expertise",
+                  "yearsOfExperience",
+                  "resume",
+                  "preferredCourses",
+                  "availability"
+                ]
               }
             }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Application submitted successfully"
           }
         }
       }
     },
-    "/api/blogs": {
+    "/api/trainers/applications": {
       "get": {
-        "summary": "Get all published blogs"
-      },
-      "post": {
-        "summary": "Create new blog post",
+        "tags": ["Trainers"],
+        "summary": "Get all trainer applications",
         "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Applications retrieved successfully"
+          }
+        }
+      }
+    },
+    "/api/contact": {
+      "post": {
+        "tags": ["Contact"],
+        "summary": "Submit contact form",
         "requestBody": {
           "required": true,
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "title": { "type": "string" },
-                  "content": { "type": "string" },
-                  "tags": { 
-                    "type": "array",
-                    "items": { "type": "string" }
-                  },
-                  "featuredImage": { "type": "string", "format": "binary" }
-                }
+                  "name": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
+                  "subject": { "type": "string" },
+                  "message": { "type": "string" }
+                },
+                "required": ["name", "email", "subject", "message"]
               }
             }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Message sent successfully"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Contact"],
+        "summary": "Get all contact submissions",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Contact submissions retrieved successfully"
           }
         }
       }
     },
-    "/api/admin/stats": {
+    "/api/partners": {
+      "post": {
+        "tags": ["Partners"],
+        "summary": "Submit partnership application",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
+                  "organization": { "type": "string" },
+                  "role": { "type": "string" },
+                  "partnershipType": { "type": "string" },
+                  "message": { "type": "string" }
+                },
+                "required": ["name", "email", "organization", "partnershipType"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Partnership application submitted successfully"
+          }
+        }
+      },
       "get": {
-        "summary": "Get dashboard statistics",
-        "security": [{ "bearerAuth": [] }]
-      }
-    }
-  },
-  "components": {
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-      }
-    }
-  },
-  "forms": {
-    "trainer": {
-      "model": {
-        "required_fields": {
-          "fullName": "String",
-          "email": "String",
-          "phoneNumber": "String",
-          "expertise": "Array of Strings",
-          "yearsOfExperience": "Number",
-          "resume": "String (file URL)",
-          "preferredCourses": "Array of Strings",
-          "availability": "String"
-        },
-        "optional_fields": {
-          "portfolio": "String (URL)",
-          "linkedIn": "String",
-          "status": "String (enum: pending, approved, rejected)"
-        }
-      },
-      "frontend_mismatches": [
-        "Course area selection is single value but backend expects array of preferredCourses",
-        "Missing expertise field in form",
-        "Missing availability field in form"
-      ],
-      "testing_procedure": {
-        "required_fields_test": {
-          "description": "Test all required fields validation",
-          "steps": [
-            "Submit form with empty required fields - should show validation errors",
-            "Submit form with invalid email format - should show email validation error",
-            "Submit form with valid data - should succeed"
-          ]
-        },
-        "file_upload_test": {
-          "description": "Test resume upload functionality",
-          "steps": [
-            "Try uploading non-PDF file - should reject",
-            "Try uploading file > 5MB - should reject",
-            "Upload valid PDF - should succeed"
-          ]
-        },
-        "api_endpoints": {
-          "submit": "POST /api/trainers/apply",
-          "get_all": "GET /api/trainers/applications",
-          "get_by_id": "GET /api/trainers/applications/:id",
-          "update_status": "PUT /api/trainers/applications/:id"
+        "tags": ["Partners"],
+        "summary": "Get all partnership applications",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Partnership applications retrieved successfully"
+          }
         }
       }
     },
-    "student": {
-      "model": {
-        "required_fields": {
-          "fullName": "String",
-          "email": "String",
-          "phoneNumber": "String",
-          "dateOfBirth": "Date",
-          "gender": "String (enum: male, female, other)",
-          "course": "String",
-          "education": "String",
-          "address": "String"
+    "/api/newsletter/subscribe": {
+      "post": {
+        "tags": ["Newsletter"],
+        "summary": "Subscribe to newsletter",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "format": "email" }
+                },
+                "required": ["email"]
+              }
+            }
+          }
         },
-        "optional_fields": {
-          "currentOccupation": "String",
-          "status": "String (enum: pending, approved, rejected)"
+        "responses": {
+          "201": {
+            "description": "Successfully subscribed to newsletter"
+          },
+          "400": {
+            "description": "Email already subscribed"
+          }
         }
-      },
-      "frontend_mismatches": [
-        "Missing dateOfBirth field in form",
-        "Missing gender selection in form",
-        "Missing education field in form"
-      ],
-      "testing_procedure": {
-        "required_fields_test": {
-          "description": "Test all required fields validation",
-          "steps": [
-            "Submit form with empty required fields - should show validation errors",
-            "Submit form with invalid email format - should show email validation error",
-            "Submit form with invalid phone format - should show phone validation error",
-            "Submit form with valid data - should succeed"
-          ]
+      }
+    },
+    "/api/newsletter/unsubscribe": {
+      "post": {
+        "tags": ["Newsletter"],
+        "summary": "Unsubscribe from newsletter",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "format": "email" }
+                },
+                "required": ["email"]
+              }
+            }
+          }
         },
-        "validation_rules": {
-          "email": "Must be valid email format",
-          "phoneNumber": "Must be valid Nigerian phone format",
-          "dateOfBirth": "Must be 16+ years old",
-          "gender": "Must be one of: male, female, other"
-        },
-        "api_endpoints": {
-          "submit": "POST /api/students/apply",
-          "get_all": "GET /api/students/applications",
-          "get_by_id": "GET /api/students/applications/:id",
-          "update_status": "PUT /api/students/applications/:id"
+        "responses": {
+          "200": {
+            "description": "Successfully unsubscribed from newsletter"
+          },
+          "404": {
+            "description": "Email not found in subscription list"
+          }
         }
       }
     }
   },
-  "general_testing_notes": {
-    "environment_setup": {
-      "development": {
-        "1": "Use .env.development for development testing",
-        "2": "Ensure MongoDB test database is running",
-        "3": "Run server in development mode: npm run dev"
-      },
-      "test": {
-        "1": "Use separate test database",
-        "2": "Run tests with: npm test"
-      }
+  "x-postman-collection": {
+    "info": {
+      "name": "Tecvin Academy API",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
-    "api_testing_tools": [
-      "Postman",
-      "Jest for unit tests",
-      "React Testing Library for frontend tests"
-    ],
-    "security_testing": {
-      "csrf": "Ensure CSRF token is required for authenticated routes",
-      "rate_limiting": "Test rate limiting on public routes",
-      "file_upload": "Validate file type and size restrictions"
-    }
+    "auth": {
+      "type": "bearer",
+      "bearer": [{
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }]
+    },
+    "event": [{
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Only run this script if the request requires authentication and we don't have a valid token",
+          "if (pm.request.headers.has('Authorization') && (!pm.environment.get('accessToken') || pm.environment.get('tokenExpiry') < new Date().getTime())) {",
+          "    // Login request to get new token",
+          "    const loginRequest = {",
+          "        url: pm.environment.get('baseUrl') + '/api/auth/login',",
+          "        method: 'POST',",
+          "        header: {",
+          "            'Content-Type': 'application/json'",
+          "        },",
+          "        body: {",
+          "            mode: 'raw',",
+          "            raw: JSON.stringify({",
+          "                email: pm.environment.get('userEmail'),",
+          "                password: pm.environment.get('userPassword')",
+          "            })",
+          "        }",
+          "    };",
+          "",
+          "    pm.sendRequest(loginRequest, (err, res) => {",
+          "        if (err) {",
+          "            console.error('Auto-login failed:', err);",
+          "            return;",
+          "        }",
+          "",
+          "        const response = res.json();",
+          "        if (response.token) {",
+          "            // Save token and set expiry to 23 hours from now",
+          "            pm.environment.set('accessToken', response.token);",
+          "            pm.environment.set('tokenExpiry', new Date().getTime() + (23 * 60 * 60 * 1000));",
+          "        }",
+          "    });",
+          "}"
+        ]
+      }
+    }],
+    "variables": [
+      {
+        "id": "baseUrl",
+        "value": "{{baseUrl}}",
+        "type": "string"
+      },
+      {
+        "id": "accessToken",
+        "value": "",
+        "type": "string"
+      },
+      {
+        "id": "tokenExpiry",
+        "value": "0",
+        "type": "string"
+      },
+      {
+        "id": "userEmail",
+        "value": "",
+        "type": "string"
+      },
+      {
+        "id": "userPassword",
+        "value": "",
+        "type": "string"
+      }
+    ]
+  },
+  "x-postman-environment-template": {
+    "name": "Tecvin Academy API - {{env}}",
+    "values": [
+      {
+        "key": "baseUrl",
+        "value": "http://localhost:5000",
+        "enabled": true
+      },
+      {
+        "key": "userEmail",
+        "value": "your-email@example.com",
+        "enabled": true
+      },
+      {
+        "key": "userPassword",
+        "value": "your-password",
+        "enabled": true
+      },
+      {
+        "key": "accessToken",
+        "value": "",
+        "enabled": true
+      },
+      {
+        "key": "tokenExpiry",
+        "value": "0",
+        "enabled": true
+      }
+    ]
   }
 }

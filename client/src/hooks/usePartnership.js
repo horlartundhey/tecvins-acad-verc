@@ -1,25 +1,67 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { submitPartnership, getAllPartnerships, clearMessages } from '../redux/slices/partnerSlice';
+import { 
+    submitPartnership, 
+    getAllPartnerships, 
+    updatePartnershipStatus,
+    deletePartnership,
+    exportPartnerships,
+    clearMessages,
+    setCurrentPartnership
+} from '../redux/slices/partnerSlice';
 
 export const usePartnership = () => {
     const dispatch = useDispatch();
-    const { partnerships, isLoading, error, successMessage } = useSelector((state) => state.partners);
+    const { 
+        partnerships, 
+        currentPartnership,
+        isLoading, 
+        error, 
+        successMessage,
+        exportData 
+    } = useSelector((state) => state.partners);
 
     const submitPartnershipForm = async (formData) => {
         try {
-            await dispatch(submitPartnership(formData)).unwrap();
-            return true;
+            const result = await dispatch(submitPartnership(formData)).unwrap();
+            return result;
         } catch (error) {
-            return false;
+            throw error;
         }
     };
 
     const getPartnerships = async (filters = {}) => {
         try {
-            await dispatch(getAllPartnerships(filters)).unwrap();
+            const result = await dispatch(getAllPartnerships(filters)).unwrap();
+            return result.data;
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    const updateStatus = async (id, status) => {
+        try {
+            const result = await dispatch(updatePartnershipStatus({ id, status })).unwrap();
+            return result.data;
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    const deletePartnershipById = async (id) => {
+        try {
+            await dispatch(deletePartnership(id)).unwrap();
             return true;
         } catch (error) {
-            return false;
+            throw error;
+        }
+    };
+
+    const exportPartnershipData = async () => {
+        try {
+            const result = await dispatch(exportPartnerships()).unwrap();
+            return result.data;
+        } catch (error) {
+            throw error;
         }
     };
 
@@ -27,13 +69,23 @@ export const usePartnership = () => {
         dispatch(clearMessages());
     };
 
+    const setCurrentPartnershipData = (partnership) => {
+        dispatch(setCurrentPartnership(partnership));
+    };
+
     return {
         partnerships,
+        currentPartnership,
         isLoading,
         error,
         successMessage,
+        exportData,
         submitPartnership: submitPartnershipForm,
         getPartnerships,
-        clearPartnershipMessages
+        updateStatus,
+        deletePartnership: deletePartnershipById,
+        exportPartnerships: exportPartnershipData,
+        clearPartnershipMessages,
+        setCurrentPartnership: setCurrentPartnershipData
     };
 };

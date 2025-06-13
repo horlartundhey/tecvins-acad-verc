@@ -11,7 +11,7 @@ const {
 } = require('../controllers/trainerController');
 
 // Public routes
-router.post('/apply', submitApplication);
+router.post('/apply', express.json(), submitApplication);
 
 // Protected routes (Admin only)
 router.get('/applications', protect, checkRole(['admin']), getAllApplications);

@@ -56,6 +56,9 @@ const Footer = () => {
                   <Link to="/courses" className="text-gray-800 hover:text-gray-600 transition-colors">
                     Courses
                   </Link>
+                  <Link to="/what_difference" className="text-gray-800 hover:text-gray-600 transition-colors">
+                    Why Tecvinson?
+                  </Link>
                   <Link to="/blog" className="text-gray-800 hover:text-gray-600 transition-colors">
                     Blog
                   </Link>

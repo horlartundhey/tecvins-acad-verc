@@ -17,46 +17,15 @@ const studentApplicationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    dateOfBirth: {
-        type: Date,
-        required: true
-    },
-    gender: {
-        type: String,
-        enum: ['male', 'female', 'other'],
-        required: true
-    },
     course: {
-        type: String,
-        required: true
-    },
-    education: {
-        type: String,
-        required: true
-    },
-    currentOccupation: {
-        type: String,
-        required: true
-    },
-    address: {
         type: String,
         required: true
     },
     country: {
         type: String,
-        required: true,
-        default: 'Nigeria'
-    },
-    timeZone: {
-        type: String,
         required: true
     },
-    year: {
-        type: String,
-        required: true,
-        default: '2025'
-    },
-    cohort: {
+    timeZone: {
         type: String,
         required: true
     },

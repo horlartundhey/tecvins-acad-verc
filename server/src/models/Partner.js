@@ -6,36 +6,41 @@ const partnerSchema = new mongoose.Schema({
         enum: ['individual', 'corporate'],
         required: true
     },
-    // Common fields
-    email: {
+    // Common fields for both individual and corporate
+    firstName: {
         type: String,
         required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true
     },
     phoneNumber: {
         type: String,
-        required: true
+        required: false // Optional in frontend
     },
-    country: {
-        type: String,
-        required: true
-    },
-    // Individual specific fields
-    firstName: String,
-    lastName: String,
-    profession: String,
-    linkedIn: String,
-    // Corporate specific fields
-    companyName: String,
-    position: String,
-    companySize: String,
-    website: String,
-    industryType: String,
-    // Partnership details
-    partnershipInterest: {
+    contactMethod: {
         type: [String],
+        enum: ['email', 'phone', 'whatsapp'],
         required: true
     },
-    additionalInfo: String,
+    // Corporate specific field
+    companyName: {
+        type: String,
+        required: function() {
+            return this.type === 'corporate';
+        }
+    },
+    // Optional note/additional information
+    note: {
+        type: String,
+        required: false
+    },
     status: {
         type: String,
         enum: ['pending', 'approved', 'rejected'],
@@ -47,14 +52,8 @@ const partnerSchema = new mongoose.Schema({
 
 // Validate required fields based on partner type
 partnerSchema.pre('save', function(next) {
-    if (this.type === 'individual') {
-        if (!this.firstName || !this.lastName || !this.profession) {
-            next(new Error('First name, last name, and profession are required for individual partners'));
-        }
-    } else if (this.type === 'corporate') {
-        if (!this.companyName || !this.position || !this.industryType) {
-            next(new Error('Company name, position, and industry type are required for corporate partners'));
-        }
+    if (this.type === 'corporate' && !this.companyName) {
+        next(new Error('Company name is required for corporate partners'));
     }
     next();
 });

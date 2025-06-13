@@ -7,7 +7,8 @@ const {
     getAllApplications,
     getApplicationById,
     updateApplicationStatus,
-    exportApplications
+    exportApplications,
+    deleteStudentApplication
 } = require('../controllers/studentController');
 
 // Public routes
@@ -18,5 +19,6 @@ router.get('/applications', protect, checkRole(['admin']), getAllApplications);
 router.get('/applications/export', protect, checkRole(['admin']), exportApplications);
 router.get('/applications/:id', protect, checkRole(['admin']), getApplicationById);
 router.put('/applications/:id', protect, checkRole(['admin']), updateApplicationStatus);
+router.delete('/applications/:id', protect, checkRole(['admin']), deleteStudentApplication);
 
 module.exports = router;

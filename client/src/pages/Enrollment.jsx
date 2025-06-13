@@ -1,30 +1,53 @@
 import { Info, Rocket, Plus, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import ApplicationModal from "./ApplicationModal";
+import WaitlistModal from "../components/WaitlistModal";
 import { HiArrowLongDown } from "react-icons/hi2";
 import { useStudentApplications } from "../hooks/useStudentApplications";
+import { useWaitlist } from "../hooks/useWaitlist";
+import { useCohort } from "../hooks/useCohort";
 
 const Enrollment = () => {
   const [expandedStage, setExpandedStage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalStep, setModalStep] = useState("notice"); // notice, form, success
-  const [formData, setFormData] = useState({
-    fullName: "",
+  const [formType, setFormType] = useState('application');  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
     email: "",
     phoneNumber: "",
-    dateOfBirth: "",
-    gender: "",
-    course: "",
-    education: "",
-    currentOccupation: "",
-    address: "",
+    courseOfInterest: "", // Changed from course to courseOfInterest
     country: "Nigeria", // Additional field for frontend use
     timeZone: "", // Additional field for frontend use
-    year: "2025", // Additional field for frontend use
-    cohort: "", // Additional field for frontend use
+    reason: "",
+    cohortId: ""
   });
 
   const { submitApplication } = useStudentApplications();
+  const { submitWaitlist } = useWaitlist();
+  const { getCohorts } = useCohort();
+  const [activeCohort, setActiveCohort] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const fetchActiveCohort = async () => {
+      try {
+        const cohorts = await getCohorts({ status: 'upcoming' });
+        const active = cohorts.find(cohort => cohort.isActive);
+        if (active) {
+          setActiveCohort(active);
+          setFormType(active.isWaitlistEnabled ? 'waitlist' : 'application');
+          // Set the cohort ID in formData when active cohort is found
+          setFormData(prev => ({ ...prev, cohortId: active._id }));
+        }
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching active cohort:', error);
+        setIsLoading(false);
+      }
+    };
+    
+    fetchActiveCohort();
+  }, [getCohorts]);
 
   useEffect(() => {
     window.scrollTo({
@@ -44,17 +67,73 @@ const Enrollment = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  };  const handleSubmit = async (payload) => {
+    try {
+      console.log('=== ENROLLMENT HANDLESUBMIT DEBUG ===');
+      console.log('Form type:', formType);
+      console.log('Payload received:', JSON.stringify(payload, null, 2));
+      console.log('Current formData state:', JSON.stringify(formData, null, 2));
+      
+      let response;
+      if (formType === 'waitlist') {
+        console.log('=== CALLING SUBMITWAITLIST ===');
+        response = await submitWaitlist(payload);
+        console.log('=== SUBMITWAITLIST RESPONSE ===', JSON.stringify(response, null, 2));
+      } else {
+        console.log('=== CALLING SUBMITAPPLICATION ===');
+        response = await submitApplication(payload);
+        console.log('=== SUBMITAPPLICATION RESPONSE ===', JSON.stringify(response, null, 2));
+      }
 
-  const handleSubmit = async () => {
-    const success = await submitApplication(formData);
-    if (success) {
+      if (!response) {
+        console.error('=== SUBMISSION FAILED - NO RESPONSE ===');
+        throw new Error('Failed to submit application');
+      }
+
+      if (!response.success) {
+        console.error('=== SUBMISSION FAILED - RESPONSE SUCCESS FALSE ===');
+        console.error('Response:', JSON.stringify(response, null, 2));
+        throw new Error(response.error || 'Failed to submit application');
+      }
+
+      console.log('=== SUBMISSION SUCCESS ===');
+      console.log('Setting modal step to success');
+      // Success!
       setModalStep("success");
-      setTimeout(() => {
-        window.location.href = "/courses"; // Redirect to courses page after 3 seconds
+      
+      // Reset form data
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: "",
+        courseOfInterest: "",
+        country: "Nigeria",
+        timeZone: "",
+        reason: "",
+        cohortId: ""
+      });
+      
+      console.log('=== FORM RESET COMPLETE ===');
+      
+      // Save successful submission
+      localStorage.setItem('applicationSubmitted', 'true');
+      
+      // Redirect after showing success message
+      const timer = setTimeout(() => {
+        window.location.href = "/courses";
       }, 3000);
-    } else {
-      alert("Failed to submit application. Please check your details and try again.");
+      
+      return () => clearTimeout(timer);
+      
+    } catch (error) {
+      console.error('=== ENROLLMENT HANDLESUBMIT ERROR ===');
+      console.error('Error object:', error);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      console.error('Full error:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
+      // Re-throw the error to be handled by the calling code
+      throw error;
     }
   };
 
@@ -86,13 +165,10 @@ const Enrollment = () => {
       title: "Software Development",
       duration: "2 Months",
       content: [
-        "Advanced Programming Concepts",
-        "Front-end Development",
-        "Back-end Development",
-        "Database Design and Management",
-        "API Development",
-        "Testing and Quality Assurance",
-        "DevOps Fundamentals",
+        "Core JAVA",
+        "Core C#",
+        "Core PYTHON",
+        "HTML, CSS and JavaScript (Mandatory for frontend)",        
       ],
     },
     {
@@ -100,12 +176,19 @@ const Enrollment = () => {
       title: "Specialization",
       duration: "3 Months",
       content: [
-        "Choose Your Track: Web, Mobile, or Data",
-        "Deep Dive into Frameworks",
-        "Advanced Architecture Patterns",
-        "Security Best Practices",
-        "Performance Optimization",
-        "Team Collaboration",
+        "Backend Software Development in JAVA",
+        "Backend Software Development in C#",
+        "Backend Software Development in PYTHON",
+        "Mobile Development",
+        "Frontend Software Development(ReactJS)",
+        "Software Quality",
+        "Data Analysis + Data Scientist",
+        "DevOps",
+        "Cybersecurity",
+        "Business Analysis",
+        "Scrum Master",
+        "Product Owner",
+        "UI/UX Designer",
       ],
     },
     {
@@ -113,12 +196,12 @@ const Enrollment = () => {
       title: "Project-based Learning and Job Readiness",
       duration: "2 Months",
       content: [
-        "Real-world Project Implementation",
-        "Portfolio Development",
-        "Technical Interview Preparation",
-        "Resume Building",
-        "Soft Skills Development",
-        "Industry Networking",
+        "Internship Across all Courses",
+        "Students come together to work on a real-world project to develop a Mininum Viable Product(MVP) that is Market Ready.",
+        "CV Writing",
+        "LinkedIn Profile Optimization",
+        "Cover Letter Writing",
+        "Interview Techniques and Story Telling",
       ],
     },
   ];
@@ -148,30 +231,44 @@ const Enrollment = () => {
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-10">Apply to Tecvinson Academy</h1>
 
-          {/* Cohort Information Box */}
-          <div className="bg-blue-50 border border-blue-100 rounded-lg p-6 mb-12">
+          {/* Cohort Information Box */}          <div className="bg-blue-50 border border-blue-100 rounded-lg p-6 mb-12">
             <div className="flex items-start">
               <Info className="h-5 w-5 text-blue-500 mt-0.5 mr-2 flex-shrink-0" />
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-3">Upcoming Cohort Information</h2>
-                <ul className="space-y-2 text-gray-700">
-                  <li className="flex items-baseline">
-                    <span className="font-medium mr-2">•</span>
-                    <span className="font-medium mr-1">Start Date:</span> February 5, 2025
-                  </li>
-                  <li className="flex items-baseline">
-                    <span className="font-medium mr-2">•</span>
-                    <span className="font-medium mr-1">Duration:</span> 9 Months (2 Sessions per Week)
-                  </li>
-                  <li className="flex items-baseline">
-                    <span className="font-medium mr-2">•</span>
-                    <span className="font-medium mr-1">Time:</span> Saturdays and Sundays, 14:00 - 16:00 (CET)
-                  </li>
-                  <li className="flex items-baseline">
-                    <span className="font-medium mr-2">•</span>
-                    <span className="font-medium mr-1">Mode of Delivery:</span> Online (via Microsoft Teams)
-                  </li>
-                </ul>
+                <h2 className="text-lg font-semibold text-gray-900 mb-3">
+                  {activeCohort ? 'Active Cohort Information' : 'No Active Cohort'}
+                </h2>
+                {activeCohort ? (
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="md:flex items-baseline">
+                      <span className="font-medium mr-2">•</span>
+                      <span className="font-medium mr-1">Start Date:</span>{" "}
+                      {new Date(activeCohort.startDate).toLocaleDateString()}
+                    </li>
+                    <li className="md:flex items-baseline">
+                      <span className="font-medium mr-2">•</span>
+                      <span className="font-medium mr-1">Duration:</span>{" "}
+                      {activeCohort.duration || "9 Months"} (2 Sessions per Week)
+                    </li>
+                    <li className="md:flex items-baseline">
+                      <span className="font-medium mr-2">•</span>
+                      <span className="font-medium mr-1">Time:</span>{" "}
+                      {activeCohort.schedule || "Saturdays and Sundays, 14:00 - 16:00 (CET)"}
+                    </li>
+                    <li className="md:flex items-baseline">
+                      <span className="font-medium mr-2">•</span>
+                      <span className="font-medium mr-1">Mode of Delivery:</span>{" "}
+                      {activeCohort.deliveryMode || "Online (via Microsoft Teams)"}
+                    </li>
+                    <li className="md:flex items-baseline">
+                      <span className="font-medium mr-2">•</span>
+                      <span className="font-medium mr-1">Available Spots:</span>{" "}
+                      {activeCohort.maxStudents - (activeCohort.currentEnrollment || 0)} of {activeCohort.maxStudents}
+                    </li>
+                  </ul>
+                ) : (
+                  <p className="text-gray-600">There is currently no active cohort. Please check back later.</p>
+                )}
               </div>
             </div>
           </div>
@@ -232,15 +329,41 @@ const Enrollment = () => {
               </svg>
             </div>
             
-            {/* Button centered on the page */}
-            <div className="flex justify-center">
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="bg-[#3B9790] hover:bg-teal-600 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300 flex items-center"
-              >
-                Submit Your Application
-                <Rocket className="ml-2 h-4 w-4" />
-              </button>
+            {/* Button centered on the page */}            <div className="flex justify-center">              {activeCohort ? (
+                <button
+                  onClick={() => {
+                    console.log('=== ENROLLMENT BUTTON CLICK DEBUG ===');
+                    console.log('Button clicked - Active Cohort:', JSON.stringify(activeCohort, null, 2));
+                    console.log('Setting cohortId:', activeCohort._id);
+                    console.log('Active cohort isWaitlistEnabled:', activeCohort.isWaitlistEnabled);
+                    console.log('Setting formType:', activeCohort.isWaitlistEnabled ? 'waitlist' : 'application');
+                    console.log('Current formData before update:', JSON.stringify(formData, null, 2));
+                    
+                    setFormData(prev => {
+                      const newFormData = { ...prev, cohortId: activeCohort._id };
+                      console.log('New formData after cohortId update:', JSON.stringify(newFormData, null, 2));
+                      return newFormData;
+                    });
+                    
+                    setFormType(activeCohort.isWaitlistEnabled ? 'waitlist' : 'application');
+                    setIsModalOpen(true);
+                    
+                    console.log('Modal opened with formType:', activeCohort.isWaitlistEnabled ? 'waitlist' : 'application');
+                  }}
+                  className="bg-[#3B9790] hover:bg-teal-600 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300 flex items-center"
+                >
+                  {activeCohort.isWaitlistEnabled ? "Join Waitlist" : "Submit Your Application"}
+                  <Rocket className="ml-2 h-4 w-4" />
+                </button>
+              ) : (
+                <button
+                  disabled
+                  className="bg-gray-400 cursor-not-allowed text-white font-medium py-3 px-6 rounded-lg flex items-center"
+                >
+                  No Active Cohort Available
+                  <Info className="ml-2 h-4 w-4" />
+                </button>
+              )}
             </div>
           </div>
           </div>
@@ -251,90 +374,88 @@ const Enrollment = () => {
         <h1 className="text-3xl font-bold text-gray-900 mb-10">Your Learning Journey at Tecvinson Academy</h1>
 
         {/* Timeline Visualization */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold text-gray-800 mb-8">Timeline Visualization:</h2>
+        <div className="mb-8 sm:mb-16">
+          <h2 className="text-lg sm:text-2xl font-bold text-gray-800 mb-4 sm:mb-8">Timeline Visualization:</h2>
 
           <div className="relative">
             {/* Vertical Line */}
-            <div className="absolute left-[1.4rem] top-6 bottom-10 w-1 bg-[#B7E5E1]"></div>
+            <div className="absolute left-1 sm:left-2 top-2 sm:top-4 bottom-2 sm:bottom-4 w-0.5 sm:w-1 bg-[#B7E5E1]"></div>
 
             {/* Timeline Stages */}
-            <div className="space-y-4">
-            {timelineStages.map((stage) => (
-              <div key={stage.number} className="relative">
-                {/* Stage Circle */}
-                <div className="absolute left-6 transform -translate-x-1/2 top-6">
-                  <div className="w-8 h-8 bg-white rounded-full border-8 border-teal-100 flex items-center justify-center">                    
+            <div className="space-y-2 sm:space-y-4">
+              {timelineStages.map((stage) => (
+                <div key={stage.number} className="relative">
+                  {/* Stage Circle */}
+                  <div className="absolute left-1 sm:left-2 transform -translate-x-1/2 top-2 sm:top-2">
+                    <div className="w-4 sm:w-6 h-4 sm:h-6 bg-white rounded-full border-2 sm:border-4 border-teal-100 flex items-center justify-center"></div>
                   </div>
-                </div>
 
-                {/* Stage Content */}
-                <div className="ml-16">
-                  {/* Stage Header */}
-                  <div
-                    className={`rounded-md p-4 ${
-                      expandedStage === stage.number
-                        ? "bg-teal-50 border border-teal-100"
-                        : "bg-white border border-gray-200"
-                    }`}
-                  >
-                    <div className="flex justify-between items-center">
-                      <div>
-                        <span className="font-semibold text-gray-700">Stage {stage.number} </span>
-                        <span className="text-sm text-gray-500">({stage.duration}): </span>
-                        <span className="text-gray-700">{stage.title}</span>
+                  {/* Stage Content */}
+                  <div className="ml-6 sm:ml-12">
+                    {/* Stage Header */}
+                    <div
+                      className={`rounded-md p-2 sm:p-4 ${
+                        expandedStage === stage.number
+                          ? "bg-teal-50 border border-teal-100"
+                          : "bg-white border border-gray-200"
+                      }`}
+                    >
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <span className="font-semibold text-gray-700">Stage {stage.number} </span>
+                          <span className="text-xs sm:text-sm text-gray-500">({stage.duration}): </span>
+                          <span className="text-sm sm:text-base text-gray-700">{stage.title}</span>
+                        </div>
+                        <button
+                          onClick={() => toggleStage(stage.number)}
+                          className="w-6 sm:w-8 h-6 sm:h-8 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-gray-50"
+                        >
+                          {expandedStage === stage.number ? <X size={12} /> : <Plus size={12} />}
+                        </button>
                       </div>
-                      <button
-                        onClick={() => toggleStage(stage.number)}
-                        className="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-gray-50"
-                      >
-                        {expandedStage === stage.number ? <X size={16} /> : <Plus size={16} />}
-                      </button>
+
+                      {/* Expanded Content (unchanged for brevity, adjust as needed) */}
+                      {expandedStage === stage.number && (
+                        <div className="mt-2 sm:mt-4 space-y-2 sm:space-y-4">
+                          {stage.content.map((item, index) => (
+                            <div key={index} className="relative">
+                              <div className="bg-white rounded-md p-2 sm:p-4 shadow-sm flex items-center">
+                                <div className="w-6 sm:w-8 h-6 sm:h-8 bg-[#DBF2F0] rounded-full flex items-center justify-center text-xs sm:text-sm font-medium text-[#2C716C] mr-2 sm:mr-3 border border-teal-100">
+                                  {index + 1}
+                                </div>
+                                <div className="flex-1 text-sm sm:text-base text-[#5E5E5E]">{item}</div>
+                              </div>
+
+                              {index < stage.content.length - 1 && (
+                                <div className="flex justify-center my-2 sm:my-4">
+                                  <HiArrowLongDown className="text-[#4ABDB4]" size={20} sm:size={30} />
+                                </div>
+                              )}
+                            </div>
+                          ))}
+
+                          {stage.number === 1 && (
+                            <div className="mt-4 sm:mt-6 bg-blue-50 border border-blue-100 rounded-md p-2 sm:p-4">
+                              <div className="flex">
+                                <Info className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500 mr-2 flex-shrink-0" />
+                                <div className="text-xs sm:text-sm text-blue-800">
+                                  <p className="font-semibold mb-1">Important Notes:</p>
+                                  <p>
+                                    Tecvinson Academy continuously updates its courses and materials to keep pace with
+                                    industry standards and the evolving IT landscape. Content may be revised to ensure
+                                    relevance and equip students with the latest in-demand skills.
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
-
-                    {/* Expanded Content */}
-                    {expandedStage === stage.number && (
-                      <div className="mt-2 space-y-4">
-                        {stage.content.map((item, index) => (
-                          <div key={index} className="relative">
-                            <div className="bg-white rounded-md p-4 shadow-sm flex items-center">
-                              <div className="w-8 h-8 bg-[#DBF2F0] rounded-full flex items-center justify-center text-xs font-medium text-[#2C716C] mr-3 border border-teal-100">
-                                {index + 1}
-                              </div>
-                              <div className="flex-1 text-[#5E5E5E] ">{item}</div>
-                            </div>
-
-                            {/* Arrow between items */}
-                            {index < stage.content.length - 1 && (
-                              <div className="flex justify-center my-4">
-                                <HiArrowLongDown className="text-[#4ABDB4]" size={30} />
-                              </div>
-                            )}
-                          </div>
-                        ))}
-
-                        {stage.number === 1 && (
-                          <div className="mt-6 bg-blue-50 border border-blue-100 rounded-md p-4">
-                            <div className="flex">
-                              <Info className="h-5 w-5 text-blue-500 mr-2 flex-shrink-0" />
-                              <div className="text-sm text-blue-800">
-                                <p className="font-semibold mb-1">Important Notes:</p>
-                                <p>
-                                  Tecvinson Academy continuously updates its courses and materials to keep pace with
-                                  industry standards and the evolving IT landscape. Content may be revised to ensure
-                                  relevance and equip students with the latest in-demand skills.
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -347,7 +468,7 @@ const Enrollment = () => {
             <div className="absolute left-4 top-6 bottom-[0.5rem] w-1 bg-[#EBC894]"></div>
 
             {/* Cohort Steps */}
-            <div className="space-y-6">
+            <div className="space-y-8">
               {cohortSteps.map((step, index) => (
                 <div key={index} className="relative">
                   <div className="flex items-start">
@@ -355,7 +476,7 @@ const Enrollment = () => {
                       <div className="w-8 h-8 bg-white rounded-full border-8 border-[#EBC894] flex items-center justify-center"></div>
                     </div>
 
-                    <div className="ml-12 flex gap-x-3">
+                    <div className="ml-12  md:flex gap-x-3">
                       <div className="font-semibold text-[#5E5E5E]">{step.title}: </div>
                       <div className="text-gray-600">{step.description}</div>
                     </div>
@@ -365,18 +486,31 @@ const Enrollment = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Modal */}
-      <ApplicationModal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        modalStep={modalStep}
-        setModalStep={setModalStep}
-        formData={formData}
-        handleInputChange={handleInputChange}
-        handleSubmit={handleSubmit}
-      />
+      </div>      {/* Modal */}
+      {activeCohort && (
+        formType === 'waitlist' ? (
+          <WaitlistModal
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            modalStep={modalStep}
+            setModalStep={setModalStep}
+            formData={formData}
+            handleInputChange={handleInputChange}
+            handleSubmit={handleSubmit}
+          />
+        ) : (
+          <ApplicationModal
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            modalStep={modalStep}
+            setModalStep={setModalStep}
+            formData={formData}
+            handleInputChange={handleInputChange}
+            handleSubmit={handleSubmit}
+            formType={formType}
+          />
+        )
+      )}
     </>
   );
 };

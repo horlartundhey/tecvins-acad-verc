@@ -1,3 +1,4 @@
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     submitTrainerApplication,
@@ -16,16 +17,14 @@ export const useTrainerApplications = () => {
         } catch (error) {
             return false;
         }
-    };
-
-    const loadApplications = async (filters = {}) => {
+    };    const loadApplications = React.useCallback(async (filters = {}) => {
         try {
             await dispatch(getAllTrainerApplications(filters)).unwrap();
             return true;
         } catch (error) {
             return false;
         }
-    };
+    }, [dispatch]);
 
     const updateStatus = async (id, status) => {
         try {

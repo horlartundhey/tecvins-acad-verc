@@ -37,6 +37,18 @@ export const updateStudentApplicationStatus = createAsyncThunk(
     }
 );
 
+export const deleteStudentApplication = createAsyncThunk(
+    'students/delete',
+    async (id, { rejectWithValue }) => {
+        try {
+            await apiService.delete(`/students/applications/${id}`);
+            return id;
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to delete application');
+        }
+    }
+);
+
 const initialState = {
     applications: [],
     currentApplication: null,
@@ -65,11 +77,13 @@ const studentSlice = createSlice({
             })
             .addCase(submitStudentApplication.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.successMessage = 'Application submitted successfully';
+                state.successMessage = action.payload.message || 'Application submitted successfully';
+                state.error = null;
             })
             .addCase(submitStudentApplication.rejected, (state, action) => {
                 state.isLoading = false;
-                state.error = action.payload;
+                state.error = action.payload || 'An unexpected error occurred';
+                state.successMessage = null;
             })
             // Get all applications
             .addCase(getAllStudentApplications.pending, (state) => {
@@ -92,6 +106,10 @@ const studentSlice = createSlice({
             })
             .addCase(updateStudentApplicationStatus.rejected, (state, action) => {
                 state.error = action.payload;
+            })
+            // Delete application
+            .addCase(deleteStudentApplication.fulfilled, (state, action) => {
+                state.applications = state.applications.filter(app => app._id !== action.payload);
             });
     }
 });

@@ -1,11 +1,12 @@
+const dotenv = require('dotenv');
+// Load environment variables before other imports
+dotenv.config({ path: '.env' });
+
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-const dotenv = require('dotenv');
 const path = require('path');
 const connectDB = require('./src/config/db');
-const fileUpload = require('express-fileupload');
-
 // Route imports
 const authRoutes = require('./src/routes/auth');
 const blogRoutes = require('./src/routes/blog');
@@ -15,8 +16,8 @@ const adminRoutes = require('./src/routes/admin');
 const contactRoutes = require('./src/routes/contact');
 const partnerRoutes = require('./src/routes/partner');
 const newsletterRoutes = require('./src/routes/newsletter');
-
-dotenv.config();
+const waitlistRoutes = require('./src/routes/waitlistRoutes');
+const cohortRoutes = require('./src/routes/cohort');
 
 const app = express();
 
@@ -24,7 +25,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
-app.use(fileUpload());
 
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -41,6 +41,8 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/partners', partnerRoutes);
 app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/waitlist', waitlistRoutes);
+app.use('/api/cohorts', cohortRoutes);
 
 // Basic route for API health check
 app.get('/', (req, res) => {

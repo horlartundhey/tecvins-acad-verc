@@ -8,6 +8,9 @@ import trainerReducer from './slices/trainerSlice';
 import contactReducer from './slices/contactSlice';
 import partnerReducer from './slices/partnerSlice';
 import newsletterReducer from './slices/newsletterSlice';
+import dashboardReducer from './slices/dashboardSlice';
+import waitlistReducer from './slices/waitlistSlice';
+import cohortReducer from './slices/cohortSlice';
 
 const persistConfig = {
     key: 'root',
@@ -22,7 +25,10 @@ const rootReducer = combineReducers({
     trainers: trainerReducer,
     contact: contactReducer,
     partners: partnerReducer,
-    newsletter: newsletterReducer
+    newsletter: newsletterReducer,
+    dashboard: dashboardReducer,
+    waitlist: waitlistReducer,
+    cohorts: cohortReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

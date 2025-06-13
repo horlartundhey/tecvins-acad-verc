@@ -1,23 +1,23 @@
 import { useSelector, useDispatch } from 'react-redux';
+import { useCallback } from 'react';
 import {
     createBlogPost,
     getAllBlogs,
+    getDraftBlogs,
     updateBlogPost,
     deleteBlogPost,
     setCurrentBlog,
     clearCurrentBlog
 } from '../redux/slices/blogSlice';
 
-export const useBlog = () => {
-    const dispatch = useDispatch();
-    const { blogs, currentBlog, isLoading, error, successMessage } = useSelector((state) => state.blogs);
-
-    const handleCreateBlog = async (blogData) => {
+export const useBlog = () => {    const dispatch = useDispatch();
+    const { blogs, currentBlog, isLoading, error, successMessage, hasLoaded } = useSelector((state) => state.blogs);    const handleCreateBlog = async (blogData) => {
         try {
-            await dispatch(createBlogPost(blogData)).unwrap();
-            return true;
+            const result = await dispatch(createBlogPost(blogData)).unwrap();
+            return { success: true, data: result };
         } catch (error) {
-            return false;
+            console.error('Blog creation error:', error);
+            throw error;
         }
     };
 
@@ -37,16 +37,21 @@ export const useBlog = () => {
         } catch (error) {
             return false;
         }
-    };
-
-    const loadBlogs = async () => {
+    };    const loadBlogs = useCallback(async (status) => {
         try {
-            await dispatch(getAllBlogs()).unwrap();
+            if (status === 'draft') {
+                await dispatch(getDraftBlogs()).unwrap();
+            } else if (status === 'published') {
+                await dispatch(getAllBlogs('published')).unwrap();
+            } else {
+                await dispatch(getAllBlogs()).unwrap();
+            }
             return true;
         } catch (error) {
+            console.error('Error loading blogs:', error);
             return false;
         }
-    };
+    }, [dispatch]);
 
     const selectBlog = (blog) => {
         dispatch(setCurrentBlog(blog));
@@ -54,14 +59,13 @@ export const useBlog = () => {
 
     const clearBlog = () => {
         dispatch(clearCurrentBlog());
-    };
-
-    return {
+    };    return {
         blogs,
         currentBlog,
         isLoading,
         error,
         successMessage,
+        hasLoaded,
         createBlog: handleCreateBlog,
         updateBlog: handleUpdateBlog,
         deleteBlog: handleDeleteBlog,

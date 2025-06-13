@@ -50,13 +50,13 @@ const OurPartners = () => {
             {slidingPartners.map((partner, index) => (
               <div 
                 key={`${partner.name}-${index}`} 
-                className="flex-shrink-0 px-4 w-[200px] flex items-center justify-center"
+                className="flex-shrink-0 px-4 w-[160px] sm:w-[200px] flex items-center justify-center"
               >
-                <div className="h-20 w-full flex items-center justify-center">
+                <div className="h-16 sm:h-20 w-full flex items-center justify-center">
                   <img
                     src={partner.logo}
                     alt={partner.alt}
-                    className="max-h-full max-w-full object-contain opacity-80 hover:opacity-100 transition-opacity"
+                    className="max-h-full max-w-full object-contain hover:scale-105 hover:shadow-md transition-all duration-300"
                     loading="lazy"
                   />
                 </div>
@@ -77,9 +77,6 @@ const OurPartners = () => {
         }
         .animate-slide {
           animation: slide 20s linear infinite;
-        }
-        .animate-slide:hover {
-          animation-play-state: paused;
         }
       `}</style>
     </section>

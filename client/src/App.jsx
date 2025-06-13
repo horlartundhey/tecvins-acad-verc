@@ -14,6 +14,7 @@ import Creative_des from './pages/Creative_des';
 import Trainer from './pages/Trainer';
 import Support from './pages/Support';
 import Donate from './pages/Donate';
+import OurJourney from './pages/OurJourney';
 import Partner from './pages/Partner';
 import Login from './pages/Login';
 import Dashboard from './pages/admin/Dashboard';
@@ -22,6 +23,19 @@ import NotFound from './pages/Notfound';
 import './App.css';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
+import Difference from './pages/Difference';
+import Frequently_asked from './pages/Frequently_asked';
+import AdminLayout from './components/layout/AdminLayout';
+import BlogList from './pages/admin/BlogList';
+import BlogForm from './pages/admin/BlogForm';
+import BlogDetails from './pages/BlogDetails';
+import StudentList from './pages/admin/StudentList';
+import TrainerList from './pages/admin/TrainerList';
+import ContactMessages from './pages/admin/ContactMessages';
+import PartnerList from './pages/admin/PartnerList';
+import CohortSettings from './pages/admin/CohortSettings';
+import OurTrainers from './pages/OurTrainers';
+import CohortManagement from './pages/admin/CohortManagement';
 
 function App() {
   return (
@@ -33,6 +47,7 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="sdgs" element={<Sdgs />} />
           <Route path="blog" element={<Blog />} />
+          <Route path="blog/:slug" element={<BlogDetails />} />
           <Route path="contact" element={<Contact />} />
           <Route path="courses" element={<Courses />} />
           <Route path="product-management" element={<Product_Manage />} />
@@ -41,29 +56,38 @@ function App() {
           <Route path="job-readiness" element={<Job_readiness />} />
           <Route path="enrollment" element={<Enrollment />} />
           <Route path="trainer" element={<Trainer />} />
+          <Route path="our-trainers" element={<OurTrainers />} />
           <Route path="donate" element={<Donate />} />
           <Route path="support" element={<Support />} />
           <Route path="partner" element={<Partner />} />
+          <Route path="what_difference" element={<Difference />} />
+          <Route path="our-journey" element={<OurJourney />} />
+          <Route path="frequently-asked-questions" element={<Frequently_asked />} />
+          
 
           {/* Auth Routes */}
           <Route path="/login" element={<Login />} />
 
           {/* Protected Admin Routes */}
           <Route
-            path="admin/dashboard"
-            element={
-              <ProtectedRoute roles={['admin']}>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Editor Routes */}
-          <Route
-            path="admin/blog"
+            path="/admin/*"
             element={
               <ProtectedRoute roles={['admin', 'editor']}>
-                <Blog />
+                <AdminLayout>
+                  <Routes>
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="blog" element={<BlogList />} />
+                    <Route path="blog/new" element={<BlogForm />} />
+                    <Route path="blog/edit/:id" element={<BlogForm />} />
+                    <Route path="students" element={<StudentList />} />
+                    <Route path="trainers" element={<TrainerList />} />
+                    <Route path="partners" element={<PartnerList />} />
+                    <Route path="contacts" element={<ContactMessages />} />
+                    <Route path="cohort-settings" element={<CohortSettings />} />
+                    <Route path="cohort-management" element={<CohortManagement />} />
+
+                  </Routes>
+                </AdminLayout>
               </ProtectedRoute>
             }
           />

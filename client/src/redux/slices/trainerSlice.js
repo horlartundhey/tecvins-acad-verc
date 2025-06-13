@@ -5,17 +5,8 @@ export const submitTrainerApplication = createAsyncThunk(
     'trainers/submit',
     async (applicationData, { rejectWithValue }) => {
         try {
-            const formData = new FormData();
-            Object.keys(applicationData).forEach(key => {
-                if (key === 'expertise' || key === 'preferredCourses') {
-                    formData.append(key, JSON.stringify(applicationData[key]));
-                } else {
-                    formData.append(key, applicationData[key]);
-                }
-            });
-            const response = await apiService.post('/trainers/apply', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+            // Send JSON data directly
+            const response = await apiService.post('/trainers/apply', applicationData);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response.data.message);
@@ -73,7 +64,7 @@ const trainerSlice = createSlice({
                 state.isLoading = true;
                 state.error = null;
             })
-            .addCase(submitTrainerApplication.fulfilled, (state, action) => {
+            .addCase(submitTrainerApplication.fulfilled, (state) => {
                 state.isLoading = false;
                 state.successMessage = 'Application submitted successfully';
             })

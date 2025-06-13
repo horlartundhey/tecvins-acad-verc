@@ -13,9 +13,13 @@ const blogSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
-    },
-    featuredImage: {
-        type: String,  // URL to the image
+    },    featuredImage: {
+        url: {
+            type: String  // Cloudinary secure URL
+        },
+        public_id: {
+            type: String  // Cloudinary public ID for deletion
+        }
     },
     tags: [{
         type: String
@@ -34,17 +38,7 @@ const blogSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Create URL-friendly slug from title before saving
-blogSchema.pre('save', function(next) {
-    if (this.isModified('title')) {
-        this.slug = this.title
-            .toLowerCase()
-            .replace(/[^a-zA-Z0-9]/g, '-')
-            .replace(/-+/g, '-')
-            .replace(/^-|-$/g, '');
-    }
-    next();
-});
+// No pre-save middleware needed as slug is handled in controller
 
 const Blog = mongoose.model('Blog', blogSchema);
 module.exports = Blog;

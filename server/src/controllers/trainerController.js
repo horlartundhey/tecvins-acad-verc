@@ -5,10 +5,70 @@ const TrainerApplication = require('../models/TrainerApplication');
 // @access  Public
 const submitApplication = async (req, res) => {
     try {
+        // Validate required fields in the request body
+        const requiredFields = [
+            'firstName', 'lastName', 'gender', 'country', 'email', 'phoneNumber',
+            'courseArea', 'experience', 'skillRating', 'teachingExp', 'confidence', 'prepTime'
+        ];
+
+        // Convert FormData fields that might be strings back to objects/arrays
+        if (req.body.expertise && typeof req.body.expertise === 'string') {
+            try {
+                req.body.expertise = JSON.parse(req.body.expertise);
+            } catch (error) {
+                console.log('Error parsing expertise:', error);
+            }
+        }
+        if (req.body.preferredCourses && typeof req.body.preferredCourses === 'string') {
+            try {
+                req.body.preferredCourses = JSON.parse(req.body.preferredCourses);
+            } catch (error) {
+                console.log('Error parsing preferredCourses:', error);
+            }
+        }
+
+        const missingFields = requiredFields.filter(field => !req.body[field]);
+        if (missingFields.length > 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Missing required fields: ${missingFields.join(', ')}`
+            });
+        }
+
+        // Email validation
+        const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        if (!emailRegex.test(req.body.email)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please provide a valid email address'
+            });
+        }
+
         const application = await TrainerApplication.create(req.body);
-        res.status(201).json(application);
+        
+        res.status(201).json({
+            success: true,
+            message: 'Your trainer application has been submitted successfully. We will contact you shortly.',
+            data: application
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message });
+        console.error('Error submitting trainer application:', error);
+
+        // Handle Mongoose validation errors
+        if (error.name === 'ValidationError') {
+            const validationErrors = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({
+                success: false,
+                message: 'Validation error',
+                errors: validationErrors
+            });
+        }
+
+        res.status(500).json({
+            success: false,
+            message: 'Failed to submit trainer application. Please try again.',
+            error: error.message
+        });
     }
 };
 

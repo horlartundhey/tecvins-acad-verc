@@ -3,14 +3,14 @@ import { submitContactForm, clearMessages } from '../redux/slices/contactSlice';
 
 export const useContact = () => {
     const dispatch = useDispatch();
-    const { isLoading, error, successMessage } = useSelector((state) => state.contact);
-
-    const submitContact = async (formData) => {
+    const { isLoading, error, successMessage } = useSelector((state) => state.contact);    const submitContact = async (formData) => {
         try {
-            await dispatch(submitContactForm(formData)).unwrap();
-            return true;
+            const result = await dispatch(submitContactForm(formData)).unwrap();
+            console.log('Response from server:', result);  // Debug log
+            return result;
         } catch (error) {
-            return false;
+            console.error('Contact submission error:', error);
+            throw error;
         }
     };
 

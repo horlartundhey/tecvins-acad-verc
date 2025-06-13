@@ -5,10 +5,54 @@ const StudentApplication = require('../models/StudentApplication');
 // @access  Public
 const submitApplication = async (req, res) => {
     try {
+        // Validate required fields
+        const requiredFields = ['firstName', 'lastName', 'email', 'phoneNumber', 'course', 'country', 'timeZone', 'reason'];
+        const missingFields = requiredFields.filter(field => !req.body[field]);
+        
+        if (missingFields.length > 0) {
+            return res.status(400).json({ 
+                message: `Missing required fields: ${missingFields.join(', ')}`,
+                error: 'VALIDATION_ERROR',
+                fields: missingFields
+            });
+        }
+
+        // Validate email format
+        const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        if (!emailRegex.test(req.body.email)) {
+            return res.status(400).json({
+                message: 'Invalid email format',
+                error: 'VALIDATION_ERROR',
+                field: 'email'
+            });
+        }
+
         const application = await StudentApplication.create(req.body);
-        res.status(201).json(application);
+        res.status(201).json({
+            message: 'Application submitted successfully',
+            data: application
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message });
+        // Check for duplicate key error (e.g., unique email constraint)
+        if (error.code === 11000 && error.keyPattern?.email) {
+            return res.status(400).json({
+                message: 'An application with this email already exists',
+                error: 'DUPLICATE_EMAIL'
+            });
+        }
+        
+        // Handle validation errors from Mongoose
+        if (error.name === 'ValidationError') {
+            return res.status(400).json({
+                message: Object.values(error.errors).map(e => e.message).join(', '),
+                error: 'VALIDATION_ERROR'
+            });
+        }
+
+        res.status(500).json({
+            message: 'Failed to submit application',
+            error: error.message
+        });
     }
 };
 
@@ -21,11 +65,14 @@ const getAllApplications = async (req, res) => {
         
         let query = {};
         if (status) query.status = status;
-        if (course) query.course = course;
-
-        const applications = await StudentApplication.find(query)
+        if (course) query.course = course;        const applications = await StudentApplication.find(query)
             .sort({ [sortBy]: order === 'desc' ? -1 : 1 });
             
+        // Set cache control headers
+        res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+        res.set('Expires', '0');
+        res.set('Pragma', 'no-cache');
+        
         res.json(applications);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
@@ -94,10 +141,26 @@ const exportApplications = async (req, res) => {
     }
 };
 
+// @desc    Delete a student application
+// @route   DELETE /api/students/applications/:id
+// @access  Private (Admin)
+const deleteStudentApplication = async (req, res) => {
+    try {
+        const application = await StudentApplication.findByIdAndDelete(req.params.id);
+        if (!application) {
+            return res.status(404).json({ message: 'Application not found' });
+        }
+        res.json({ success: true, message: 'Application deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
 module.exports = {
     submitApplication,
     getAllApplications,
     getApplicationById,
     updateApplicationStatus,
-    exportApplications
+    exportApplications,
+    deleteStudentApplication
 };
