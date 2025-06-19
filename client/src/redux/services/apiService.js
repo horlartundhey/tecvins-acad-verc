@@ -2,7 +2,8 @@ import axios from 'axios';
 
 const BASE_URL = import.meta.env.PROD 
     ? '/api'  // In production, use relative path
-    : 'http://localhost:5000/api';
+    // : 'http://localhost:5000/api';
+    : 'https://tecvins-acad-verc-server.vercel.app/api';
 
 const apiService = axios.create({
     baseURL: BASE_URL,

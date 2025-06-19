@@ -282,17 +282,17 @@ const Hero = () => {
 
         {/* Hero content */}
         <div className="max-w-4xl mx-auto text-center mb-8 md:mb-16 pt-10 sm:pt-12">
-          <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 px-2">
+          <h1 className="text-[1.5rem] xs:text-[1.875rem] sm:text-[2.25rem] md:text-[3rem] lg:text-[3.75rem] font-bold mb-3 sm:mb-4 px-2 leading-tight">
             Ready to Work in <span className="text-amber-500">Tech</span>?
             <br className="hidden sm:block" />
             We'll Get You There.
           </h1>
-          <p className="text-gray-600 text-sm xs:text-base sm:text-lg md:text-xl max-w-2xl mx-auto px-2 sm:px-0">
+          <p className="text-gray-600 text-sm xs:text-base sm:text-lg md:text-xl max-w-2xl mx-auto px-2 sm:px-0 ">
             You're in the right place to unlock your potential in tech. Join our free training program to acquire
             in-demand skills and launch a fulfilling career in the global tech industry.
           </p>
           <div className="mt-6 md:mt-8">
-            <Button className="bg-[#3B9790] hover:bg-teal-600 text-white px-5 py-[1.3rem] sm:px-6 sm:py-[1.3rem] md:px-8 md:py-[1.3rem] rounded-xl text-sm sm:text-base md:text-lg font-medium shadow-md transition duration-300 flex items-center mx-auto">
+            <Button className="bg-[#3B9790] hover:bg-teal-600 text-white px-5 py-[1rem] sm:px-6 sm:py-[1.3rem] md:px-8 md:py-[1rem] rounded-xl text-sm sm:text-base md:text-lg font-medium shadow-md transition duration-300 flex items-center mx-auto">
               Begin your learning journey
               <HiOutlineRocketLaunch className="ml-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
             </Button>

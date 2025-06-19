@@ -8,6 +8,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Trainer = () => {
+    useEffect(() => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        }, []);
+        
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { submitApplication, isLoading, error } = useTrainerApplications();
     const [formData, setFormData] = useState({
@@ -182,7 +189,7 @@ const Trainer = () => {
 
                             {/* Center Text Box */}
                             <div className="md:col-span-1 flex items-center">
-                                <div className=" bg-[#BE3C2F] border-[8px] border-[#FF6F61] text-white py-11 px-8 rounded-xl">
+                                <div className=" bg-[#BE3C2F] border-[8px] border-[#FF6F61] text-white py-10 px-8 rounded-xl">
                                     <p className="text-lg">
                                         Tecvinson Academy is growing, and we need passionate, skilled professionals to join us as trainers. By becoming a trainer, you'll play a pivotal role in transforming lives, sharing your expertise, and shaping the next generation of IT talent.
                                     </p>

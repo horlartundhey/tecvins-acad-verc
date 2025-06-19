@@ -112,7 +112,7 @@ const Donate = () => {
 
           {/* Center Text Box - Appears between images on mobile */}
           <div className="lg:col-span-1 flex items-center order-2 lg:order-2">
-            <div className="bg-[#1B8D6C] border-4 sm:border-[8px] border-[#00BC85] text-white py-4 sm:py-6 px-4 sm:px-5 rounded-xl w-full">
+            <div className="bg-[#1B8D6C] border-4 sm:border-[8px] border-[#00BC85] text-white py-4 sm:py-3 px-4 sm:px-5 rounded-xl w-full">
               <p className="text-sm sm:text-base lg:text-lg leading-relaxed">
                 At Tecvinson Academy, we are building a global ecosystem to transform lives through free, accessible IT
                 education. We are seeking partnerships with corporations, nonprofit organizations, and tech companies to

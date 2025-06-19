@@ -1,16 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import logo from '../../assets/tecvinson-logo-one.png'; // Assuming you'll add this image to assets folder
+import logo from '../../assets/tecvinson-logo-one.png';
 import { HiOutlineMenuAlt1 } from 'react-icons/hi';
-import { HiOutlineRocketLaunch, HiRocketLaunch } from 'react-icons/hi2';
+import { HiOutlineRocketLaunch, HiRocketLaunch, HiChevronDown } from 'react-icons/hi2';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isDesktopDropdownOpen, setIsDesktopDropdownOpen] = useState(false);
+  const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const navLinks = [
     { path: '/', label: 'Home' },
-    { path: '/about', label: 'About Us' },
+    { 
+      path: '/about', 
+      label: 'About Us',
+      dropdown: [
+        { path: '/about', label: 'Who we are' },
+        { path: '/our-journey', label: 'Our Journey' },
+        { path: '/our-trainers', label: 'Our Trainers' },
+        { path: '/sdgs', label: 'SDGs' },
+      ]
+    },
     { path: '/courses', label: 'Courses' },
     { path: '/blog', label: 'Blog' },
     { path: '/support', label: 'Support Us' },
@@ -29,6 +41,18 @@ const Navbar = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Close dropdown when clicking outside (desktop only)
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDesktopDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   // Add shadow when scrolling
   useEffect(() => {
     const handleScroll = () => {
@@ -42,13 +66,22 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+    // Close mobile dropdown when closing menu
+    if (!isMenuOpen === false) {
+      setIsMobileDropdownOpen(false);
+    }
+  };
+
+  // Close mobile menu and dropdowns when changing route
+  const handleMobileNavClick = () => {
+    setIsMenuOpen(false);
+    setIsMobileDropdownOpen(false);
   };
 
   return (
-    <nav className={`bg-white py-6 fixed w-full top-0 z-50 mb-10 transition-shadow ${scrolled ? 'shadow-md' : 'shadow-sm'}` }>
+    <nav className={`bg-white py-7 fixed w-full top-0 z-50 transition-shadow ${scrolled ? 'shadow-md' : 'shadow-sm'}` }>
       <div className="container mx-auto flex justify-between items-center px-4">
         {/* Logo */}
         <Link to="/" className="flex items-center">
@@ -57,27 +90,71 @@ const Navbar = () => {
 
         {/* Right side container for nav links and CTA */}
         <div className="hidden md:flex items-center space-x-8">
-          {/* Desktop Navigation Menu - moved to right */}
+          {/* Desktop Navigation Menu */}
           <div className="flex space-x-6">
             {navLinks.map((link) => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                className={({ isActive }) =>
-                  isActive 
-                    ? "text-teal-500 font-medium" 
-                    : "text-gray-700 hover:text-teal-500 transition-colors"
-                }
-              >
-                {link.label}
-              </NavLink>
+              link.dropdown ? (
+                <div 
+                  key={link.path}
+                  className="relative"
+                  ref={dropdownRef}
+                >
+                  <button
+                    className={`flex items-center space-x-1 ${
+                      isDesktopDropdownOpen
+                        ? "text-teal-500 font-medium"
+                        : "text-gray-700 hover:text-teal-500"
+                    } transition-colors`}
+                    onClick={() => setIsDesktopDropdownOpen(!isDesktopDropdownOpen)}
+                  >
+                    <span>{link.label}</span>
+                    <HiChevronDown className={`h-4 w-4 transition-transform ${
+                      isDesktopDropdownOpen ? 'transform rotate-180' : ''
+                    }`} />
+                  </button>
+                  
+                  {/* Desktop Dropdown Menu */}
+                  {isDesktopDropdownOpen && (
+                    <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50">
+                      {link.dropdown.map((dropdownItem) => (
+                        <NavLink
+                          key={dropdownItem.path}
+                          to={dropdownItem.path}
+                          className={({ isActive }) =>
+                            `block px-4 py-2 text-sm ${
+                              isActive
+                                ? "text-teal-500 bg-gray-50 font-medium"
+                                : "text-gray-700 hover:text-teal-500 hover:bg-gray-50"
+                            } transition-colors`
+                          }
+                          onClick={() => setIsDesktopDropdownOpen(false)}
+                        >
+                          {dropdownItem.label}
+                        </NavLink>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <NavLink
+                  key={link.path}
+                  to={link.path}
+                  className={({ isActive }) =>
+                    isActive 
+                      ? "text-teal-500 font-medium" 
+                      : "text-gray-700 hover:text-teal-500 transition-colors"
+                  }
+                >
+                  {link.label}
+                </NavLink>
+              )
             ))}
           </div>
 
           {/* CTA Button */}
           <Link 
             to="/courses" 
-            className="bg-[#3B9790] text-white font-semibold px-4 py-[1.3rem] rounded-lg flex items-center hover:bg-teal-600 transition-colors"
+            className="bg-[#3B9790] text-white font-semibold px-4 py-[1rem] rounded-lg flex items-center hover:bg-teal-600 transition-colors"
           >
             Begin your learning journey
             <HiOutlineRocketLaunch className="ml-2 h-7 w-7" />
@@ -110,36 +187,60 @@ const Navbar = () => {
       >
         <div className="container mx-auto px-4 py-3">
           {navLinks.map((link) => (
-            <NavLink
-              key={link.path}
-              to={link.path}
-              className={({ isActive }) =>
-                isActive 
-                  ? "text-[#3B9790] font-medium block py-3 border-b border-gray-100" 
-                  : "text-gray-700 block py-3 border-b border-gray-100"
-              }
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {link.label}
-            </NavLink>
+            <div key={link.path}>
+              {link.dropdown ? (
+                <>
+                  <button
+                    onClick={() => setIsMobileDropdownOpen(!isMobileDropdownOpen)}
+                    className={`w-full flex items-center justify-between py-3 ${
+                      isMobileDropdownOpen ? 'text-teal-500 font-medium' : 'text-gray-700'
+                    } hover:text-teal-500`}
+                  >
+                    <span>{link.label}</span>
+                    <HiChevronDown className={`h-5 w-5 transition-transform ${
+                      isMobileDropdownOpen ? 'transform rotate-180' : ''
+                    }`} />
+                  </button>
+                  <div className={`pl-4 pb-2 overflow-hidden transition-all duration-300 ${
+                    isMobileDropdownOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+                  }`}>
+                    {link.dropdown.map((dropdownItem) => (
+                      <NavLink
+                        key={dropdownItem.path}
+                        to={dropdownItem.path}
+                        className={({ isActive }) =>
+                          `block py-2 text-sm ${
+                            isActive
+                              ? "text-teal-500 font-medium"
+                              : "text-gray-600 hover:text-teal-500"
+                          } transition-colors`
+                        }
+                        onClick={handleMobileNavClick}
+                      >
+                        {dropdownItem.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <NavLink
+                  to={link.path}
+                  className={({ isActive }) =>
+                    `block py-3 ${
+                      isActive 
+                        ? "text-teal-500 font-medium" 
+                        : "text-gray-700 hover:text-teal-500"
+                    } transition-colors`
+                  }
+                  onClick={handleMobileNavClick}
+                >
+                  {link.label}
+                </NavLink>
+              )}
+            </div>
           ))}
-          
-          {/* Mobile CTA Button */}
-          <div className="py-4">
-            <Link 
-              to="/courses" 
-              className="bg-[#3B9790] text-white px-4 py-[1.3rem] font-semibold rounded-lg flex items-center justify-center hover:bg-teal-600 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Begin your learning journey
-              <HiOutlineRocketLaunch className="ml-2 h-5 w-5" />
-            </Link>
-          </div>
         </div>
       </div>
-
-      {/* Add padding at the bottom to prevent content jumping when menu is fixed */}
-      <div className={`${isMenuOpen ? 'h-16 md:h-0' : 'h-0'} transition-all duration-300`}></div>
     </nav>
   );
 };

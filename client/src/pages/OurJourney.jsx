@@ -1,5 +1,5 @@
 import { ArrowRight, ChevronDown } from 'lucide-react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FaArrowRightLong } from 'react-icons/fa6'
 import { HiArrowLongRight, HiGlobeAlt, HiOutlineRocketLaunch } from 'react-icons/hi2'
 import { TbChartPieFilled } from "react-icons/tb";
@@ -17,6 +17,13 @@ import OurPartners from '../components/OurPartners'
 import Testimonials from '../components/Testimonials'
 
 const OurJourney = () => {
+
+  useEffect(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }, []);
 
 
     const milestones = [
@@ -78,7 +85,7 @@ const OurJourney = () => {
           <div className="lg:col-span-1 order-1">
             <div className="rounded-lg overflow-hidden shadow-lg h-48 sm:h-64 lg:h-80">
               <img
-                src="https://res.cloudinary.com/kamisama/image/upload/v1746463181/image_azkifq.png"
+                src="https://res.cloudinary.com/dwgyu7pr9/image/upload/v1750252706/journ_sg0vza.png"
                 alt="Group of diverse tech professionals collaborating"
                 className="w-full h-full object-cover"
               />
@@ -98,7 +105,7 @@ const OurJourney = () => {
           <div className="lg:col-span-1 order-3">
             <div className="rounded-lg overflow-hidden shadow-lg h-48 sm:h-64 lg:h-80">
               <img
-                src="https://res.cloudinary.com/kamisama/image/upload/v1746463259/image_hmoftw.png"
+                src="https://res.cloudinary.com/dwgyu7pr9/image/upload/v1750252700/Container_qwgtjz.png"
                 alt="Trainer helping students with computer tasks"
                 className="w-full h-full object-cover"
               />

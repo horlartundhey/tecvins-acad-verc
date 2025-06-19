@@ -67,7 +67,7 @@ const Courses = () => {
       image: "https://res.cloudinary.com/kamisama/image/upload/v1730724263/scrum_tkpb6b.png",
       title: "Product Management",
       description: "Courses that focus on managing product life cycles, stakeholder management, and agile practices.",
-      overlayColor: "bg-blue-400",
+      overlayColor: "bg-blue-600",
       courseLink: "/product-management"
     },
     {

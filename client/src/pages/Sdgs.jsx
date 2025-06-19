@@ -175,13 +175,13 @@ const Sdgs = () => {
               
               {/* Testimonial Button */}
               <div className="mt-6 sm:mt-8">
-                <button 
+                {/* <button 
                   onClick={() => setIsTestimonialModalOpen(true)}
                   className="inline-flex items-center text-[#3B9790] font-semibold bg-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg border border-blue-300 hover:bg-blue-50 transition-colors"
                 >
                   <HiOutlinePlayCircle className="mr-2 w-5 h-5 text-[#3B9790]" />
                   Hear from some beneficiaries
-                </button>
+                </button> */}
 
                 {/* Testimonial Modal */}
                 <TestimonialModal 

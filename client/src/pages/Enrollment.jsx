@@ -379,7 +379,7 @@ const Enrollment = () => {
 
           <div className="relative">
             {/* Vertical Line */}
-            <div className="absolute left-1 sm:left-2 top-2 sm:top-4 bottom-2 sm:bottom-4 w-0.5 sm:w-1 bg-[#B7E5E1]"></div>
+            <div className="absolute left-1 sm:left-2 top-2 sm:top-4 bottom-2 sm:bottom-[3rem] w-0.5 sm:w-1 bg-[#B7E5E1]"></div>
 
             {/* Timeline Stages */}
             <div className="space-y-2 sm:space-y-4">
@@ -468,10 +468,10 @@ const Enrollment = () => {
             <div className="absolute left-4 top-6 bottom-[0.5rem] w-1 bg-[#EBC894]"></div>
 
             {/* Cohort Steps */}
-            <div className="space-y-8">
+            <div className="space-y-12">
               {cohortSteps.map((step, index) => (
                 <div key={index} className="relative">
-                  <div className="flex items-start">
+                  <div className="flex items-center">
                     <div className="absolute left-4 transform -translate-x-1/2 mt-1">
                       <div className="w-8 h-8 bg-white rounded-full border-8 border-[#EBC894] flex items-center justify-center"></div>
                     </div>

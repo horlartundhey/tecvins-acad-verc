@@ -11,7 +11,7 @@ export default function Testimonials() {
   const testimonials = [
     {
       id: 1,
-      image: "./src/assets/images/gloria.png",
+      image: "https://res.cloudinary.com/dwgyu7pr9/image/upload/v1749836961/gloria_pon7wq.png",
       quote: [
         "The hands-on approach at Tecvinson Academy gave me practical skills that I use every day.",
         "The curriculum is up-to-date with industry standards, and the career support helped me connect with top employers in the field."
@@ -23,7 +23,7 @@ export default function Testimonials() {
     },
     {
       id: 2,
-      image: "./src/assets/images/clifford.png",
+      image: "https://res.cloudinary.com/dwgyu7pr9/image/upload/v1749836961/clifford_yifuaq.png",
       quote: [
         "Enrolling at Tecvinson Academy was one of the best decisions I've ever made! The instructors were incredibly knowledgeable and always willing to help, making the learning experience truly enjoyable."      
       ],

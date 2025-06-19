@@ -15,18 +15,16 @@ const Whoweare2 = () => {
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
                   {/* Text content */}
                   <div className="max-w-xl">
-                    <h2 className="text-3xl md:text-4xl font-bold text-[#1a2e35] mb-6">Who Are We?</h2>
+                    <h2 className="text-[30rem] md:text-[32rem] font-bold text-[#1a2e35] mb-6">Who Are We?</h2>
     
                     <div className="space-y-4 text-gray-700 text-base md:text-lg">
                       <p>
-                        Tecvinson Academy is a Swedish-based global IT education platform revolutionizing tech education. We
-                        focus on project-based learning, industry mentorship, and real-world assignments tailored for learners
-                        from underrepresented backgrounds.
-                      </p>
-    
+                        Tecvinson Academy is a Swedish-based global IT education platform dedicated to revolutionizing tech education through practical, project-based learning. 
+                        We focus on industry mentorship, real-world assignments, and personalized support, especially for learners from underrepresented backgrounds. 
+                        In small, collaborative groups guided by expert mentors, students acquire practical skills, enabling confident transitions into impactful tech roles.                        
+                      </p>                      
                       <p>
-                        Students work in small groups, guided by experienced instructors, to gain practical skills and
-                        confidently transition into tech roles.
+                        We are more than a training center; we are architects of a future where every learner unlocks limitless possibilities in the digital realm.
                       </p>
                     </div>
     
@@ -74,13 +72,11 @@ const Whoweare2 = () => {
   <div className="flex flex-col lg:flex-row-reverse items-center justify-between gap-8">
     {/* Text content - now on the right side */}
     <div className="max-w-xl">
-      <h2 className="text-3xl md:text-4xl font-bold text-[#1a2e35] mb-6">Our Vision</h2>
+      <h2 className="text-[30rem] md:text-[32rem] font-bold text-[#1a2e35] mb-6">Our Vision</h2>
       
       <div className="space-y-4 text-gray-700 text-base md:text-lg">
         <p>
-          To diversify the tech workforce by delivering tailored, accessible education and ongoing support 
-          to learners from underrepresented backgrounds, increasing their representation across all levels 
-          of the industry.
+          To transform tech education by providing accessible, industry-driven training that empowers learners to become confident, highly sought-after professionals.
         </p>
       </div>
     </div>
@@ -128,12 +124,11 @@ const Whoweare2 = () => {
                 <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
                   {/* Text content */}
                   <div className="max-w-xl">
-                    <h2 className="text-3xl md:text-4xl font-bold text-[#1a2e35] mb-6">Our Mission</h2>
+                    <h2 className="text-[30rem] md:text-[32rem] font-bold text-[#1a2e35] mb-6">Our Mission</h2>
     
                     <div className="space-y-4 text-gray-700 text-base md:text-lg">
                       <p>
-                      Tecvinson Academy is a Swedish-based global IT education platform revolutionizing tech education. We focus on project-based learning, industry mentorship, and real-world assignments tailored for learners from underrepresented backgrounds.
-                      Students work in small groups, guided by experienced instructors, to gain practical skills and confidently transition into tech roles.
+                      To diversify the tech workforce by delivering tailored, accessible education and ongoing support to learners from underrepresented backgrounds, increasing their representation at all industry levels.
                       </p>
     
                      

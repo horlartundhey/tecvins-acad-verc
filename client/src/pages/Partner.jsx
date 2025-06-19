@@ -148,7 +148,7 @@ const Partner = () => {
             
             {/* Center Text Box */}
             <div className="md:col-span-1 flex items-center">
-              <div className=" bg-[#3E3ACE] border-[8px] border-[#807CFF] text-white py-5 px-8 rounded-xl">
+              <div className=" bg-[#3E3ACE] border-[8px] border-[#807CFF] text-white py-3 px-8 rounded-xl">
                 <p className="text-lg">
                 At Tecvinson Academy, we are building a global ecosystem to transform lives through free, accessible IT education. We are seeking partnerships with corporations, nonprofit organizations, and tech companies to expand our impact and reach more individuals from underrepresented backgrounds.
                 </p>
