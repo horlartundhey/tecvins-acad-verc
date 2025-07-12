@@ -4,6 +4,7 @@ import { HiEnvelope, HiPhone } from "react-icons/hi2"
 import { SiLinkedin, SiFacebook } from "react-icons/si"
 import { RiInstagramFill, RiTwitterXFill } from "react-icons/ri"
 import { useContact } from '../hooks/useContact'
+import PhoneInput from '../components/PhoneInput'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -31,6 +32,14 @@ const Contact = () => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
+    }));
+  };
+
+  // Handle phone input changes
+  const handlePhoneChange = (fullPhoneNumber) => {
+    setFormData(prev => ({
+      ...prev,
+      phoneNumber: fullPhoneNumber
     }));
   };
 
@@ -146,13 +155,18 @@ const Contact = () => {
           </div>
 
           {/* Right Column - Form in white container */}
-          <div className="bg-white p-8 rounded-lg m-6 md:m-8 md:w-1/2 md:ml-0">
-            <h2 className="text-xl font-bold text-gray-800 mb-2">Request a callback</h2>
-            <p className="text-sm text-gray-600 mb-6">
-              Complete this form, and a member of our team will reach out to assist you shortly.
-            </p>
+          <div className="bg-white rounded-lg m-6 md:m-8 md:w-1/2 md:ml-0 max-h-[80vh] flex flex-col">
+            {/* Fixed Header */}
+            <div className="p-8 border-b">
+              <h2 className="text-xl font-bold text-gray-800 mb-2">Request a callback</h2>
+              <p className="text-sm text-gray-600">
+                Complete this form, and a member of our team will reach out to assist you shortly.
+              </p>
+            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Scrollable Form Content */}
+            <div className="flex-1 overflow-y-auto p-8">
+              <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
@@ -208,23 +222,12 @@ const Contact = () => {
                   <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
                     Phone Number
                   </label>
-                  <div className="mt-1 flex rounded-md shadow-sm">
-                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500">
-                      <span className="flex items-center">
-                        <span className="flag-icon">🇳🇬</span>
-                        <span className="ml-1">+234</span>
-                      </span>
-                    </span>
-                    <input
-                      type="tel"
-                      id="phoneNumber"
-                      name="phoneNumber"
-                      value={formData.phoneNumber}
-                      onChange={handleChange}
-                      placeholder="+XX XXX XXX XXX"
-                      className="flex-1 block w-full rounded-none rounded-r-md border-gray-300 focus:border-teal-500 focus:ring-teal-500 p-2 border"
-                    />
-                  </div>
+                  <PhoneInput
+                    value={formData.phoneNumber}
+                    onChange={handlePhoneChange}
+                    placeholder="Phone number"
+                    className="mt-1"
+                  />
                 </div>
               </div>
 
@@ -241,16 +244,17 @@ const Contact = () => {
                   placeholder="What would you like to inquire about?"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 p-2 border"
                 ></textarea>
-              </div>              <div className="space-y-3">
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="px-6 py-3 bg-[#3B9790] text-white font-medium rounded-md hover:bg-[#2c7a6a] transition-colors"
-                >
-                  {isLoading ? "Submitting..." : "Submit"}
-                </button>
-              </div>
-            </form>
+              </div>                <div className="space-y-3">
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="px-6 py-3 bg-[#3B9790] text-white font-medium rounded-md hover:bg-[#2c7a6a] transition-colors"
+                  >
+                    {isLoading ? "Submitting..." : "Submit"}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       </div>

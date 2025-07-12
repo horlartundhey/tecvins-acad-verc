@@ -5,6 +5,7 @@ const Blog = require('../models/Blog');
 const Contact = require('../models/Contact');
 const Partner = require('../models/Partner');
 const Cohort = require('../models/Cohort');
+const HireRequest = require('../models/HireRequest');
 
 // @desc    Get dashboard statistics
 // @route   GET /api/admin/stats
@@ -27,10 +28,12 @@ const getDashboardStats = async (req, res) => {
             blogStats,
             contactStats,
             partnerStats,
+            hireRequestStats,
             userStats,
             recentStudents,
             recentTrainers,
-            recentBlogs
+            recentBlogs,
+            recentHireRequests
         ] = await Promise.all([
             // Student stats
             Promise.all([
@@ -66,6 +69,13 @@ const getDashboardStats = async (req, res) => {
                 Partner.countDocuments({ status: 'approved' }),
                 Partner.countDocuments({ status: 'rejected' })
             ]),
+            // Hire Request stats
+            Promise.all([
+                HireRequest.countDocuments(),
+                HireRequest.countDocuments({ status: 'pending' }),
+                HireRequest.countDocuments({ status: 'contacted' }),
+                HireRequest.countDocuments({ status: 'completed' })
+            ]),
             // User stats
             Promise.all([
                 User.countDocuments(),
@@ -85,7 +95,11 @@ const getDashboardStats = async (req, res) => {
                 .sort({ createdAt: -1 })
                 .limit(5)
                 .select('title status createdAt')
-                .populate('author', 'name')
+                .populate('author', 'name'),
+            HireRequest.find()
+                .sort({ createdAt: -1 })
+                .limit(5)
+                .select('companyName requestType skills status createdAt')
         ]);
 
         // Format the stats into a structured object
@@ -119,6 +133,12 @@ const getDashboardStats = async (req, res) => {
                 approved: partnerStats[2],
                 rejected: partnerStats[3]
             },
+            hireRequests: {
+                total: hireRequestStats[0],
+                pending: hireRequestStats[1],
+                contacted: hireRequestStats[2],
+                completed: hireRequestStats[3]
+            },
             users: {
                 total: userStats[0],
                 admins: userStats[1],
@@ -136,7 +156,8 @@ const getDashboardStats = async (req, res) => {
             recentActivities: {
                 students: recentStudents,
                 trainers: recentTrainers,
-                blogs: recentBlogs
+                blogs: recentBlogs,
+                hireRequests: recentHireRequests
             }
         });
     } catch (error) {

@@ -18,6 +18,8 @@ const partnerRoutes = require('./src/routes/partner');
 const newsletterRoutes = require('./src/routes/newsletter');
 const waitlistRoutes = require('./src/routes/waitlistRoutes');
 const cohortRoutes = require('./src/routes/cohort');
+const donationRoutes = require('./src/routes/donation');
+const hireRequestRoutes = require('./src/routes/hireRequest');
 
 const app = express();
 
@@ -43,6 +45,8 @@ app.use('/api/partners', partnerRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/waitlist', waitlistRoutes);
 app.use('/api/cohorts', cohortRoutes);
+app.use('/api/donate', donationRoutes);
+app.use('/api/hire-requests', hireRequestRoutes);
 
 // Basic route for API health check
 app.get('/', (req, res) => {

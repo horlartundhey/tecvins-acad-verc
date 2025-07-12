@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle, Award, Globe, Zap, FileText, MessageSquare, Tr
 import { HiArrowLongRight, HiCheckCircle, HiMiniUserGroup } from 'react-icons/hi2';
 import { MdLibraryBooks, MdStars } from 'react-icons/md';
 import { useTrainerApplications } from '../hooks/useTrainerApplications';
+import PhoneInput from '../components/PhoneInput';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -38,6 +39,14 @@ const Trainer = () => {
         setFormData((prev) => ({
             ...prev,
             [name]: value
+        }));
+    };
+
+    // Handle phone input changes
+    const handlePhoneChange = (fullPhoneNumber) => {
+        setFormData(prev => ({
+            ...prev,
+            phoneNumber: fullPhoneNumber
         }));
     };
 
@@ -189,7 +198,7 @@ const Trainer = () => {
 
                             {/* Center Text Box */}
                             <div className="md:col-span-1 flex items-center">
-                                <div className=" bg-[#BE3C2F] border-[8px] border-[#FF6F61] text-white py-10 px-8 rounded-xl">
+                                <div className=" bg-[#BE3C2F] border-[8px] border-[#FF6F61] text-white py-11 px-8 rounded-xl">
                                     <p className="text-lg">
                                         Tecvinson Academy is growing, and we need passionate, skilled professionals to join us as trainers. By becoming a trainer, you'll play a pivotal role in transforming lives, sharing your expertise, and shaping the next generation of IT talent.
                                     </p>
@@ -473,15 +482,25 @@ const Trainer = () => {
             {/* Application Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                        {/* Modal Header */}
-                        <div className="p-6 border-b">
-                            <h2 className="text-2xl font-bold text-gray-900">Join Tecvinson Academy as a Trainer</h2>
-                            <p className="mt-1 text-gray-600">Please complete this form and we will be in touch shortly.</p>
+                    <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+                        {/* Fixed Modal Header */}
+                        <div className="p-6 border-b bg-white">
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <h2 className="text-2xl font-bold text-gray-900">Join Tecvinson Academy as a Trainer</h2>
+                                    <p className="mt-1 text-gray-600">Please complete this form and we will be in touch shortly.</p>
+                                </div>
+                                <button
+                                    onClick={closeModal}
+                                    className="text-gray-500 hover:text-gray-700"
+                                >
+                                    <X className="h-6 w-6" />
+                                </button>
+                            </div>
                         </div>
 
-                        {/* Modal Body */}
-                        <div className="p-6">
+                        {/* Scrollable Modal Body */}
+                        <div className="flex-1 overflow-y-auto p-6">
                             <form className="space-y-6" onSubmit={handleSubmit}>
                                 {/* Name Fields */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -571,13 +590,11 @@ const Trainer = () => {
                                         <label className="block text-sm font-medium text-gray-700 mb-1">
                                             Phone Number
                                         </label>
-                                        <input
-                                            type="tel"
-                                            name="phoneNumber"
+                                        <PhoneInput
                                             value={formData.phoneNumber}
-                                            onChange={handleChange}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500"
-                                            placeholder="XXX XXX XXXX"
+                                            onChange={handlePhoneChange}
+                                            placeholder="Phone number"
+                                            required
                                         />
                                     </div>
                                 </div>

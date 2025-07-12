@@ -64,10 +64,9 @@ const faqData = {
   ],
   training: [
     {
-      question: "What laptop do I need for training?",
+      question: "What tools and software will I need?",
       answer:
-        ["Windows (Recommended):\n• Intel i5 10th Gen+ or AMD Ryzen 5 4000+\n• 16GB RAM (8GB minimum)\n• 512GB SSD (256GB minimum)\n\nMac (Recommended):\n• MacBook Pro/Air with M1 chip or later\n• 16GB RAM (8GB minimum)\n• 512GB SSD (256GB minimum)\n\nLinux: Any modern laptop with similar specs to Windows/Mac.\n\n",          
-        "🍏 MacBook (Recommended):\n•	OS: macOS 12.0+ (Monterey or newer)\n•	CPU: Apple M1/M2 or Intel i5 10th Gen+\n•	RAM: 16GB+\n•	SSD: 512GB+\n"],
+        "We provide a comprehensive list of required tools before each course begins. Most software we use is free and open-source, including VS Code, Git, and various development frameworks. We also provide access to premium tools during your learning period.",
     },
     {
       question: "Do I need a powerful computer to participate?",
@@ -150,29 +149,24 @@ const Frequently_asked = () => {
 
     // Search across all categories
     const searchResults = []
-  const lowerSearchTerm = searchTerm.toLowerCase()
+    const lowerSearchTerm = searchTerm.toLowerCase()
 
-  Object.entries(faqData).forEach(([categoryId, faqs]) => {
-    const categoryName = faqCategories.find(cat => cat.id === categoryId)?.name || categoryId
-    
-    faqs.forEach(faq => {
-      // Handle both string and array answers
-      const answerText = Array.isArray(faq.answer) 
-        ? faq.answer.join(' ') 
-        : faq.answer
-
-      if (
-        faq.question.toLowerCase().includes(lowerSearchTerm) ||
-        answerText.toLowerCase().includes(lowerSearchTerm)
-      ) {
-        searchResults.push({
-          ...faq,
-          category: categoryName,
-          categoryId: categoryId
-        })
-      }
+    Object.entries(faqData).forEach(([categoryId, faqs]) => {
+      const categoryName = faqCategories.find(cat => cat.id === categoryId)?.name || categoryId
+      
+      faqs.forEach(faq => {
+        if (
+          faq.question.toLowerCase().includes(lowerSearchTerm) ||
+          faq.answer.toLowerCase().includes(lowerSearchTerm)
+        ) {
+          searchResults.push({
+            ...faq,
+            category: categoryName,
+            categoryId: categoryId
+          })
+        }
+      })
     })
-  })
 
     return {
       faqs: searchResults,
@@ -285,7 +279,7 @@ const Frequently_asked = () => {
           <div className="lg:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="w-full flex items-center justify-start px-4 py-1 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full flex items-center justify-start px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <svg className="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -338,7 +332,7 @@ const Frequently_asked = () => {
 
               <div className="p-6">
                 {filteredFaqs.length === 0 ? (
-                  <div className="text-center py-4">
+                  <div className="text-center py-8">
                     <p className="text-gray-500">
                       {searchTerm
                         ? "No FAQs found matching your search. Try different keywords or browse categories."
@@ -374,7 +368,7 @@ const Frequently_asked = () => {
                                 )}
                               </div>
                               <button
-                                className="flex items-center justify-center w-12 h-12 sm:w-10 sm:h-10 rounded-lg border border-gray-300 flex-shrink-0"
+                                className="flex items-center justify-center w-12 h-12 sm:w-10 sm:h-10 rounded-lg flex-shrink-0"
                                 aria-label={
                                   isOpen
                                     ? `Collapse ${faq.question}`
@@ -390,16 +384,8 @@ const Frequently_asked = () => {
                             </div>
                           </button>
                           {isOpen && (
-                            <div className="px-4 pb-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-1 bg-[#EDF8F7]">
-                              {(Array.isArray(faq.answer) ? faq.answer.join('') : faq.answer)
-                                .split('\n')
-                                .map((line, index) => (
-                                  <span key={index}>
-                                    {line}
-                                    <br />
-                                  </span>
-                                ))
-                              }
+                            <div className="px-4 pb-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4 bg-[#EDF8F7]">
+                              {faq.answer}
                             </div>
                           )}
                         </div>

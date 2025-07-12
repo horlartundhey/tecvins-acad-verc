@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllContacts, deleteContact, updateContactStatus } from '../../redux/slices/contactSlice';
 
@@ -6,12 +6,17 @@ const statusOptions = ['pending', 'responded', 'closed'];
 
 const ContactMessages = () => {
   const dispatch = useDispatch();
-  const { contacts, isLoading, error } = useSelector((state) => state.contact);
+  const { contacts, isLoading, error, hasLoaded } = useSelector((state) => state.contact);
   const [selected, setSelected] = useState(null);
+  const hasInitialized = useRef(false);
 
   useEffect(() => {
-    dispatch(fetchAllContacts());
-  }, [dispatch]);
+    // Only fetch if not already loaded and no auth errors and not already initialized
+    if (!hasLoaded && !error?.includes('401') && !error?.includes('Authentication failed') && !hasInitialized.current) {
+      hasInitialized.current = true;
+      dispatch(fetchAllContacts());
+    }
+  }, [dispatch, hasLoaded, error]);
 
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this message?')) {

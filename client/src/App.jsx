@@ -14,6 +14,7 @@ import Creative_des from './pages/Creative_des';
 import Trainer from './pages/Trainer';
 import Support from './pages/Support';
 import Donate from './pages/Donate';
+import DonationSuccess from './pages/DonationSuccess';
 import OurJourney from './pages/OurJourney';
 import Partner from './pages/Partner';
 import Login from './pages/Login';
@@ -36,6 +37,14 @@ import PartnerList from './pages/admin/PartnerList';
 import CohortSettings from './pages/admin/CohortSettings';
 import OurTrainers from './pages/OurTrainers';
 import CohortManagement from './pages/admin/CohortManagement';
+import DonationDashboard from './pages/admin/DonationDashboard';
+import HireRequestDashboard from './pages/admin/HireRequestDashboard';
+import ProjectsByStud from './pages/ProjectsByStud';
+import EventSystem from './pages/EventSystem';
+import Linguafrika from './pages/Linguafrika';
+import Imovellereal from './pages/Imovellereal';
+import Studat from './pages/Studat';
+import Aipowered from './pages/Aipowered';
 
 function App() {
   return (
@@ -58,12 +67,19 @@ function App() {
           <Route path="trainer" element={<Trainer />} />
           <Route path="our-trainers" element={<OurTrainers />} />
           <Route path="donate" element={<Donate />} />
+          <Route path="donate/success" element={<DonationSuccess />} />
           <Route path="support" element={<Support />} />
           <Route path="partner" element={<Partner />} />
           <Route path="what_difference" element={<Difference />} />
           <Route path="our-journey" element={<OurJourney />} />
           <Route path="frequently-asked-questions" element={<Frequently_asked />} />
-          
+          <Route path="projects-by-students" element={<ProjectsByStud />} /> 
+          <Route path="event-management-system" element={<EventSystem />} />
+          <Route path="linguafrika" element={<Linguafrika />} />
+          <Route path="imovelle" element={<Imovellereal />} />
+          <Route path="studat" element={<Studat />} />
+          <Route path="ai-powered" element={<Aipowered />} />
+
 
           {/* Auth Routes */}
           <Route path="/login" element={<Login />} />
@@ -83,6 +99,8 @@ function App() {
                     <Route path="trainers" element={<TrainerList />} />
                     <Route path="partners" element={<PartnerList />} />
                     <Route path="contacts" element={<ContactMessages />} />
+                    <Route path="donations" element={<DonationDashboard />} />
+                    <Route path="hire-requests" element={<HireRequestDashboard />} />
                     <Route path="cohort-settings" element={<CohortSettings />} />
                     <Route path="cohort-management" element={<CohortManagement />} />
 

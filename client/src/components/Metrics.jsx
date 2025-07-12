@@ -27,7 +27,7 @@ const Metrics = () => {
             <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mb-4">
               <HiGlobeAlt className="h-10 w-10 text-[#00BC85]" />
             </div>
-            <p className="text-4xl font-bold text-[#1a4741] mb-2">500+</p>
+            <p className="text-4xl font-bold text-[#1a4741] mb-2">2000+</p>
             <p className="text-gray-600 text-center">Students empowered across 11 countries worldwide.</p>
           </div>
 

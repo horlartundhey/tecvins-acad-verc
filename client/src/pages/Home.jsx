@@ -6,6 +6,7 @@ import OurPartners from '../components/OurPartners'
 import Metrics from '../components/Metrics'
 import Testimonials from '../components/Testimonials'
 import Faq from '../components/Faq'
+import Excellence from '../components/Excellence'
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <Hero />
       <Whoweare />
       <WhyTecvinson />
+      <Excellence />
       <OurPartners />
       <Metrics />
       <Testimonials />

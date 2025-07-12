@@ -7,10 +7,11 @@ export const useDashboard = () => {
     const { stats, recentActivities, isLoading, error, hasLoaded } = useSelector((state) => state.dashboard);
 
     const loadDashboardStats = useCallback(() => {
-        if (!isLoading && !hasLoaded) {
+        // Prevent repeated calls if there's an auth error
+        if (!isLoading && !hasLoaded && !error?.includes('401')) {
             dispatch(fetchDashboardStats());
         }
-    }, [dispatch, isLoading, hasLoaded]);
+    }, [dispatch, isLoading, hasLoaded, error]);
 
     return {
         stats,

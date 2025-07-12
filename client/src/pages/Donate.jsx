@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle, Award, Globe, Zap, FileText, MessageSquare, Trophy, X, ChevronDown } from "lucide-react"
 import one from '../assets/images/1.png'
@@ -8,6 +8,7 @@ import four from '../assets/images/4.png'
 // import chartgo from '../assets/images/ChartGo_20250128115513.png'
 import { HiArrowLongRight } from 'react-icons/hi2';
 import { PieChart, Pie, Cell, LabelList } from "recharts";
+import DonationModal from '../components/DonationModal';
 
 const data = [
   { name: "Trainer Compensation", value: 35, fullName: "Trainer Compensation (35%)" },
@@ -19,6 +20,7 @@ const data = [
 const COLORS = ["#807CFF", "#00BC85", "#FF6F61", "#0082FF"]
 
 const Donate = () => {
+  const [isDonationModalOpen, setIsDonationModalOpen] = useState(false);
 
   useEffect(() => {
         window.scrollTo({
@@ -26,6 +28,14 @@ const Donate = () => {
           behavior: 'smooth'
         });
       }, []);
+
+  const handleDonateClick = () => {
+    setIsDonationModalOpen(true);
+  };
+
+  const closeDonationModal = () => {
+    setIsDonationModalOpen(false);
+  };
 
   return (
    <>
@@ -142,6 +152,7 @@ const Donate = () => {
             Your donation fuels learning, growth, and brighter futures. Donate now!
             </p>
             <button 
+            onClick={handleDonateClick}
             className="bg-[#3B9790] hover:bg-teal-700 text-white font-semibold px-8 py-[1.3rem] rounded-xl transition-colors text-lg"
             >
             Donate Now
@@ -251,7 +262,10 @@ const Donate = () => {
           </div>
 
           {/* Donate button */}
-          <button className="bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white px-6 sm:px-8 py-3 sm:py-4 font-semibold rounded-xl transition-colors w-full sm:w-auto lg:flex-shrink-0 text-base sm:text-lg">
+          <button 
+            onClick={handleDonateClick}
+            className="bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white px-6 sm:px-8 py-3 sm:py-4 font-semibold rounded-xl transition-colors w-full sm:w-auto lg:flex-shrink-0 text-base sm:text-lg"
+          >
             Donate Now
           </button>
         </div>
@@ -295,6 +309,7 @@ const Donate = () => {
             Your donation fuels learning, growth, and brighter futures. Donate now!
             </p>
             <button 
+            onClick={handleDonateClick}
             className="bg-teal-600 hover:bg-teal-700 text-white font-semibold px-8 py-3 rounded-md transition-colors text-lg"
             >
             Donate Now
@@ -306,6 +321,12 @@ const Donate = () => {
         
       </div>
   </div>
+  
+  {/* Donation Modal */}
+  <DonationModal 
+    isOpen={isDonationModalOpen} 
+    onClose={closeDonationModal} 
+  />
   
   </>
   )

@@ -6,11 +6,13 @@ import {
     GraduationCap, 
     UserCog, 
     MessageSquare, 
+    DollarSign,
     Handshake, 
     FileEdit, 
     LogOut,
     Menu,
-    X
+    X,
+    Briefcase as BriefcaseIcon
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -52,10 +54,22 @@ const AdminLayout = ({ children }) => {
             allowedRoles: ['admin'] 
         },
         { 
+            path: '/admin/donations', 
+            name: 'Donations', 
+            icon: <DollarSign className="w-5 h-5" />,
+            allowedRoles: ['admin'] 
+        },
+        { 
             path: '/admin/partners', 
             name: 'Partners', 
             icon: <Handshake className="w-5 h-5" />,
             allowedRoles: ['admin'] 
+        },
+        { 
+            path: '/admin/hire-requests', 
+            name: 'Hire Requests', 
+            icon: <BriefcaseIcon className="w-5 h-5" />,
+            allowedRoles: ['admin', 'editor'] 
         },
         { 
             path: '/admin/blog', 

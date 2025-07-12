@@ -8,6 +8,7 @@ import vrImage from "../assets/images/hero-vr.png";
 import studentImage from "../assets/images/hero-analyst.png";
 import { HiCodeBracket, HiOutlineRocketLaunch, HiOutlineSparkles, HiSparkles } from "react-icons/hi2";
 import { FiPenTool } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const canvasRef = useRef(null);
@@ -293,8 +294,10 @@ const Hero = () => {
           </p>
           <div className="mt-6 md:mt-8">
             <Button className="bg-[#3B9790] hover:bg-teal-600 text-white px-5 py-[1rem] sm:px-6 sm:py-[1.3rem] md:px-8 md:py-[1rem] rounded-xl text-sm sm:text-base md:text-lg font-medium shadow-md transition duration-300 flex items-center mx-auto">
-              Begin your learning journey
-              <HiOutlineRocketLaunch className="ml-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
+              <Link to="/courses " className="flex items-center">
+                Begin your learning journey
+                <HiOutlineRocketLaunch className="ml-2 h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
+              </Link>
             </Button>
           </div>
         </div>

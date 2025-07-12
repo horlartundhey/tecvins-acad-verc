@@ -5,9 +5,18 @@ import apiService from '../services/apiService';
 export const fetchDashboardStats = createAsyncThunk(
     'dashboard/fetchStats',    async (_, { rejectWithValue }) => {
         try {
+            // Check if user has token before making request
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.log('No token found - aborting dashboard stats request');
+                window.location.replace('/login');
+                return rejectWithValue('No authentication token');
+            }
+            
             const response = await apiService.get('/admin/stats');
             return response.data;
         } catch (error) {
+            console.log('Dashboard stats request failed:', error.message);
             return rejectWithValue(error.response?.data?.message || 'Failed to fetch dashboard stats');
         }
     }
@@ -51,6 +60,10 @@ const dashboardSlice = createSlice({
             .addCase(fetchDashboardStats.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload;
+                // Prevent infinite retries on auth errors
+                if (action.payload && (action.payload.includes('401') || action.payload.includes('unauthorized') || action.payload.includes('Not authorized'))) {
+                    state.hasLoaded = true; // Stop retrying on auth errors
+                }
             });
     }
 });

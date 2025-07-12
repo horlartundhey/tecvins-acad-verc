@@ -138,14 +138,7 @@ const trainers = [
     id: "16",
     name: "Lukeman Frimpong",
     email: "lukeman.frimpong@tecvinsonacademy.com",
-    location: "Ghanaian living in Sweden",
-    specialization: ["Data Analytics", "Data Science", "Machine Learning", "Artificial Intelligence"],
-    skills: ["Data Analytics", "Data Science", "Machine Learning", "Artificial Intelligence"],
-    experience: [
-      "<span style='font-weight: bold;'>3</span> years Experience in Machine Learning and Artificial Intelligence",
-      "<span style='font-weight: bold;'>4</span> years experience as Data Scientist and Data Analyst",
-    ],
-    linkedinUrl: "https://www.linkedin.com/in/lukeman-frimpong-306bb3212/",
+    isMemorial: true,
     imageUrl: lukeman,
   },
   {
@@ -441,7 +434,7 @@ const OurTrainers = () => {
         <div className="mb-12">
           <h1 className="text-4xl font-bold text-[#0F2624] mb-4">Meet Our Trainers</h1>
           <p className="text-lg text-[#5E5E5E] mx-auto">
-            At Tecvrinon Academy, you'll learn from industry professionals who are passionate about helping you succeed.
+            At Tecvinson Academy, you'll learn from industry professionals who are passionate about helping you succeed.
             <br />
             Get to know the experienced minds shaping your journey.
           </p>
@@ -452,7 +445,9 @@ const OurTrainers = () => {
           {trainers.map((trainer) => (
             <div
               key={trainer.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col max-w-sm mx-auto"
+              className={`bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col max-w-sm mx-auto ${
+                trainer.isMemorial ? 'grayscale opacity-75' : ''
+              }`}
             >
               {/* Top Section - Light Blue Background */}
               <div className="bg-[#EDF8F7] px-8 py-10 rounded-xl m-3 text-center">
@@ -476,73 +471,103 @@ const OurTrainers = () => {
 
               {/* Bottom Section - White Background */}
               <div className="p-6 flex-1 flex flex-col">
-                {/* Content sections grouped together */}
-                <div className="space-y-4">
-                  {/* Specialization/Course with Icon */}
-                  <div className="flex items-start">
-                    <MdLibraryBooks className="w-5 h-5 text-[#1E4C48] mt-0.5 mr-3 flex-shrink-0" />
-                    <div className="flex-1">
-                      <div className="text-sm font-semibold text-gray-900 mb-2">Specialization</div>
-                      {Array.isArray(trainer.specialization) ? (
-                        <ul className="text-sm text-gray-600 space-y-1">
-                          {trainer.specialization.slice(0, 6).map((spec, index) => (
-                            <li key={index} className="flex items-start">
+                {trainer.isMemorial ? (
+                  /* Memorial Content */
+                  <div className="flex-1 flex flex-col items-center justify-center text-center space-y-10">
+                    {/* Dove Icon */}
+                    <div className="text-6xl text-gray-400">
+                      <img src="https://res.cloudinary.com/kamisama/image/upload/v1751687739/Detail_Text_wcotbw.png" alt="Dove Icon" className="w-full h-full object-cover" />
+                    </div>
+                    
+                    {/* Memorial Message */}
+                    <div className="space-y-2">
+                      <h4 className="text-lg font-semibold text-gray-600">In loving memory...</h4>                     
+                    </div>
+
+                    {/* Disabled LinkedIn Button */}
+                    <div className="mt-6 w-full">
+                      <button 
+                        disabled
+                        className="flex items-center justify-center w-full border border-gray-200 text-gray-400 text-sm font-medium py-3 px-4 rounded-full cursor-not-allowed"
+                      >
+                        <FaLinkedin className="w-5 h-5 mr-2 text-gray-300" />
+                        <span>Connect on LinkedIn</span>
+                        <ArrowUpRight className="w-4 h-4 ml-2 text-gray-300" />
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  /* Regular Trainer Content */
+                  <>
+                    {/* Content sections grouped together */}
+                    <div className="space-y-4">
+                      {/* Specialization/Course with Icon */}
+                      <div className="flex items-start">
+                        <MdLibraryBooks className="w-5 h-5 text-[#1E4C48] mt-0.5 mr-3 flex-shrink-0" />
+                        <div className="flex-1">
+                          <div className="text-sm font-semibold text-gray-900 mb-2">Specialization</div>
+                          {Array.isArray(trainer.specialization) ? (
+                            <ul className="text-sm text-gray-600 space-y-1">
+                              {trainer.specialization.slice(0, 6).map((spec, index) => (
+                                <li key={index} className="flex items-start">
+                                  <span className="w-1.5 h-1.5 bg-[#0F2624] rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                                  <span>{spec}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <div className="text-sm text-gray-600 flex items-start">
                               <span className="w-1.5 h-1.5 bg-[#0F2624] rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
-                              <span>{spec}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      ) : (
-                        <div className="text-sm text-gray-600 flex items-start">
-                          <span className="w-1.5 h-1.5 bg-[#0F2624] rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
-                          <span>{trainer.specialization}</span>
+                              <span>{trainer.specialization}</span>
+                            </div>
+                          )}
                         </div>
-                      )}
+                      </div>
+
+                      {/* Experience with Icon */}
+                      <div className="flex items-start">
+                        <RiBriefcase4Fill className="w-5 h-5 text-[#1E4C48] mt-0.5 mr-3 flex-shrink-0" />
+                        <div className="flex-1">
+                          <div className="text-sm font-semibold text-gray-900 mb-2">Experience</div>
+                          <ul className="text-sm text-gray-600 space-y-1">
+                            {trainer.experience.slice(0, 5).map((exp, index) => (
+                              <li key={index} className="flex items-start">
+                                <span className="w-1.5 h-1.5 bg-[#0F2624] rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                                <span dangerouslySetInnerHTML={{ __html: exp }}></span>
+                              </li>
+                            ))}
+                            {trainer.experience.length > 4 && (
+                              <li className="text-blue-600 text-sm">+{trainer.experience.length - 4} more...</li>
+                            )}
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* Location with Icon */}
+                      <div className="flex items-start">
+                        <FaLocationDot className="w-5 h-5 text-[#1E4C48] mt-0.5 mr-3 flex-shrink-0" />
+                        <div className="flex-1">
+                          <div className="text-sm font-semibold text-gray-900 mb-1">Location</div>
+                          <div className="text-sm text-gray-600">{trainer.location}</div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Experience with Icon */}
-                  <div className="flex items-start">
-                    <RiBriefcase4Fill className="w-5 h-5 text-[#1E4C48] mt-0.5 mr-3 flex-shrink-0" />
-                    <div className="flex-1">
-                      <div className="text-sm font-semibold text-gray-900 mb-2">Experience</div>
-                      <ul className="text-sm text-gray-600 space-y-1">
-                        {trainer.experience.slice(0, 5).map((exp, index) => (
-                          <li key={index} className="flex items-start">
-                            <span className="w-1.5 h-1.5 bg-[#0F2624] rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
-                            <span dangerouslySetInnerHTML={{ __html: exp }}></span>
-                          </li>
-                        ))}
-                        {trainer.experience.length > 4 && (
-                          <li className="text-blue-600 text-sm">+{trainer.experience.length - 4} more...</li>
-                        )}
-                      </ul>
+                    {/* Spacer to push button to bottom */}
+                    <div className="flex-1"></div>
+
+                    {/* LinkedIn Connect Button - Fixed position at bottom */}
+                    <div className="mt-6">
+                      <Link to={trainer.linkedinUrl} target="_blank" rel="noopener noreferrer" className="block">
+                        <button className="flex items-center justify-center w-full border border-gray-300 text-[#3B9790] hover:bg-blue-50 text-sm font-medium py-3 px-4 rounded-full transition-colors duration-200 group">
+                          <FaLinkedin className="w-5 h-5 mr-2 text-[#0076B2]" />
+                          <span>Connect on LinkedIn</span>
+                          <ArrowUpRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
+                        </button>
+                      </Link>
                     </div>
-                  </div>
-
-                  {/* Location with Icon */}
-                  <div className="flex items-start">
-                    <FaLocationDot className="w-5 h-5 text-[#1E4C48] mt-0.5 mr-3 flex-shrink-0" />
-                    <div className="flex-1">
-                      <div className="text-sm font-semibold text-gray-900 mb-1">Location</div>
-                      <div className="text-sm text-gray-600">{trainer.location}</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Spacer to push button to bottom */}
-                <div className="flex-1"></div>
-
-                {/* LinkedIn Connect Button - Fixed position at bottom */}
-                <div className="mt-6">
-                  <Link to={trainer.linkedinUrl} target="_blank" rel="noopener noreferrer" className="block">
-                    <button className="flex items-center justify-center w-full border border-gray-300 text-[#3B9790] hover:bg-blue-50 text-sm font-medium py-3 px-4 rounded-full transition-colors duration-200 group">
-                      <FaLinkedin className="w-5 h-5 mr-2 text-[#0076B2]" />
-                      <span>Connect on LinkedIn</span>
-                      <ArrowUpRight className="w-4 h-4 ml-2 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
-                    </button>
-                  </Link>
-                </div>
+                  </>
+                )}
               </div>
             </div>
           ))}

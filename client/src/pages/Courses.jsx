@@ -5,6 +5,7 @@ import Faq from "../components/Faq";
 import { Link } from "react-router-dom";
 import { FiPenTool } from "react-icons/fi";
 import { useEffect } from "react";
+import Excellence from "../components/Excellence";
 
 const CourseCard = ({ iconBg, icon, image, title, description, overlayColor, courseLink }) => {
   useEffect(() => {
@@ -100,7 +101,7 @@ const Courses = () => {
   ];
 
   return (
-    <div className="bg-gray-50 py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+    <div className="bg-gray-50 py-8 sm:py-12 w-full">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 sm:mb-10">Explore Our Free IT Courses</h2>
 
@@ -135,6 +136,9 @@ const Courses = () => {
       </div>      
       <div className="my-8 sm:my-14">
         <Faq />
+      </div>
+      <div className="my-8 sm:my-14 ">
+        <Excellence />
       </div>
     </div>
   );

@@ -18,9 +18,18 @@ export const fetchAllContacts = createAsyncThunk(
     'contact/fetchAll',
     async (_, { rejectWithValue }) => {
         try {
+            // Check if user has token before making request
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.log('No token found - aborting contacts request');
+                window.location.replace('/login');
+                return rejectWithValue('No authentication token');
+            }
+            
             const response = await apiService.get('/contact');
             return response.data.data; // assuming response.data.data is the array
         } catch (error) {
+            console.log('Contacts request failed:', error.message);
             return rejectWithValue(error.response?.data?.message || 'Failed to fetch contacts');
         }
     }
@@ -57,6 +66,7 @@ const initialState = {
     error: null,
     successMessage: null,
     contacts: [], // NEW: store all contacts
+    hasLoaded: false, // Prevent infinite retries
 };
 
 const contactSlice = createSlice({
@@ -93,10 +103,15 @@ const contactSlice = createSlice({
             .addCase(fetchAllContacts.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.contacts = action.payload;
+                state.hasLoaded = true;
             })
             .addCase(fetchAllContacts.rejected, (state, action) => {
                 state.isLoading = false;
                 state.error = action.payload || 'Failed to fetch contacts';
+                // Stop retrying on auth errors
+                if (action.payload && (action.payload.includes('401') || action.payload.includes('unauthorized') || action.payload.includes('Authentication failed'))) {
+                    state.hasLoaded = true; // Prevent retries
+                }
             })
             // Delete contact
             .addCase(deleteContact.fulfilled, (state, action) => {

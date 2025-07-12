@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { 
     Users,
     GraduationCap,
@@ -6,7 +6,8 @@ import {
     MessageSquare,
     Handshake,
     FileEdit,
-    AlertCircle
+    AlertCircle,
+    Briefcase
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
@@ -16,7 +17,8 @@ import ContactMessages from './ContactMessages';
 const Dashboard = () => {
     const navigate = useNavigate();
     const { user, isAuthenticated } = useAuth();
-    const { stats, recentActivities, isLoading, error, hasLoaded, loadDashboardStats } = useDashboard();
+    const { stats, recentActivities, isLoading, error, loadDashboardStats } = useDashboard();
+    const hasInitialized = useRef(false);
     
     useEffect(() => {
         if (!isAuthenticated || user?.role !== 'admin') {
@@ -24,10 +26,11 @@ const Dashboard = () => {
         }
     }, [isAuthenticated, user, navigate]);
 
-    // Load dashboard data when authenticated
+    // Load dashboard data when authenticated - prevent double calls
     useEffect(() => {
-        // Only load stats if we're authenticated and haven't loaded yet
-        if (isAuthenticated && user?.role === 'admin') {
+        // Only load stats if we're authenticated and haven't loaded yet and haven't already initialized
+        if (isAuthenticated && user?.role === 'admin' && !hasInitialized.current) {
+            hasInitialized.current = true;
             loadDashboardStats();
         }
     }, [isAuthenticated, user, loadDashboardStats]);
@@ -38,35 +41,48 @@ const Dashboard = () => {
             value: stats?.students?.total || 0,
             pending: stats?.students?.pending || 0,
             icon: <GraduationCap className="w-8 h-8 text-blue-600" />,
-            color: 'bg-blue-50'
+            color: 'bg-blue-50',
+            link: '/admin/students'
         },
         {
             title: 'Total Trainers',
             value: stats?.trainers?.total || 0,
             pending: stats?.trainers?.pending || 0,
             icon: <UserCog className="w-8 h-8 text-purple-600" />,
-            color: 'bg-purple-50'
+            color: 'bg-purple-50',
+            link: '/admin/trainers'
         },
         {
             title: 'Blog Posts',
             value: stats?.blogs?.total || 0,
             published: stats?.blogs?.published || 0,
             icon: <FileEdit className="w-8 h-8 text-green-600" />,
-            color: 'bg-green-50'
+            color: 'bg-green-50',
+            link: '/admin/blog'
         },
         {
             title: 'Contact Messages',
             value: stats?.contacts?.total || 0,
             pending: stats?.contacts?.pending || 0,
             icon: <MessageSquare className="w-8 h-8 text-yellow-600" />,
-            color: 'bg-yellow-50'
+            color: 'bg-yellow-50',
+            link: '/admin/contact'
         },
         {
             title: 'Partners',
             value: stats?.partners?.total || 0,
             pending: stats?.partners?.pending || 0,
             icon: <Handshake className="w-8 h-8 text-red-600" />,
-            color: 'bg-red-50'
+            color: 'bg-red-50',
+            link: '/admin/partnerships'
+        },
+        {
+            title: 'Hire Requests',
+            value: stats?.hireRequests?.total || 0,
+            pending: stats?.hireRequests?.pending || 0,
+            icon: <Briefcase className="w-8 h-8 text-orange-600" />,
+            color: 'bg-orange-50',
+            link: '/admin/hire-requests'
         },
         {
             title: 'Total Users',
@@ -74,7 +90,8 @@ const Dashboard = () => {
             admins: stats?.users?.admins || 0,
             editors: stats?.users?.editors || 0,
             icon: <Users className="w-8 h-8 text-indigo-600" />,
-            color: 'bg-indigo-50'
+            color: 'bg-indigo-50',
+            link: '/admin/users'
         }
     ];
 
@@ -116,7 +133,8 @@ const Dashboard = () => {
                 {statCards.map((stat, index) => (
                     <div 
                         key={index}
-                        className={`${stat.color} rounded-lg p-6 shadow-sm transition-transform hover:scale-[1.02]`}
+                        className={`${stat.color} rounded-lg p-6 shadow-sm transition-transform hover:scale-[1.02] cursor-pointer`}
+                        onClick={() => navigate(stat.link)}
                     >
                         <div className="flex items-center justify-between">
                             <div>
