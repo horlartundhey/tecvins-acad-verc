@@ -93,42 +93,45 @@ const countryCodes = [
   { code: '+98', flagCode: 'IR', country: 'Iran' }
 ];
 
-const PhoneInput = ({ 
-  value = '', 
-  onChange, 
-  placeholder = "Phone number", 
+
+const getCountryByCode = (code) => countryCodes.find(c => c.code === code) || countryCodes[0];
+
+const extractCountryCode = (value) => {
+  if (typeof value !== 'string') return countryCodes[0].code;
+  const match = value.match(/^\+\d{1,3}/);
+  return match ? match[0] : countryCodes[0].code;
+};
+
+const PhoneInput = ({
+  value = '',
+  onChange,
+  placeholder = "Phone number",
   error = '',
   required = false,
-  className = '' 
+  className = ''
 }) => {
-  const [selectedCountryCode, setSelectedCountryCode] = useState(countryCodes[0]);
+  // Always derive selected country code from value
+  const countryCode = extractCountryCode(value);
+  const selectedCountry = getCountryByCode(countryCode);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+
+  // Extract the phone number without country code for display
+  const phoneNumberOnly = typeof value === 'string' ? value.replace(/^\+\d{1,3}/, '') : '';
 
   const handlePhoneChange = (e) => {
     const inputValue = e.target.value;
-    console.log('Input value:', inputValue); // Debug log
-    
-    // Only allow numbers - strictly numeric input
     const numericValue = inputValue.replace(/\D/g, '');
-    console.log('Numeric value:', numericValue); // Debug log
-    
-    const fullPhoneNumber = `${selectedCountryCode.code}${numericValue}`;
-    console.log('Full phone number:', fullPhoneNumber); // Debug log
-    
-    onChange(fullPhoneNumber, numericValue, selectedCountryCode);
+    const fullPhoneNumber = `${selectedCountry.code}${numericValue}`;
+    onChange(fullPhoneNumber, numericValue, selectedCountry);
   };
 
   const handleCountrySelect = (country) => {
-    setSelectedCountryCode(country);
     setShowCountryDropdown(false);
     // Update the full phone number with new country code
-    const phoneNumber = value.replace(/^\+\d+/, ''); // Remove existing country code
+    const phoneNumber = phoneNumberOnly;
     const fullPhoneNumber = `${country.code}${phoneNumber}`;
     onChange(fullPhoneNumber, phoneNumber, country);
   };
-
-  // Extract the phone number without country code for display
-  const phoneNumberOnly = value ? value.replace(/^\+\d+/, '') : '';
 
   return (
     <div className={`relative ${className}`}>
@@ -137,15 +140,14 @@ const PhoneInput = ({
           <button
             type="button"
             onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-            className={`flex items-center px-3 py-2 border border-r-0 rounded-l-md bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+            className={`flex items-center py-2 border border-r-0 rounded-l-md bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
               error ? 'border-red-500' : 'border-gray-300'
             }`}
           >
-            <FlagIcon countryCode={selectedCountryCode.flagCode} className="w-4 h-4 mr-1" />
-            <span className="text-sm">{selectedCountryCode.code}</span>
+            <FlagIcon countryCode={selectedCountry.flagCode} className="w-4 h-4 mr-1" />
+            <span className="text-sm">{selectedCountry.code}</span>
             <ChevronDown className="w-4 h-4 ml-1" />
           </button>
-          
           {showCountryDropdown && (
             <div className="absolute top-full left-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 max-h-60 overflow-y-auto min-w-[280px]">
               {countryCodes.map((country) => (
@@ -169,7 +171,7 @@ const PhoneInput = ({
           onChange={handlePhoneChange}
           placeholder={placeholder}
           required={required}
-          className={`flex-1 px-3 py-2 border border-l-0 rounded-r-md focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+          className={`flex-1 px-3 py-2 h-[38px] w-full border border-l-0 rounded-r-md focus:outline-none focus:ring-2 focus:ring-teal-500 ${
             error ? 'border-red-500' : 'border-gray-300'
           }`}
         />

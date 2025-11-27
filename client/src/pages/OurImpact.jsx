@@ -1,11 +1,13 @@
 "use client"
-import { ArrowRight } from "lucide-react"
-import { HiArrowLongRight, HiOutlineRocketLaunch } from "react-icons/hi2"
+import { ArrowRight, Mail, Phone } from "lucide-react"
+import { HiArrowLongRight, HiEnvelope, HiOutlineRocketLaunch, HiPhone } from "react-icons/hi2"
 import { Link } from "react-router-dom"
 import HireTalent from "./HireTalent"
 import { useEffect } from "react"
+import Ourimpac from "../components/Ourimpac"
+import Impactvi from "../components/Impactvi"
 
-const ProjectsByStud = () => {
+const OurImpact = () => {
   useEffect(() => {
         window.scrollTo({
           top: 0,
@@ -76,14 +78,14 @@ const ProjectsByStud = () => {
       {/* Header Section with Green Faded Blur */}
       <div className="relative py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 overflow-hidden container mx-auto">
         {/* Green Faded Blur Background */}
-        <div className="absolute inset-0">
+        {/* <div className="absolute inset-0">
           <div className="absolute top-0 left-[10%] sm:left-[14%] w-48 sm:w-80 lg:w-96 h-48 sm:h-80 lg:h-96 bg-green-400/20 rounded-full blur-3xl"></div>
           <div className="absolute top-1/4 right-1/4 w-32 sm:w-60 lg:w-80 h-32 sm:h-60 lg:h-80 bg-emerald-300/15 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 left-1/2 w-36 sm:w-56 lg:w-72 h-36 sm:h-56 lg:h-72 bg-green-500/10 rounded-full blur-3xl"></div>
-        </div>
+        </div> */}
 
         {/* Content */}
-        <div className="relative z-10">
+        {/* <div className="relative z-10">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
             Ideas to Execution: See What Our Students Are Building
           </h1>
@@ -93,14 +95,16 @@ const ProjectsByStud = () => {
             This page showcases the remarkable work being created by our learners across Product Design, Development,
             Management, and beyond.
           </p>
-        </div>
+        </div> */}
+
+        <Ourimpac />
       </div>
 
       {/* Featured Projects Section */}
-      <div className="py-8 sm:py-12 lg:py-16">
+      <div className=" font-montserrat">
         <div className="w-full mx-auto">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8 sm:mb-12 lg:mb-20">Featured Projects</h2>
+          <div className="container mx-auto px-4 sm:px-2 lg:px-8">
+            <h2 className="text-[32px] sm:text-3xl font-semibold text-gray-900 mb-8 sm:mb-12 lg:mb-20">Projects & Stories</h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -156,33 +160,52 @@ const ProjectsByStud = () => {
               </div>
             ))}
           </div>
+        </div>        
+      </div>    
+
+      <Impactvi />
+
+      <div className="mb-12 font-montserrat">
+        <div className="bg-[#1E4C48] p-8 text-center">
+          <h3 className="text-2xl sm:text-3xl font-semibold text-[#EDF8F7] mb-4">Support Us in Making Impact</h3>
+          <p className="text-[#EDF8F7] mb-3 text-sm font-normal">Connect with us through any of these channels.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-[4.5rem] max-w-4xl mx-auto px-4">
+            {/* Call Us card */}
+            <div className="bg-white rounded-xl p-6 w-full max-w-md mx-auto md:max-w-none">
+              <div className="w-12 h-12 bg-[#DBF2F0] rounded-md flex items-center justify-center mb-4">
+                <HiPhone className="w-6 h-6 text-[#3B9790]" />
+              </div>
+              <div className="text-left">
+                <h4 className="text-[20px] font-semibold text-[#0F2624] mb-2">Call Us</h4>
+                <a href="tel:+46703699614" className="text-[#2C716C] hover:text-[#00a073] text-left text-[16px] font-medium transition-colors">
+                  +46 703 699 614
+                </a>
+              </div>
+            </div>
+
+            {/* Email Us card */}
+            <div className="bg-white rounded-xl p-6 w-full max-w-md mx-auto md:max-w-none">
+              <div className="w-12 h-12 bg-[#DBF2F0] rounded-md flex items-center justify-center mb-4">
+                <HiEnvelope className="w-6 h-6 text-[#3B9790]" />
+              </div>
+              <div className="text-left">
+              <h4 className="text-[20px] font-semibold text-[#0F2624] mb-2 text-left">Email Us</h4>
+              <a
+                href="mailto:info@tecvinsonacademy.com"
+                className="text-[#2C716C] hover:text-[#00a073] text-[16px] text-left font-medium transition-colors break-all sm:break-normal"
+              >
+                info@tecvinsonacademy.com
+              </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Hire Talent Section */}
-      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 bg-[#FFFFEE] mb-6 sm:mb-10">
-        <HireTalent />
-      </div>
-
-      {/* Bottom CTA Section */}
-      <div className="px-4 sm:px-6 lg:px-8 pb-8 sm:pb-11">
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 max-w-2xl mx-auto">
-          <Link href="/support" className="w-full sm:w-auto order-2 sm:order-1">
-            <button className="w-full px-4 sm:px-6 py-3 sm:py-[1.3rem] rounded-xl border border-gray-300 text-[#3B9790] font-semibold hover:bg-gray-50 transition-colors text-base sm:text-lg">
-              Support Us
-            </button>
-          </Link>
-          <Link href="/courses" className="w-full sm:w-auto order-1 sm:order-2">
-            <button className="w-full px-4 sm:px-6 py-3 sm:py-[1.3rem] rounded-xl bg-[#3B9790] text-white hover:bg-teal-700 transition-colors flex items-center justify-center font-semibold text-base sm:text-lg">
-              Begin your learning journey
-              <HiOutlineRocketLaunch className="ml-2 h-4 w-4 flex-shrink-0" />
-            </button>
-          </Link>
-        </div>
-      </div>
+     
     </div>
     </>
   )
 }
 
-export default ProjectsByStud
+export default OurImpact

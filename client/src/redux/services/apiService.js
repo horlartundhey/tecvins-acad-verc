@@ -3,9 +3,7 @@ import axios from 'axios';
 // Global flag to prevent API calls after auth failure
 let isAuthenticating = false;
 
-const BASE_URL = import.meta.env.PROD 
-    ? '/api'  // In production, use relative path
-    : 'http://localhost:5000/api';
+const BASE_URL = 'https://tecvins-acad-verc-server.vercel.app/api';
 
 const apiService = axios.create({
     baseURL: BASE_URL,

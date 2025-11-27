@@ -5,11 +5,13 @@ import { HiOutlineMenuAlt1 } from 'react-icons/hi';
 import { HiOutlineRocketLaunch, HiRocketLaunch, HiChevronDown } from 'react-icons/hi2';
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+ const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isDesktopDropdownOpen, setIsDesktopDropdownOpen] = useState(false);
+  const [isTabletDropdownOpen, setIsTabletDropdownOpen] = useState(false); // Add separate state for tablet
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const tabletDropdownRef = useRef(null);
 
   const navLinks = [
     { path: '/', label: 'Home' },
@@ -22,7 +24,8 @@ const Navbar = () => {
         { path: '/our-trainers', label: 'Our Trainers' },
         { path: '/sdgs', label: 'SDGs' },
         { path: '/what_difference', label: 'Why Tecvinson' },
-        { path: '/projects-by-students', label: 'Projects By Our Students' }
+        { path: '/our-impact', label: 'Our Impact' },
+        { path: '/Projects-built', label: 'Projects Built by Students' }
 
       ]
     },
@@ -49,6 +52,9 @@ const Navbar = () => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDesktopDropdownOpen(false);
+      }
+      if (tabletDropdownRef.current && !tabletDropdownRef.current.contains(event.target)) {
+        setIsTabletDropdownOpen(false);
       }
     };
 
@@ -180,24 +186,24 @@ const Navbar = () => {
             </NavLink>
             <div 
               className="relative"
-              ref={dropdownRef}
+              ref={tabletDropdownRef} // Use separate ref
             >
               <button
                 className={`flex items-center space-x-1 text-sm ${
-                  isDesktopDropdownOpen
+                  isTabletDropdownOpen // Use separate state
                     ? "text-teal-500 font-medium"
                     : "text-gray-700 hover:text-teal-500"
                 } transition-colors`}
-                onClick={() => setIsDesktopDropdownOpen(!isDesktopDropdownOpen)}
+                onClick={() => setIsTabletDropdownOpen(!isTabletDropdownOpen)} // Use separate state
               >
                 <span>About</span>
                 <HiChevronDown className={`h-3 w-3 transition-transform ${
-                  isDesktopDropdownOpen ? 'transform rotate-180' : ''
+                  isTabletDropdownOpen ? 'transform rotate-180' : '' // Use separate state
                 }`} />
               </button>
               
               {/* Tablet Dropdown Menu */}
-              {isDesktopDropdownOpen && (
+              {isTabletDropdownOpen && ( // Use separate state
                 <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 z-50">
                   {navLinks.find(link => link.dropdown)?.dropdown.map((dropdownItem) => (
                     <NavLink
@@ -210,7 +216,7 @@ const Navbar = () => {
                             : "text-gray-700 hover:text-teal-500 hover:bg-gray-50"
                         } transition-colors`
                       }
-                      onClick={() => setIsDesktopDropdownOpen(false)}
+                      onClick={() => setIsTabletDropdownOpen(false)} // Use separate state
                     >
                       {dropdownItem.label}
                     </NavLink>

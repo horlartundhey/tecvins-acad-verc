@@ -7,16 +7,17 @@ export default {
   theme: {
     extend: {
       colors: {        
-       'primary': '#178582',
+        'primary': '#178582',
         'cream': '#FFF8E8', 
       },
       backgroundColor: {
         'cream': '#FFF8E8', 
       },
       fontFamily: {
-        'sans': ['Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        'montserrat': ['Montserrat', 'sans-serif']
-      }
+        'sans': ['Inter', 'Montserrat', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        'montserrat': ['Montserrat', 'sans-serif'],
+        'inter': ['Inter', 'sans-serif'],
+      },
     },
   },
   plugins: [],

@@ -9,6 +9,7 @@ import studentImage from "../assets/images/hero-analyst.png";
 import { HiCodeBracket, HiOutlineRocketLaunch, HiOutlineSparkles, HiSparkles } from "react-icons/hi2";
 import { FiPenTool } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import Banner from "./Banner";
 
 const Hero = () => {
   const canvasRef = useRef(null);
@@ -233,6 +234,8 @@ const Hero = () => {
   );
 
   return (
+    <>
+    {/* <Banner /> */}
     <section className="bg-[#FAFAFA] py-8 md:py-16 pb-16 md:pb-32 relative overflow-hidden min-h-[600px] md:min-h-[800px]">
       {/* Animated background canvas */}
       <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full" style={{ zIndex: 0 }} />
@@ -473,6 +476,7 @@ const Hero = () => {
         `}
       </style>
     </section>
+    </>
   );
 };
 

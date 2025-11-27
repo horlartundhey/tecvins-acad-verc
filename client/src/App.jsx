@@ -39,12 +39,14 @@ import OurTrainers from './pages/OurTrainers';
 import CohortManagement from './pages/admin/CohortManagement';
 import DonationDashboard from './pages/admin/DonationDashboard';
 import HireRequestDashboard from './pages/admin/HireRequestDashboard';
-import ProjectsByStud from './pages/ProjectsByStud';
+import ProjectsByStud from './pages/OurImpact';
 import EventSystem from './pages/EventSystem';
 import Linguafrika from './pages/Linguafrika';
 import Imovellereal from './pages/Imovellereal';
 import Studat from './pages/Studat';
 import Aipowered from './pages/Aipowered';
+import OurImpact from './pages/OurImpact';
+import ProjectsByStudents from './pages/ProjectsByStudents';
 
 function App() {
   return (
@@ -73,7 +75,8 @@ function App() {
           <Route path="what_difference" element={<Difference />} />
           <Route path="our-journey" element={<OurJourney />} />
           <Route path="frequently-asked-questions" element={<Frequently_asked />} />
-          <Route path="projects-by-students" element={<ProjectsByStud />} /> 
+          <Route path="our-impact" element={<OurImpact />} />
+          <Route path="Projects-built" element={<ProjectsByStudents />} />
           <Route path="event-management-system" element={<EventSystem />} />
           <Route path="linguafrika" element={<Linguafrika />} />
           <Route path="imovelle" element={<Imovellereal />} />

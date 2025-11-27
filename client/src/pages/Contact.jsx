@@ -36,10 +36,10 @@ const Contact = () => {
   };
 
   // Handle phone input changes
-  const handlePhoneChange = (fullPhoneNumber) => {
+  const handlePhoneChange = (fullPhoneNumber, numericValue) => {
     setFormData(prev => ({
       ...prev,
-      phoneNumber: fullPhoneNumber
+      phoneNumber: fullPhoneNumber || ''
     }));
   };
 
@@ -106,7 +106,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-[#1d4741] text-xl">Email Us</h3>
-                  <p className="text-[#2C716C] hover:underline">example@domain.com</p>
+                  <p className="text-[#2C716C] hover:underline">info@tecvinsonacademy.com</p>
                 </div>
               </div>
             </div>
@@ -226,7 +226,7 @@ const Contact = () => {
                     value={formData.phoneNumber}
                     onChange={handlePhoneChange}
                     placeholder="Phone number"
-                    className="mt-1"
+                    className="mt-1 w-full"
                   />
                 </div>
               </div>

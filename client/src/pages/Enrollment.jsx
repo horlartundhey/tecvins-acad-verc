@@ -233,7 +233,7 @@ const Enrollment = () => {
               <Info className="h-5 w-5 text-blue-500 mt-0.5 mr-2 flex-shrink-0" />
               <div>
                 <h2 className="text-lg font-semibold text-gray-900 mb-3">
-                  {activeCohort ? 'Active Cohort Information' : 'No Active Cohort'}
+                  {activeCohort ? 'Active Cohort Information' : 'Cohort Applications Currently Closed'}
                 </h2>
                 {activeCohort ? (
                   <ul className="space-y-2 text-gray-700">
@@ -264,7 +264,9 @@ const Enrollment = () => {
                     </li>
                   </ul>
                 ) : (
-                  <p className="text-gray-600">There is currently no active cohort. Please check back later.</p>
+                  <p className="text-gray-600">
+                  We run structured, cohort-based programs once or twice a year. <br />The current cohort is ongoing, and applications for the next one are not yet open.<br /> Please check back here or join our mailing list to receive updates when the next application window begins.
+                  </p>
                 )}
               </div>
             </div>
@@ -357,7 +359,7 @@ const Enrollment = () => {
                   disabled
                   className="bg-gray-400 cursor-not-allowed text-white font-medium py-3 px-6 rounded-lg flex items-center"
                 >
-                  No Active Cohort Available
+                  Cohort Applications Currently Closed
                   <Info className="ml-2 h-4 w-4" />
                 </button>
               )}

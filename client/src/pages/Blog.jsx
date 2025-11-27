@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useBlog } from '../hooks/useBlog';
 import { AlertCircle, ArrowRight } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_URL = 'https://tecvins-acad-verc-server.vercel.app';
 
 const Blog = () => {
   useEffect(() => {
