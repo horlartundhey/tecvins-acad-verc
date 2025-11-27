@@ -140,7 +140,7 @@ const PhoneInput = ({
           <button
             type="button"
             onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-            className={`flex items-center py-2 border border-r-0 rounded-l-md bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+            className={`flex items-center px-2 py-2.5 border border-r-0 rounded-l-md bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
               error ? 'border-red-500' : 'border-gray-300'
             }`}
           >
@@ -171,7 +171,7 @@ const PhoneInput = ({
           onChange={handlePhoneChange}
           placeholder={placeholder}
           required={required}
-          className={`flex-1 px-3 py-2 h-[38px] w-full border border-l-0 rounded-r-md focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+          className={`flex-1 px-3 py-2.5 text-base w-full border border-l-0 rounded-r-md focus:outline-none focus:ring-2 focus:ring-teal-500 ${
             error ? 'border-red-500' : 'border-gray-300'
           }`}
         />

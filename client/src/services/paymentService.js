@@ -1,4 +1,5 @@
 // Payment service for handling donation transactions
+// Updated: Using production API endpoint
 import apiService from '../redux/services/apiService';
 
 const API_BASE_URL = 'https://tecvins-acad-verc-server.vercel.app/api';
