@@ -135,34 +135,46 @@ const PhoneInput = ({
 
   return (
     <div className={`relative ${className}`}>
-      <div className="flex">
-        <div className="relative">
+      <div className={`flex items-stretch rounded-md border ${error ? 'border-red-500' : 'border-gray-300'} focus-within:ring-2 focus-within:ring-teal-500 focus-within:border-teal-500 bg-white overflow-visible`}>
+        <div className="relative z-30">
           <button
             type="button"
-            onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-            className={`flex items-center px-2 py-2.5 border border-r-0 rounded-l-md bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-              error ? 'border-red-500' : 'border-gray-300'
-            }`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setShowCountryDropdown(!showCountryDropdown);
+            }}
+            className="h-full flex items-center px-2.5 sm:px-3 bg-white hover:bg-gray-50 focus:outline-none border-r border-gray-200 transition-colors cursor-pointer"
           >
-            <FlagIcon countryCode={selectedCountry.flagCode} className="w-4 h-4 mr-1" />
-            <span className="text-sm">{selectedCountry.code}</span>
-            <ChevronDown className="w-4 h-4 ml-1" />
+            <FlagIcon countryCode={selectedCountry.flagCode} className="w-4 h-4" />
+            <span className="text-sm text-gray-700 mx-1.5 sm:mx-2">{selectedCountry.code}</span>
+            <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500" />
           </button>
           {showCountryDropdown && (
-            <div className="absolute top-full left-0 bg-white border border-gray-300 rounded-md shadow-lg z-20 max-h-60 overflow-y-auto min-w-[280px]">
-              {countryCodes.map((country) => (
-                <button
-                  key={`${country.code}-${country.country}`}
-                  type="button"
-                  onClick={() => handleCountrySelect(country)}
-                  className="w-full flex items-center px-3 py-2 hover:bg-gray-100 text-left"
-                >
-                  <FlagIcon countryCode={country.flagCode} className="w-4 h-4 mr-2" />
-                  <span className="text-sm font-medium mr-2">{country.code}</span>
-                  <span className="text-sm text-gray-600">{country.country}</span>
-                </button>
-              ))}
-            </div>
+            <>
+              <div 
+                className="fixed inset-0 z-40" 
+                onClick={() => setShowCountryDropdown(false)}
+              />
+              <div className="absolute top-full left-0 mt-1 bg-white border border-gray-300 rounded-md shadow-xl z-50 max-h-60 overflow-y-auto min-w-[280px]">
+                {countryCodes.map((country) => (
+                  <button
+                    key={`${country.code}-${country.country}`}
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleCountrySelect(country);
+                    }}
+                    className="w-full flex items-center px-3 py-2 hover:bg-gray-50 text-left transition-colors"
+                  >
+                    <FlagIcon countryCode={country.flagCode} className="w-4 h-4 mr-2" />
+                    <span className="text-sm font-medium mr-2">{country.code}</span>
+                    <span className="text-sm text-gray-600">{country.country}</span>
+                  </button>
+                ))}
+              </div>
+            </>
           )}
         </div>
         <input
@@ -171,9 +183,7 @@ const PhoneInput = ({
           onChange={handlePhoneChange}
           placeholder={placeholder}
           required={required}
-          className={`flex-1 px-3 py-2.5 text-base w-full border border-l-0 rounded-r-md focus:outline-none focus:ring-2 focus:ring-teal-500 ${
-            error ? 'border-red-500' : 'border-gray-300'
-          }`}
+          className="flex-1 px-3 py-2.5 text-base bg-white focus:outline-none min-w-0"
         />
       </div>
       {error && (

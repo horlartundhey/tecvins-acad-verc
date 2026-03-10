@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { 
     LayoutDashboard, 
     Users, 
@@ -12,7 +14,8 @@ import {
     LogOut,
     Menu,
     X,
-    Briefcase as BriefcaseIcon
+    Briefcase as BriefcaseIcon,
+    Star
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -78,16 +81,16 @@ const AdminLayout = ({ children }) => {
             allowedRoles: ['admin', 'editor'] 
         },
         { 
-            path: '/admin/cohort-settings', 
-            name: 'Cohort Settings', 
-            icon: <FileEdit className="w-5 h-5" />,
-            allowedRoles: ['admin'] 
-        },
-        { 
             path: '/admin/cohort-management',
             name: 'Cohort Management',             
             icon: <FileEdit className="w-5 h-5" />,
             allowedRoles: ['admin'] 
+        },
+        { 
+            path: '/admin/testimonials',
+            name: 'Testimonials',             
+            icon: <Star className="w-5 h-5" />,
+            allowedRoles: ['admin', 'editor'] 
         }
     ];
 
@@ -102,6 +105,7 @@ const AdminLayout = ({ children }) => {
 
     return (
         <div className="min-h-screen bg-gray-50">
+            <ToastContainer position="top-right" autoClose={3000} />
             {/* Mobile Sidebar Toggle */}
             <button 
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}

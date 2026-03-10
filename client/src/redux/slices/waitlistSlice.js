@@ -8,17 +8,11 @@ export const submitWaitlist = createAsyncThunk(
             console.log('=== REDUX WAITLIST SUBMISSION ===');
             console.log('Original data:', JSON.stringify(data, null, 2));
 
-            // Transform cohortId to preferredCohort
-            const transformedData = {
-                ...data,
-                preferredCohort: data.cohortId
-            };
-            delete transformedData.cohortId;
-
-            console.log('Transformed data:', JSON.stringify(transformedData, null, 2));
+            // Hook already maps cohortId → preferredCohort before dispatching;
+            // just pass data through directly.
             console.log('Making API call to /waitlist...');
             
-            const response = await api.post('/waitlist', transformedData);
+            const response = await api.post('/waitlist', data);
             
             console.log('=== REDUX API RESPONSE ===');
             console.log('Full response:', JSON.stringify(response, null, 2));

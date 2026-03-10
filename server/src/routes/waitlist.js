@@ -10,7 +10,8 @@ const {
 } = require('../controllers/waitlistController');
 
 // Public routes
-router.post('/submit', express.json(), submitWaitlist);
+router.post('/', express.json(), submitWaitlist);       // POST /api/waitlist
+router.post('/submit', express.json(), submitWaitlist); // POST /api/waitlist/submit (legacy)
 
 // Protected routes (Admin only)
 router.get('/', protect, checkRole(['admin']), getWaitlistEntries);

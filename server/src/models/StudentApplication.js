@@ -29,9 +29,14 @@ const studentApplicationSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    cohortId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Cohort',
+        default: null
+    },
     reason: {
         type: String,
-        required: true
+        default: ''
     },
     status: {
         type: String,

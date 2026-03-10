@@ -5,7 +5,7 @@ import WaitlistModal from "../components/WaitlistModal";
 import { HiArrowLongDown } from "react-icons/hi2";
 import { useStudentApplications } from "../hooks/useStudentApplications";
 import { useWaitlist } from "../hooks/useWaitlist";
-import { useCohort } from "../hooks/useCohort";
+import api from "../services/api";
 
 const Enrollment = () => {
   const [expandedStage, setExpandedStage] = useState(null);
@@ -25,26 +25,25 @@ const Enrollment = () => {
 
   const { submitApplication } = useStudentApplications();
   const { submitWaitlist } = useWaitlist();
-  const { getCohorts } = useCohort();
   const [activeCohort, setActiveCohort] = useState(null);
   useEffect(() => {
     const fetchActiveCohort = async () => {
       try {
-        const cohorts = await getCohorts({ status: 'upcoming' });
-        const active = cohorts.find(cohort => cohort.isActive);
+        // Direct API call — no Redux cache, always fresh
+        const res = await api.get('/cohorts', { params: { isActive: 'true' } });
+        const cohorts = res.data?.data || [];
+        const active = cohorts[0] || null;
         if (active) {
           setActiveCohort(active);
           setFormType(active.isWaitlistEnabled ? 'waitlist' : 'application');
-          // Set the cohort ID in formData when active cohort is found
           setFormData(prev => ({ ...prev, cohortId: active._id }));
         }
       } catch (error) {
         console.error('Error fetching active cohort:', error);
       }
     };
-    
     fetchActiveCohort();
-  }, [getCohorts]);
+  }, []);
 
   useEffect(() => {
     window.scrollTo({
@@ -65,73 +64,32 @@ const Enrollment = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };  const handleSubmit = async (payload) => {
-    try {
-      console.log('=== ENROLLMENT HANDLESUBMIT DEBUG ===');
-      console.log('Form type:', formType);
-      console.log('Payload received:', JSON.stringify(payload, null, 2));
-      console.log('Current formData state:', JSON.stringify(formData, null, 2));
-      
-      let response;
-      if (formType === 'waitlist') {
-        console.log('=== CALLING SUBMITWAITLIST ===');
-        response = await submitWaitlist(payload);
-        console.log('=== SUBMITWAITLIST RESPONSE ===', JSON.stringify(response, null, 2));
-      } else {
-        console.log('=== CALLING SUBMITAPPLICATION ===');
-        response = await submitApplication(payload);
-        console.log('=== SUBMITAPPLICATION RESPONSE ===', JSON.stringify(response, null, 2));
-      }
-
-      if (!response) {
-        console.error('=== SUBMISSION FAILED - NO RESPONSE ===');
-        throw new Error('Failed to submit application');
-      }
-
-      if (!response.success) {
-        console.error('=== SUBMISSION FAILED - RESPONSE SUCCESS FALSE ===');
-        console.error('Response:', JSON.stringify(response, null, 2));
-        throw new Error(response.error || 'Failed to submit application');
-      }
-
-      console.log('=== SUBMISSION SUCCESS ===');
-      console.log('Setting modal step to success');
-      // Success!
-      setModalStep("success");
-      
-      // Reset form data
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
-        courseOfInterest: "",
-        country: "Nigeria",
-        timeZone: "",
-        reason: "",
-        cohortId: ""
-      });
-      
-      console.log('=== FORM RESET COMPLETE ===');
-      
-      // Save successful submission
-      localStorage.setItem('applicationSubmitted', 'true');
-      
-      // Redirect after showing success message
-      const timer = setTimeout(() => {
-        window.location.href = "/courses";
-      }, 3000);
-      
-      return () => clearTimeout(timer);
-      
-    } catch (error) {
-      console.error('=== ENROLLMENT HANDLESUBMIT ERROR ===');
-      console.error('Error object:', error);
-      console.error('Error message:', error.message);
-      console.error('Error stack:', error.stack);
-      console.error('Full error:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
-      // Re-throw the error to be handled by the calling code
-      throw error;
+    if (formType === 'waitlist') {
+      await submitWaitlist(payload);
+    } else {
+      // Map frontend field names to backend model field names
+      const applicationPayload = { ...payload };
+      applicationPayload.course = payload.courseOfInterest;
+      applicationPayload.reason = payload.additionalInfo || payload.reason || '';
+      delete applicationPayload.courseOfInterest;
+      delete applicationPayload.courseTrack;
+      delete applicationPayload.additionalInfo;
+      await submitApplication(applicationPayload);
     }
+    // If we reach here, submission succeeded (throws on error)
+    setModalStep("success");
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      courseOfInterest: "",
+      country: "Nigeria",
+      timeZone: "",
+      reason: "",
+      cohortId: activeCohort?._id || ""
+    });
+    localStorage.setItem('applicationSubmitted', 'true');
   };
 
   const timelineStages = [
@@ -499,14 +457,13 @@ const Enrollment = () => {
           />
         ) : (
           <ApplicationModal
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-            modalStep={modalStep}
-            setModalStep={setModalStep}
+            isOpen={isModalOpen}
+            onClose={() => { setIsModalOpen(false); setModalStep("notice"); }}
             formData={formData}
             handleInputChange={handleInputChange}
-            handleSubmit={handleSubmit}
+            onSubmit={handleSubmit}
             formType={formType}
+            availableCourses={activeCohort?.courses || []}
           />
         )
       )}

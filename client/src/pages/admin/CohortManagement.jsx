@@ -34,14 +34,17 @@ const CohortManagement = () => {
         if (successMessage) {
             toast.success(successMessage);
             clearCohortMessages();
-            setShowModal(false);
-            resetForm();
+            // Only close modal and reset form if the modal was actually open
+            if (showModal) {
+                setShowModal(false);
+                resetForm();
+            }
         }
         if (error) {
             toast.error(error);
             clearCohortMessages();
         }
-    }, [successMessage, error, clearCohortMessages]);
+    }, [successMessage, error, clearCohortMessages, showModal]);
 
     const resetForm = () => {
         setFormData({
@@ -85,13 +88,11 @@ const CohortManagement = () => {
         setShowModal(true);
     };    const toggleWaitlist = async (cohort) => {
         try {
-            const response = await updateCohortData(cohort._id, {
+            await updateCohortData(cohort._id, {
                 isWaitlistEnabled: !cohort.isWaitlistEnabled
             });
-            if (response) {
-                toast.success(`Waitlist ${!cohort.isWaitlistEnabled ? 'enabled' : 'disabled'} successfully`);
-                getCohorts(); // Refresh the cohort list
-            }
+            // Redux updateCohort.fulfilled already updates state and sets successMessage
+            // which the useEffect below handles — no need for a duplicate toast or refetch
         } catch (error) {
             toast.error('Failed to update waitlist status');
             console.error('Error updating waitlist status:', error);
@@ -131,6 +132,9 @@ const CohortManagement = () => {
                 </div>
             ) : (
                 <div className="overflow-x-auto">
+                    <div className="mb-3 bg-blue-50 border border-blue-200 text-blue-800 text-sm px-4 py-2 rounded-lg">
+                        ℹ️ Only the <strong>Active</strong> cohort's waitlist toggle affects the enrollment page button.
+                    </div>
                     <table className="min-w-full bg-white shadow-md rounded">
                         <thead className="bg-gray-50">
                             <tr>
@@ -142,10 +146,16 @@ const CohortManagement = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {cohorts?.map((cohort) => (
-                                <tr key={cohort._id}>
+                            {/* Sort: active cohorts first */}
+                            {[...(cohorts || [])].sort((a, b) => (b.isActive ? 1 : 0) - (a.isActive ? 1 : 0)).map((cohort) => (
+                                <tr key={cohort._id} className={cohort.isActive ? 'bg-teal-50 border-l-4 border-l-teal-500' : ''}>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="text-sm font-medium text-gray-900">{cohort.title}</div>
+                                        <div className="flex items-center gap-2">
+                                            <div className="text-sm font-medium text-gray-900">{cohort.title}</div>
+                                            {cohort.isActive && (
+                                                <span className="text-xs bg-teal-600 text-white px-2 py-0.5 rounded-full font-medium">LIVE</span>
+                                            )}
+                                        </div>
                                         <div className="text-sm text-gray-500">
                                             {new Date(cohort.startDate).toLocaleDateString()} - {new Date(cohort.endDate).toLocaleDateString()}
                                         </div>
@@ -160,17 +170,21 @@ const CohortManagement = () => {
                                         {cohort.currentEnrollment} / {cohort.maxStudents}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
-                                        <button
-                                            onClick={() => toggleWaitlist(cohort)}
-                                            className={`inline-flex items-center gap-1 px-2 py-1 rounded ${
-                                                cohort.isWaitlistEnabled
-                                                    ? 'bg-yellow-100 text-yellow-800'
-                                                    : 'bg-gray-100 text-gray-800'
-                                            }`}
-                                        >
-                                            {cohort.isWaitlistEnabled ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
-                                            {cohort.isWaitlistEnabled ? 'Enabled' : 'Disabled'}
-                                        </button>
+                                        {cohort.isActive ? (
+                                            <button
+                                                onClick={() => toggleWaitlist(cohort)}
+                                                className={`inline-flex items-center gap-1 px-2 py-1 rounded ${
+                                                    cohort.isWaitlistEnabled
+                                                        ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
+                                                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                                                }`}
+                                            >
+                                                {cohort.isWaitlistEnabled ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
+                                                {cohort.isWaitlistEnabled ? 'Enabled' : 'Disabled'}
+                                            </button>
+                                        ) : (
+                                            <span className="text-xs text-gray-400 italic">Activate cohort first</span>
+                                        )}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex gap-2">
                                         <button

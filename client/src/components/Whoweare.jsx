@@ -15,7 +15,7 @@ const Whoweare = () => {
                 <div className="absolute left-10 bottom-10 w-64 h-64 bg-teal-300 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob animation-delay-2000"></div>
                 
                 <div className="relative z-10 text-center md:text-left">
-                  <h2 className="text-2xl md:text-4xl font-bold text-[#0F2624] mb-4 md:mb-6">Who Are We?</h2>
+                  <h2 className="text-2xl md:text-4xl font-bold text-[#0F2624] mb-4 md:mb-6">Get to Know Us</h2>
 
                   <div className="space-y-3 md:space-y-4 text-[#5E5E5E] text-sm md:text-lg">
                     <p>

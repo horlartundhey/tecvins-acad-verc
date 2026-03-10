@@ -10,7 +10,7 @@ const Journey = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column - Humble Beginnings */}
         <div className="bg-[#FFE6E4] border-8 border-[#FFDBD8] p-4 rounded-2xl">
-          <p className="text-[#1E1E1E] text-xl leading-relaxed">
+          <p className="text-[#1E1E1E] text-base lg:text-lg leading-relaxed">
             Our humble beginnings can be traced back to 2007, an interesting time in the global digital transformation
             journey. A quick throwback to that period brings back memories of consumer led demands for more convenient
             and connected societies, intense rivalry between companies, innovative agility as the main strategy to fend
@@ -31,7 +31,7 @@ const Journey = () => {
 
         {/* Right Column - Business Agility */}
         <div className="bg-[#FFE6E4] border-8 border-[#FFDBD8] p-4 rounded-2xl">
-          <p className="text-[#1E1E1E] text-xl leading-relaxed">
+          <p className="text-[#1E1E1E] text-base lg:text-lg leading-relaxed">
             For most businesses, being agile meant focusing on key priorities like R&D as well as attracting and
             retaining a highly skilled tech workforce. This was such a bright strategy, until HR departments had to
             start searching for tech talents like they were trying to find needles in haystacks. The tech skill gap was
@@ -45,7 +45,7 @@ const Journey = () => {
         <h2 className="text-2xl lg:text-3xl font-bold text-[#B95F45] mb-6">
           Tecvinson: Unlocking Career Possibilities in Tech for Everyone
         </h2>
-        <p className="text-gray-700 leading-relaxed">
+        <p className="text-gray-700 text-base lg:text-lg leading-relaxed">
           It was during this transformative period that Vincent Oke began training people, helping them acquire tech
           skills and establishing the foundation for what would become Tecvinson Academy. Despite undergoing various
           phases of growth and change, Tecvinson's mission has remained clear: unlocking career possibilities in tech

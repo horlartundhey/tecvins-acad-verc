@@ -19,16 +19,16 @@ export const useStudentApplications = () => {
             
             return result;
         } catch (error) {
-            // Handle different error formats
-            if (error.response?.data?.message) {
+            // error may be an axios error, a rejectWithValue string, or a plain Error
+            if (error?.response?.data?.message) {
                 throw new Error(error.response.data.message);
             }
-            
-            if (error.message && error.message !== 'Failed to submit application') {
+            if (typeof error === 'string') {
+                throw new Error(error);
+            }
+            if (error?.message) {
                 throw new Error(error.message);
             }
-            
-            // Default error message
             throw new Error('Failed to submit application. Please try again later.');
         }
     };

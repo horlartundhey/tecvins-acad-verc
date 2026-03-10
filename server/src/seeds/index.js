@@ -7,6 +7,7 @@ const seedContacts = require('./contactSeeder');
 const seedBlogs = require('./blogSeeder');
 const seedPartners = require('./partnerSeeder');
 const seedNewsletters = require('./newsletterSeeder');
+const seedTestimonials = require('./testimonialSeeder');
 
 const runSeeders = async () => {
     try {
@@ -35,6 +36,7 @@ const runSeeders = async () => {
         await seedContacts();
         await seedPartners();
         await seedNewsletters();
+        await seedTestimonials();
 
         console.log('Database seeding completed successfully!');
         

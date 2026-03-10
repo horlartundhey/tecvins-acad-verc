@@ -1,4 +1,5 @@
 const StudentApplication = require('../models/StudentApplication');
+const Cohort = require('../models/Cohort');
 
 // @desc    Submit new student application
 // @route   POST /api/students/apply
@@ -6,7 +7,7 @@ const StudentApplication = require('../models/StudentApplication');
 const submitApplication = async (req, res) => {
     try {
         // Validate required fields
-        const requiredFields = ['firstName', 'lastName', 'email', 'phoneNumber', 'course', 'country', 'timeZone', 'reason'];
+        const requiredFields = ['firstName', 'lastName', 'email', 'phoneNumber', 'course', 'country', 'timeZone'];
         const missingFields = requiredFields.filter(field => !req.body[field]);
         
         if (missingFields.length > 0) {
@@ -106,9 +107,26 @@ const updateApplicationStatus = async (req, res) => {
             return res.status(404).json({ message: 'Application not found' });
         }
 
+        const previousStatus = application.status;
         application.status = status;
         const updatedApplication = await application.save();
-        
+
+        // Update cohort enrollment count when approval status changes
+        if (application.cohortId) {
+            if (status === 'approved' && previousStatus !== 'approved') {
+                // New approval — increment enrollment
+                await Cohort.findByIdAndUpdate(application.cohortId, {
+                    $inc: { currentEnrollment: 1 }
+                });
+            } else if (previousStatus === 'approved' && status !== 'approved') {
+                // Revoked approval — decrement enrollment (never go below 0)
+                await Cohort.findByIdAndUpdate(application.cohortId, {
+                    $inc: { currentEnrollment: -1 },
+                    $max: { currentEnrollment: 0 }
+                });
+            }
+        }
+
         res.json(updatedApplication);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });

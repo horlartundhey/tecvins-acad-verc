@@ -72,7 +72,7 @@ const Whoweare2 = () => {
       
       <div className="space-y-4 text-gray-700 text-base md:text-lg">
         <p>
-          To diversify the tech workforce by delivering tailored, accessible education and ongoing support to learners from underrepresented backgrounds, increasing their representation across all levels of the industry.
+          To see a truly inclusive global tech workforce where talent from all backgrounds has equal access to opportunity, growth, and leadership.
         </p>
       </div>
     </div>
@@ -124,8 +124,7 @@ const Whoweare2 = () => {
     
                     <div className="space-y-4 text-gray-700 text-base md:text-lg">
                       <p>
-                      Tecvinson Academy is a Swedish-based global IT education platform revolutionizing tech education. We focus on project-based learning, industry mentorship, and real-world assignments tailored for learners from underrepresented backgrounds.
-Students work in small groups, guided by experienced instructors, to gain practical skills and confidently transition into tech roles.
+                      To create equitable pathways into technology through practical education, mentorship, and real-world experience.
                       </p>
     
                      

@@ -84,7 +84,14 @@ const countryList = [
   { value: "Other", label: "Other", flag: "" }
 ];
 
-const ApplicationModal = ({ isOpen, onClose, formType, formData, handleInputChange, onSubmit }) => {
+const COURSE_LABELS = {
+  'product-management': 'Product Management',
+  'product-design': 'Product Design',
+  'development': 'Development',
+  'job-readiness': 'Job Readiness',
+};
+
+const ApplicationModal = ({ isOpen, onClose, formType, formData, handleInputChange, onSubmit, availableCourses = [] }) => {
   const [modalStep, setModalStep] = useState("notice");
   const [isChecked, setIsChecked] = useState(false);
 
@@ -109,9 +116,11 @@ const ApplicationModal = ({ isOpen, onClose, formType, formData, handleInputChan
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = await onSubmit(e);
-    if (success) {
+    try {
+      await onSubmit(formData);
       setModalStep("success");
+    } catch (error) {
+      console.error('Application submission error:', error);
     }
   };
 
@@ -374,16 +383,18 @@ const ApplicationModal = ({ isOpen, onClose, formType, formData, handleInputChan
                     Course Track <span className="text-red-500">*</span>
                   </label>
                   <select
-                    name="courseTrack"
-                    value={formData.courseTrack || ''}
+                    name="courseOfInterest"
+                    value={formData.courseOfInterest || ''}
                     onChange={handleInputChange}
                     className="block w-full rounded-md border border-gray-200 p-3 text-sm focus:border-teal-500 focus:ring-0"
                     required
                   >
                     <option value="">Select a course track</option>
-                    <option value="product-management">Product Management</option>
-                    <option value="creative-design">Creative Design</option>
-                    <option value="product-development">Product Development</option>
+                    {availableCourses.map((course) => (
+                      <option key={course} value={course}>
+                        {COURSE_LABELS[course] || course}
+                      </option>
+                    ))}
                   </select>
                 </div>
 

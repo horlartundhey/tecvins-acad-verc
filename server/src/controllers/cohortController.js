@@ -35,11 +35,16 @@ const createCohort = async (req, res) => {
 // @access  Public
 const getCohorts = async (req, res) => {
     try {
-        const { status } = req.query;
+        const { status, isActive } = req.query;
         let query = {};
         
         if (status) {
             query.status = status;
+        }
+        
+        // Support filtering by isActive ("true" / "false" as query string)
+        if (isActive !== undefined) {
+            query.isActive = isActive === 'true';
         }
 
         const cohorts = await Cohort.find(query).sort({ startDate: 1 });

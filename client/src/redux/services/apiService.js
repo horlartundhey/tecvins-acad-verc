@@ -3,7 +3,19 @@ import axios from 'axios';
 // Global flag to prevent API calls after auth failure
 let isAuthenticating = false;
 
-const BASE_URL = 'https://tecvins-acad-verc-server.vercel.app/api';
+// Smart URL detection — matches same logic as api.js
+const getApiUrl = () => {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return 'http://localhost:5000/api';
+    }
+    if (hostname.includes('tecvinsonacademy.com')) {
+        return 'https://tecvins-acad-verc-server.vercel.app/api';
+    }
+    return 'https://tecvins-acad-verc-server.vercel.app/api';
+};
+
+const BASE_URL = getApiUrl();
 
 const apiService = axios.create({
     baseURL: BASE_URL,

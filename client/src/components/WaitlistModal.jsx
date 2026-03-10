@@ -48,31 +48,21 @@ const courseCategories = [
   }
 ];
 
-const WaitlistModal = ({ isModalOpen, setIsModalOpen }) => {
-  const [modalStep, setModalStep] = useState("notice");
+const WaitlistModal = ({ 
+  isModalOpen, 
+  setIsModalOpen, 
+  modalStep, 
+  setModalStep, 
+  formData, 
+  handleInputChange, 
+  handleSubmit 
+}) => {
   const [isChecked, setIsChecked] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phoneNumber: '',
-    country: '',
-    timezone: '',
-    course: ''
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
 
   // Handle phone input changes
   const handlePhoneChange = (fullPhoneNumber) => {
-    setFormData(prev => ({
-      ...prev,
-      phoneNumber: fullPhoneNumber
-    }));
+    handleInputChange({ target: { name: 'phoneNumber', value: fullPhoneNumber } });
   };
 
   const handleCheckboxChange = (e) => {
@@ -89,19 +79,42 @@ const WaitlistModal = ({ isModalOpen, setIsModalOpen }) => {
     setModalStep("notice");
   };
 
+  const handleClose = () => {
+    setIsModalOpen(false);
+    setModalStep("notice");
+    setIsChecked(false);
+  };
+
   const handleCleanSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
-      // Here you would submit to your API
-      console.log('Submitting waitlist form:', formData);
+      console.log('=== WaitlistModal Submit ===');
+      console.log('Form data before submit:', formData);
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Prepare the payload with correct field names
+      const payload = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber,
+        country: formData.country,
+        timeZone: formData.timeZone, // Use timeZone (not timezone)
+        course: formData.courseOfInterest, // Map courseOfInterest to course
+        reason: formData.reason,
+        cohortId: formData.cohortId // Will be transformed to preferredCohort in the hook
+      };
       
-      setModalStep("success");
+      console.log('Payload to submit:', payload);
+      
+      // Call the parent's handleSubmit function
+      await handleSubmit(payload);
+      
+      // If successful, parent will set modalStep to "success"
+      console.log('=== WaitlistModal Submit Success ===');
     } catch (error) {
+      console.error('=== WaitlistModal Submit Error ===');
       console.error('Failed to submit waitlist:', error);
       alert('Failed to join waitlist. Please try again.');
     } finally {
@@ -117,7 +130,7 @@ const WaitlistModal = ({ isModalOpen, setIsModalOpen }) => {
         {/* Fixed Header */}
         <div className="p-8 border-b bg-white relative">
           <button
-            onClick={() => setIsModalOpen(false)}
+            onClick={handleClose}
             className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
           >
             <X size={24} />
@@ -343,8 +356,8 @@ const WaitlistModal = ({ isModalOpen, setIsModalOpen }) => {
                       Time Zone <span className="text-red-500">*</span>
                     </label>
                     <select
-                      name="timezone"
-                      value={formData.timezone}
+                      name="timeZone"
+                      value={formData.timeZone}
                       onChange={handleInputChange}
                       className="block w-full rounded-md border border-gray-200 p-3 text-sm focus:border-teal-500 focus:ring-0"
                       required
@@ -365,8 +378,8 @@ const WaitlistModal = ({ isModalOpen, setIsModalOpen }) => {
                     Course Interest <span className="text-red-500">*</span>
                   </label>
                   <select
-                    name="course"
-                    value={formData.course}
+                    name="courseOfInterest"
+                    value={formData.courseOfInterest}
                     onChange={handleInputChange}
                     className="block w-full rounded-md border border-gray-200 p-3 text-sm focus:border-teal-500 focus:ring-0"
                     required
@@ -382,6 +395,21 @@ const WaitlistModal = ({ isModalOpen, setIsModalOpen }) => {
                       </optgroup>
                     ))}
                   </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Why do you want to join this program? <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    name="reason"
+                    value={formData.reason}
+                    onChange={handleInputChange}
+                    placeholder="Tell us why you're interested in this program..."
+                    className="block w-full rounded-md border border-gray-200 p-3 text-sm placeholder-gray-400 focus:border-teal-500 focus:ring-0"
+                    rows="4"
+                    required
+                  />
                 </div>
 
                 <button
@@ -411,7 +439,7 @@ const WaitlistModal = ({ isModalOpen, setIsModalOpen }) => {
                 Thank you for joining the waitlist! We'll notify you as soon as a spot becomes available. Keep an eye on your email for updates! 🎉
               </p>
               <button
-                onClick={() => setIsModalOpen(false)}
+                onClick={handleClose}
                 className="bg-[#3B9790] hover:bg-teal-600 text-white font-medium py-2 px-4 rounded-lg"
               >
                 Got it!
