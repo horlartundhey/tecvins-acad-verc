@@ -3,7 +3,7 @@ import { login, register, logout } from '../redux/slices/authSlice';
 
 export const useAuth = () => {
     const dispatch = useDispatch();
-    const { user, isAuthenticated, isLoading, error } = useSelector((state) => state.auth);
+    const { user, isAuthenticated, isInitializing, isLoading, error } = useSelector((state) => state.auth);
 
     const handleLogin = async (credentials) => {
         try {
@@ -30,6 +30,7 @@ export const useAuth = () => {
     return {
         user,
         isAuthenticated,
+        isInitializing,
         isLoading,
         error,
         login: handleLogin,

@@ -1,4 +1,3 @@
-import { ArrowRight } from "lucide-react";
 import { ChevronRight } from "lucide-react";
 import { HiArrowLongRight, HiCodeBracket, HiOutlineBriefcase } from "react-icons/hi2";
 import Faq from "../components/Faq";
@@ -8,47 +7,34 @@ import { useEffect } from "react";
 import Excellence from "../components/Excellence";
 
 const CourseCard = ({ iconBg, icon, image, title, description, overlayColor, courseLink }) => {
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  }, []);
-
   return (
     <Link to={courseLink} className="block">
       <div className="bg-white rounded-lg shadow-sm overflow-hidden group hover:shadow-md transition-shadow duration-300 flex flex-col h-full">
         <div className="relative overflow-hidden flex-grow-0">
-          {/* Main course image */}
           <img
             src={image || "/placeholder.svg"}
             alt={`${title} course`}
-            className="w-full h-40 object-cover transition-transform duration-500 group-hover:scale-110"
+            className="w-full h-44 sm:h-48 object-cover transition-transform duration-500 group-hover:scale-110"
           />
-          {/* Color overlay */}
           <div
             className={`absolute inset-0 ${overlayColor} opacity-70 mix-blend-multiply transition-opacity duration-300 group-hover:opacity-100`}
           ></div>
-          {/* Icon overlay */}
           <div className="absolute top-4 left-4 transition-all duration-500 ease-in-out group-hover:top-1/2 group-hover:left-1/2 group-hover:transform group-hover:-translate-x-1/2 group-hover:-translate-y-1/2">
-          <div className={`${iconBg} w-10 h-10 sm:group-hover:w-20 sm:group-hover:h-20 rounded-full flex items-center justify-center shadow-md transition-all duration-500 ease-in-out`}>
-            <div className="w-6 h-6 sm:group-hover:scale-[2.5] transition-transform duration-500 ease-in-out">
-              {icon}
+            <div className={`${iconBg} w-10 h-10 sm:group-hover:w-20 sm:group-hover:h-20 rounded-full flex items-center justify-center shadow-md transition-all duration-500 ease-in-out`}>
+              <div className="w-6 h-6 sm:group-hover:scale-[2.5] transition-transform duration-500 ease-in-out">
+                {icon}
+              </div>
             </div>
-          </div>
           </div>
         </div>
         <div className="p-4 sm:p-5 flex flex-col flex-grow">
           <h3 className="text-base sm:text-lg font-semibold mb-2 text-gray-800">{title}</h3>
-          <p className="text-gray-600 text-sm sm:text-base mb-4 pb-10 flex-grow">{description}</p>
+          <p className="text-gray-600 text-sm sm:text-base mb-4 flex-grow">{description}</p>
           <div className="mt-auto pt-2">
-            <Link 
-              to={courseLink} 
-              className="text-teal-600 font-semibold text-sm flex items-center group"
-            >
+            <span className="text-teal-600 font-semibold text-sm flex items-center group">
               Explore Courses
               <ChevronRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            </span>
           </div>
         </div>
       </div>
@@ -57,6 +43,10 @@ const CourseCard = ({ iconBg, icon, image, title, description, overlayColor, cou
 };
 
 const Courses = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
   const courseCategories = [
     {
       iconBg: "bg-white",
@@ -73,39 +63,41 @@ const Courses = () => {
     },
     {
       iconBg: "bg-white",
-      icon: <FiPenTool className="text-[#FF6F61] w-6 h-6"  />,
+      icon: <FiPenTool className="text-[#FF6F61] w-6 h-6" />,
       image: "https://res.cloudinary.com/kamisama/image/upload/v1730728313/image_s5r5j7.png",
       title: "Creative Design",
       description: "Courses focused on user experience, user interface design, and creative design tools.",
       overlayColor: "bg-red-400",
-      courseLink: "/creative-design" // Add course link
+      courseLink: "/creative-design"
     },
     {
       iconBg: "bg-white",
-      icon: <HiCodeBracket className="w-6 h-6 text-[#807CFF]"  />,
+      icon: <HiCodeBracket className="w-6 h-6 text-[#807CFF]" />,
       image: `https://res.cloudinary.com/kamisama/image/upload/v1730727270/image_rycdsz.png`,
       title: "Product Development",
       description: "Courses focusing on coding, software development, and technical tools.",
       overlayColor: "bg-purple-400",
-      courseLink: "/product-development" // Add course link
+      courseLink: "/product-development"
     },
     {
       iconBg: "bg-white",
-      icon: <HiOutlineBriefcase className="w-6 h-6 text-[#DEA600]"/>,
+      icon: <HiOutlineBriefcase className="w-6 h-6 text-[#DEA600]" />,
       image: "https://res.cloudinary.com/kamisama/image/upload/t_crop/v1730728323/image_tp2hyp.png",
       title: "Job Readiness",
       description: "Courses on CV writing, interview preparation, and workplace communication skills.",
       overlayColor: "bg-yellow-400",
-      courseLink: "/job-readiness" // Add course link
+      courseLink: "/job-readiness"
     },
   ];
 
   return (
     <div className="bg-gray-50 py-8 sm:py-12 w-full">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 sm:mb-10">Explore Our Free IT Courses</h2>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 sm:mb-10">
+          Explore Our Free IT Courses
+        </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {courseCategories.map((course, index) => (
             <CourseCard
               key={index}
@@ -120,24 +112,27 @@ const Courses = () => {
           ))}
         </div>
 
-        <div className="mt-6 sm:mt-12 flex flex-col sm:flex-row items-center justify-between font-semibold">
-          <div className="flex items-center mb-4 sm:mb-0">
-            <p className="text-xl sm:text-2xl font-medium text-[#1E1E1E] mr-2">Not sure which course is best for you?</p>
-            <HiArrowLongRight className="w-8 sm:w-10 h-8 sm:h-10 text-[#1E1E1E]" />
+        <div className="mt-8 sm:mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-semibold">
+          <div className="flex items-center gap-2">
+            <p className="text-base sm:text-xl lg:text-2xl font-medium text-[#1E1E1E]">
+              Not sure which course is best for you?
+            </p>
+            <HiArrowLongRight className="w-6 sm:w-8 lg:w-10 h-6 sm:h-8 lg:h-10 text-[#1E1E1E] flex-shrink-0" />
           </div>
           <Link
             to="/contact"
-            className="bg-[#FAFAFA] text-teal-600 border border-[#C8C8C8] hover:bg-teal-50 px-4 sm:px-5 py-[1.3rem] rounded-xl flex items-center transition-colors font-semibold"
+            className="w-full sm:w-auto bg-[#FAFAFA] text-teal-600 border border-[#C8C8C8] hover:bg-teal-50 px-5 py-4 rounded-xl flex items-center justify-center sm:justify-start transition-colors font-semibold"
           >
             Reach Out to Us
             <HiArrowLongRight className="ml-2 w-5 sm:w-6 h-5 sm:h-6 font-semibold" />
           </Link>
         </div>
-      </div>      
-      <div className="my-8 sm:my-14">
+      </div>
+
+      <div className="mt-10 sm:mt-14">
         <Faq />
       </div>
-      <div className="my-8 sm:my-14 ">
+      <div className="mt-8 sm:mt-14">
         <Excellence />
       </div>
     </div>

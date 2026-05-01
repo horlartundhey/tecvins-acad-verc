@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { PlusCircle, Calendar, Edit2, Trash2, ToggleLeft, ToggleRight, PauseCircle, PlayCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { useCohort } from '../../hooks/useCohort';
+import apiService from '../../redux/services/apiService';
 
 const CohortManagement = () => {
     const [showModal, setShowModal] = useState(false);
+    const [globalWaitlistEnabled, setGlobalWaitlistEnabled] = useState(false);
+    const [globalWaitlistLoading, setGlobalWaitlistLoading] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
         startDate: '',
@@ -26,9 +29,29 @@ const CohortManagement = () => {
         deleteCohort,
         clearCohortMessages,
         toggleCohortActivation
-    } = useCohort();useEffect(() => {
+    } = useCohort();
+
+    useEffect(() => {
         getCohorts();
+        // Fetch initial global waitlist state
+        apiService.get('/settings')
+            .then(res => setGlobalWaitlistEnabled(res.data?.data?.isGlobalWaitlistEnabled || false))
+            .catch(() => {});
     }, [getCohorts]);
+
+    const toggleGlobalWaitlist = async () => {
+        setGlobalWaitlistLoading(true);
+        try {
+            const newValue = !globalWaitlistEnabled;
+            await apiService.patch('/settings', { isGlobalWaitlistEnabled: newValue });
+            setGlobalWaitlistEnabled(newValue);
+            toast.success(`Global waitlist ${newValue ? 'enabled' : 'disabled'}`);
+        } catch (err) {
+            toast.error('Failed to update global waitlist: ' + (err.response?.data?.message || err.message));
+        } finally {
+            setGlobalWaitlistLoading(false);
+        }
+    };
 
     useEffect(() => {
         if (successMessage) {
@@ -132,6 +155,25 @@ const CohortManagement = () => {
                 </div>
             ) : (
                 <div className="overflow-x-auto">
+                    {/* Global Waitlist Setting */}
+                    <div className="mb-4 flex items-center justify-between bg-white border border-gray-200 rounded-lg px-5 py-4 shadow-sm">
+                        <div>
+                            <p className="font-semibold text-gray-800 text-sm">Global Waitlist</p>
+                            <p className="text-xs text-gray-500 mt-0.5">When no cohort is active, visitors can still join a waitlist.</p>
+                        </div>
+                        <button
+                            onClick={toggleGlobalWaitlist}
+                            disabled={globalWaitlistLoading}
+                            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
+                                globalWaitlistEnabled
+                                    ? 'bg-teal-100 text-teal-800 hover:bg-teal-200'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
+                        >
+                            {globalWaitlistEnabled ? <ToggleRight size={18} /> : <ToggleLeft size={18} />}
+                            {globalWaitlistEnabled ? 'Enabled' : 'Disabled'}
+                        </button>
+                    </div>
                     <div className="mb-3 bg-blue-50 border border-blue-200 text-blue-800 text-sm px-4 py-2 rounded-lg">
                         ℹ️ Only the <strong>Active</strong> cohort's waitlist toggle affects the enrollment page button.
                     </div>

@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { clearError } from '../redux/slices/authSlice';
 
 const Login = () => {
     const navigate = useNavigate();
-    const { login, isAuthenticated, error, user } = useAuth();
+    const dispatch = useDispatch();
+    const { login, isAuthenticated, isInitializing, error, user } = useAuth();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
     const [isLoading, setIsLoading] = useState(false);
 
+    // Clear any stale error from a previous session
     useEffect(() => {
-        if (isAuthenticated) {
+        dispatch(clearError());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (!isInitializing && isAuthenticated && user) {
             if (user?.role === 'admin') {
-                navigate('/admin/dashboard');
+                navigate('/admin/dashboard', { replace: true });
             } else if (user?.role === 'editor') {
-                navigate('/admin/blog');
+                navigate('/admin/blog', { replace: true });
             }
         }
-    }, [isAuthenticated, user, navigate]);
+    }, [isInitializing, isAuthenticated, user, navigate]);
 
     const handleChange = (e) => {
         setFormData({
@@ -34,6 +42,18 @@ const Login = () => {
         await login(formData);
         setIsLoading(false);
     };
+
+    // Show spinner while token is being verified
+    if (isInitializing) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+            </div>
+        );
+    }
+
+    // Already authenticated — render nothing while redirect fires
+    if (isAuthenticated && user) return null;
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

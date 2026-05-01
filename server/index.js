@@ -21,6 +21,7 @@ const cohortRoutes = require('./src/routes/cohort');
 const donationRoutes = require('./src/routes/donation');
 const hireRequestRoutes = require('./src/routes/hireRequest');
 const testimonialRoutes = require('./src/routes/testimonial');
+const settingsRoutes = require('./src/routes/settings');
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use('/api/cohorts', cohortRoutes);
 app.use('/api/donate', donationRoutes);
 app.use('/api/hire-requests', hireRequestRoutes);
 app.use('/api/testimonials', testimonialRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // Basic route for API health check
 app.get('/', (req, res) => {

@@ -26,23 +26,30 @@ const Enrollment = () => {
   const { submitApplication } = useStudentApplications();
   const { submitWaitlist } = useWaitlist();
   const [activeCohort, setActiveCohort] = useState(null);
+  const [globalWaitlistEnabled, setGlobalWaitlistEnabled] = useState(false);
   useEffect(() => {
-    const fetchActiveCohort = async () => {
+    const fetchData = async () => {
       try {
-        // Direct API call — no Redux cache, always fresh
-        const res = await api.get('/cohorts', { params: { isActive: 'true' } });
-        const cohorts = res.data?.data || [];
+        const [cohortRes, settingsRes] = await Promise.all([
+          api.get('/cohorts', { params: { isActive: 'true' } }),
+          api.get('/settings')
+        ]);
+        const cohorts = cohortRes.data?.data || [];
         const active = cohorts[0] || null;
+        const isGlobalWaitlist = settingsRes.data?.data?.isGlobalWaitlistEnabled || false;
+        setGlobalWaitlistEnabled(isGlobalWaitlist);
         if (active) {
           setActiveCohort(active);
           setFormType(active.isWaitlistEnabled ? 'waitlist' : 'application');
           setFormData(prev => ({ ...prev, cohortId: active._id }));
+        } else if (isGlobalWaitlist) {
+          setFormType('waitlist');
         }
       } catch (error) {
-        console.error('Error fetching active cohort:', error);
+        console.error('Error fetching enrollment data:', error);
       }
     };
-    fetchActiveCohort();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -289,27 +296,24 @@ const Enrollment = () => {
             {/* Button centered on the page */}            <div className="flex justify-center">              {activeCohort ? (
                 <button
                   onClick={() => {
-                    console.log('=== ENROLLMENT BUTTON CLICK DEBUG ===');
-                    console.log('Button clicked - Active Cohort:', JSON.stringify(activeCohort, null, 2));
-                    console.log('Setting cohortId:', activeCohort._id);
-                    console.log('Active cohort isWaitlistEnabled:', activeCohort.isWaitlistEnabled);
-                    console.log('Setting formType:', activeCohort.isWaitlistEnabled ? 'waitlist' : 'application');
-                    console.log('Current formData before update:', JSON.stringify(formData, null, 2));
-                    
-                    setFormData(prev => {
-                      const newFormData = { ...prev, cohortId: activeCohort._id };
-                      console.log('New formData after cohortId update:', JSON.stringify(newFormData, null, 2));
-                      return newFormData;
-                    });
-                    
+                    setFormData(prev => ({ ...prev, cohortId: activeCohort._id }));
                     setFormType(activeCohort.isWaitlistEnabled ? 'waitlist' : 'application');
                     setIsModalOpen(true);
-                    
-                    console.log('Modal opened with formType:', activeCohort.isWaitlistEnabled ? 'waitlist' : 'application');
                   }}
                   className="bg-[#3B9790] hover:bg-teal-600 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300 flex items-center"
                 >
                   {activeCohort.isWaitlistEnabled ? "Join Waitlist" : "Submit Your Application"}
+                  <Rocket className="ml-2 h-4 w-4" />
+                </button>
+              ) : globalWaitlistEnabled ? (
+                <button
+                  onClick={() => {
+                    setFormType('waitlist');
+                    setIsModalOpen(true);
+                  }}
+                  className="bg-[#3B9790] hover:bg-teal-600 text-white font-medium py-3 px-6 rounded-lg transition-colors duration-300 flex items-center"
+                >
+                  Join Waitlist
                   <Rocket className="ml-2 h-4 w-4" />
                 </button>
               ) : (

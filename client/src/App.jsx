@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { verifyToken } from './redux/slices/authSlice';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -50,6 +53,15 @@ import OurImpact from './pages/OurImpact';
 import ProjectsByStudents from './pages/ProjectsByStudents';
 
 function App() {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(verifyToken());
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <Router>
       <Layout>

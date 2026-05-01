@@ -5,14 +5,15 @@ import Footer from './Footer';
 const Layout = ({ children }) => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const isBareRoute = location.pathname === '/login';
 
   return (
     <div className="app-container min-h-screen flex flex-col">
-      {!isAdminRoute && <Navbar />}
-      <main className="flex-grow pt-28"> {/* Added padding-top to account for fixed navbar */}
+      {!isAdminRoute && !isBareRoute && <Navbar />}
+      <main className={`flex-grow${!isAdminRoute && !isBareRoute ? ' pt-28' : ''}`}>
         {children}
       </main>
-      {!isAdminRoute && <Footer />}
+      {!isAdminRoute && !isBareRoute && <Footer />}
     </div>
   );
 };

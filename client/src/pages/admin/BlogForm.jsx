@@ -230,6 +230,7 @@ const BlogForm = () => {
                             </label>
                             <div className="border border-gray-300 rounded-lg overflow-hidden">
                                 <Editor
+                                    tinymceScriptSrc="/tinymce/tinymce.min.js"
                                     value={formData.content}
                                     onEditorChange={handleEditorChange}
                                     init={{

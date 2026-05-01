@@ -82,14 +82,16 @@ apiService.interceptors.response.use(
     async (error) => {
         // Handle 401 Unauthorized errors
         if (error.response?.status === 401) {
-            console.log('401 Unauthorized - COMPLETELY STOPPING ALL API CALLS');
-            
+            console.log('401 Unauthorized - clearing auth state');
+
             // Set flag to block all future API calls
             isAuthenticating = true;
-            
-            // Clear all auth-related data
+
+            // Clear token from both localStorage keys so redux-persist
+            // doesn't rehydrate stale "isAuthenticated: true" on next load
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+            localStorage.removeItem('persist:root');
             
             // Completely disable the axios instance
             apiService.defaults.timeout = 1; // Set to 1ms to make all requests fail fast

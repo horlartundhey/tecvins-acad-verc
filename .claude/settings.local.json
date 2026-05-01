@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:tecvinsonacademy.com)",
+      "Bash(npm run *)"
+    ]
+  }
+}
