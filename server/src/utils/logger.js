@@ -2,7 +2,10 @@ const fs = require('fs');
 const path = require('path');
 
 // Ensure logs directory exists
-const logsDir = path.join(__dirname, '../../logs');
+// On Vercel (serverless), only /tmp is writable; fallback to /tmp/logs
+const logsDir = process.env.VERCEL
+    ? '/tmp/logs'
+    : path.join(__dirname, '../../logs');
 let errorLog, uploadLog, infoLog;
 
 try {
