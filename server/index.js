@@ -25,8 +25,31 @@ const settingsRoutes = require('./src/routes/settings');
 
 const app = express();
 
+// Allowed origins
+const allowedOrigins = [
+    'https://tecvinsonacademy.com',
+    'https://www.tecvinsonacademy.com',
+    'http://localhost:5173',
+    'http://localhost:3000',
+];
+
+const corsOptions = {
+    origin: (origin, callback) => {
+        // Allow requests with no origin (e.g. mobile apps, curl, Postman)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error(`CORS: origin ${origin} not allowed`));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // handle preflight for all routes
 app.use(express.json());
 app.use(morgan('dev'));
 
