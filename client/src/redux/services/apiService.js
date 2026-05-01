@@ -19,12 +19,7 @@ const BASE_URL = getApiUrl();
 
 const apiService = axios.create({
     baseURL: BASE_URL,
-    headers: {
-        // Optional: explicitly tell the browser and server to not cache
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-    },
+    headers: {},
     // Ensure proper handling of FormData
     transformRequest: [function (data, headers) {
         if (data instanceof FormData) {
@@ -52,7 +47,7 @@ apiService.interceptors.request.use(
         const token = localStorage.getItem('token');
         
         // If no token for admin/protected routes, immediately block the request
-        if (!token && (config.url.includes('/admin') || config.url.includes('/contact'))) {
+        if (!token && config.url.includes('/admin')) {
             console.log('No token found for protected route - blocking request and redirecting');
             isAuthenticating = true;
             setTimeout(() => {

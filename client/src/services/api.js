@@ -25,9 +25,6 @@ const api = axios.create({
     baseURL: getApiUrl(),
     headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache',
-        'Expires': '0',
     }
 });
 
