@@ -49,7 +49,6 @@ const corsOptions = {
 
 // Middleware
 app.use(cors(corsOptions));
-app.options('/{*path}', cors(corsOptions)); // handle preflight for all routes (Express 5 wildcard syntax)
 app.use(express.json());
 app.use(morgan('dev'));
 
