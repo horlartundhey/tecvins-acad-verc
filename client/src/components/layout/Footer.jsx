@@ -1,7 +1,40 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
+import { useNewsletter } from "../../hooks/useNewsletter";
+
+const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
 const Footer = () => {
+  const { isLoading, error, successMessage, subscribe, clearNewsletterMessages } = useNewsletter();
+  const [email, setEmail] = useState("");
+  const [validationError, setValidationError] = useState("");
+
+  // Auto-clear messages after 5 seconds
+  useEffect(() => {
+    if (successMessage || error) {
+      const timer = setTimeout(() => clearNewsletterMessages(), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage, error, clearNewsletterMessages]);
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    setValidationError("");
+    const trimmed = email.trim();
+    if (!trimmed) {
+      setValidationError("Please enter your email address.");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmed)) {
+      setValidationError("Please enter a valid email address.");
+      return;
+    }
+    const success = await subscribe(trimmed);
+    if (success) setEmail("");
+  };
+
   return (
     <footer>
       {/* Newsletter subscription */}
@@ -11,20 +44,37 @@ const Footer = () => {
             <div className="md:max-w-lg">
               <h3 className="text-xl font-semibold mb-2">Stay Connected</h3>
               <p className="text-gray-700">
-                Subscribe to our newsletter and be the first to know about our next cohorts, new courses, and more—subscribe
-                now!
+                Subscribe to our newsletter and be the first to know about our next cohorts, new courses, and more.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 md:w-1/3">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="px-4 py-2 border border-gray-300 rounded-md flex-grow"
-              />
-              <button className="bg-[#D68B00] hover:bg-[#B87700] text-white font-medium py-2 px-6 rounded-md transition-colors whitespace-nowrap">
-                Subscribe
-              </button>
-            </div>
+            <form onSubmit={handleSubscribe} className="flex flex-col gap-2 md:w-1/3" noValidate>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setValidationError(""); }}
+                  className="px-4 py-2 border border-gray-300 rounded-md flex-grow focus:outline-none focus:ring-2 focus:ring-[#D68B00]"
+                  disabled={isLoading}
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="bg-[#D68B00] hover:bg-[#B87700] disabled:opacity-60 text-white font-medium py-2 px-6 rounded-md transition-colors whitespace-nowrap"
+                >
+                  {isLoading ? "Subscribing..." : "Subscribe"}
+                </button>
+              </div>
+              {validationError && (
+                <p className="text-red-600 text-sm">{validationError}</p>
+              )}
+              {successMessage && (
+                <p className="text-green-700 text-sm font-medium">{successMessage}</p>
+              )}
+              {error && (
+                <p className="text-red-600 text-sm">{error}</p>
+              )}
+            </form>
           </div>
         </div>
       </div>
@@ -35,7 +85,7 @@ const Footer = () => {
           <div className="flex flex-col justify-between">
             {/* Logo */}
             <div className="mb-6">
-              <Link to="/">
+              <Link to="/" onClick={scrollToTop}>
                 <img src={logo || "/placeholder.svg"} alt="Tecvinson Academy Logo" className="h-12" />
               </Link>
             </div>
@@ -47,25 +97,25 @@ const Footer = () => {
                 <h4 className="text-sm font-semibold mb-3 md:hidden">Quick Links</h4>
                 
                 <div className="flex flex-col md:flex-row md:items-center gap-y-3 md:gap-x-6">
-                  <Link to="/" className="text-gray-800 hover:text-gray-600 transition-colors">
+                  <Link to="/" onClick={scrollToTop} className="text-gray-800 hover:text-gray-600 transition-colors">
                     Home
                   </Link>
-                  <Link to="/about" className="text-gray-800 hover:text-gray-600 transition-colors">
+                  <Link to="/about" onClick={scrollToTop} className="text-gray-800 hover:text-gray-600 transition-colors">
                     About Us
                   </Link>
-                  <Link to="/courses" className="text-gray-800 hover:text-gray-600 transition-colors">
+                  <Link to="/courses" onClick={scrollToTop} className="text-gray-800 hover:text-gray-600 transition-colors">
                     Courses
                   </Link>
-                  <Link to="/what_difference" className="text-gray-800 hover:text-gray-600 transition-colors">
+                  <Link to="/what_difference" onClick={scrollToTop} className="text-gray-800 hover:text-gray-600 transition-colors">
                     Why Tecvinson?
                   </Link>
-                  <Link to="/blog" className="text-gray-800 hover:text-gray-600 transition-colors">
+                  <Link to="/blog" onClick={scrollToTop} className="text-gray-800 hover:text-gray-600 transition-colors">
                     Blog
                   </Link>
-                  <Link to="/support" className="text-gray-800 hover:text-gray-600 transition-colors">
+                  <Link to="/support" onClick={scrollToTop} className="text-gray-800 hover:text-gray-600 transition-colors">
                     Support Us
                   </Link>
-                  <Link to="/contact" className="text-gray-800 hover:text-gray-600 transition-colors">
+                  <Link to="/contact" onClick={scrollToTop} className="text-gray-800 hover:text-gray-600 transition-colors">
                     Contact Us
                   </Link>
                 </div>
@@ -130,7 +180,7 @@ const Footer = () => {
           {/* Copyright */}
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
             <p className="mb-2 md:mb-0">© 2024 Tecvinson Academy. All rights reserved.</p>
-            <Link to="/privacy-policy" className="hover:text-gray-800">
+            <Link to="/privacy-policy" onClick={scrollToTop} className="hover:text-gray-800">
               Privacy Policy
             </Link>
           </div>

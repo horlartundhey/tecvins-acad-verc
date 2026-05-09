@@ -210,30 +210,60 @@ export default function Testimonials() {
           </div>
         </div>
 
-        {/* Navigation arrows */}
+        {/* Navigation arrows — desktop only (absolute) */}
         <button 
           onClick={prevSlide} 
-          className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-2 md:-translate-x-20 bg-white rounded-full shadow-lg p-2 md:p-3 hover:bg-gray-100 focus:outline-none"
+          className="hidden md:flex absolute top-1/2 left-0 transform -translate-y-1/2 md:-translate-x-20 bg-white rounded-full shadow-lg p-3 hover:bg-gray-100 focus:outline-none"
           aria-label="Previous testimonial"
         >
-          <SlArrowLeft className="w-5 md:w-6 h-5 md:h-6 text-gray-700" />
+          <SlArrowLeft className="w-6 h-6 text-gray-700" />
         </button>
         
         <button 
           onClick={nextSlide} 
-          className="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-2 md:translate-x-20 bg-white rounded-full shadow-lg p-2 md:p-3 hover:bg-gray-100 focus:outline-none"
+          className="hidden md:flex absolute top-1/2 right-0 transform -translate-y-1/2 md:translate-x-20 bg-white rounded-full shadow-lg p-3 hover:bg-gray-100 focus:outline-none"
           aria-label="Next testimonial"
         >
-          <SlArrowRight className="w-5 md:w-6 h-5 md:h-6 text-gray-700" />
+          <SlArrowRight className="w-6 h-6 text-gray-700" />
         </button>
 
-        {/* Dot indicators */}
-        <div className="flex justify-center gap-2 mt-4">
+        {/* Mobile: arrows + dots in one row */}
+        <div className="flex md:hidden items-center justify-center gap-4 mt-6">
+          <button
+            onClick={prevSlide}
+            className="bg-white rounded-full shadow-lg p-2 hover:bg-gray-100 focus:outline-none"
+            aria-label="Previous testimonial"
+          >
+            <SlArrowLeft className="w-5 h-5 text-gray-700" />
+          </button>
+          <div className="flex gap-2">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToSlide(index)}
+                className={`w-3.5 h-3.5 rounded-full ${
+                  index === currentSlide ? 'bg-teal-600' : 'bg-gray-300'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+          <button
+            onClick={nextSlide}
+            className="bg-white rounded-full shadow-lg p-2 hover:bg-gray-100 focus:outline-none"
+            aria-label="Next testimonial"
+          >
+            <SlArrowRight className="w-5 h-5 text-gray-700" />
+          </button>
+        </div>
+
+        {/* Dot indicators — desktop only */}
+        <div className="hidden md:flex justify-center gap-2 mt-4">
           {testimonials.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3.5 md:w-4 h-3.5 md:h-4 rounded-full ${
+              className={`w-4 h-4 rounded-full ${
                 index === currentSlide ? 'bg-teal-600' : 'bg-gray-300'
               }`}
               aria-label={`Go to slide ${index + 1}`}

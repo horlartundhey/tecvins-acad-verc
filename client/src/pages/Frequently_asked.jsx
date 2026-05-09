@@ -124,6 +124,34 @@ const faqData = {
   ],
 }
 
+const formatAnswer = (answer) => {
+  const lines = answer.split('\n');
+  return lines.map((line, lineIndex) => {
+    const trimmedLine = line.trim();
+    if (!trimmedLine) return <div key={lineIndex} className="mb-2" />;
+    if (trimmedLine.startsWith('•')) {
+      return (
+        <div key={lineIndex} className="flex items-baseline mb-2">
+          <span className="text-[#3B9790] mr-2 flex-shrink-0">•</span>
+          <span>{trimmedLine.replace('•', '').trim()}</span>
+        </div>
+      );
+    }
+    if (/^[🧭🎨💻💼🍏💡✅📌]/u.test(trimmedLine)) {
+      return (
+        <div key={lineIndex} className="font-semibold text-gray-800 mt-4 mb-2">
+          {trimmedLine}
+        </div>
+      );
+    }
+    return (
+      <div key={lineIndex} className="mb-2">
+        {trimmedLine}
+      </div>
+    );
+  }).filter(Boolean);
+};
+
 const Frequently_asked = () => {
   useEffect(() => {
     window.scrollTo({
@@ -157,7 +185,8 @@ const Frequently_asked = () => {
       faqs.forEach(faq => {
         if (
           faq.question.toLowerCase().includes(lowerSearchTerm) ||
-          faq.answer.toLowerCase().includes(lowerSearchTerm)
+          faq.answer.toLowerCase().includes(lowerSearchTerm) ||
+          categoryName.toLowerCase().includes(lowerSearchTerm)
         ) {
           searchResults.push({
             ...faq,
@@ -385,7 +414,7 @@ const Frequently_asked = () => {
                           </button>
                           {isOpen && (
                             <div className="px-4 pb-4 text-gray-600 leading-relaxed border-t border-gray-100 pt-4 bg-[#EDF8F7]">
-                              {faq.answer}
+                              {formatAnswer(faq.answer)}
                             </div>
                           )}
                         </div>

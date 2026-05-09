@@ -54,7 +54,7 @@ export const useWaitlist = () => {
             console.log('Mapped data:', JSON.stringify(mappedData, null, 2));
             
             // Validate required fields to match backend expectations
-            const requiredFields = ['firstName', 'lastName', 'email', 'phoneNumber', 'course', 'country', 'timeZone', 'reason', 'preferredCohort'];
+            const requiredFields = ['firstName', 'lastName', 'email', 'phoneNumber', 'course', 'country', 'timeZone', 'reason'];
             const missingFields = requiredFields.filter(field => !mappedData[field]);
             
             if (missingFields.length > 0) {
@@ -91,10 +91,7 @@ export const useWaitlist = () => {
             console.error('Error object:', error);
             console.error('Error message:', error.message);
             console.error('Error response:', error.response?.data);
-            return {
-                success: false,
-                error: error.message || 'Failed to submit to waitlist'
-            };
+            throw error;
         }
     };
 

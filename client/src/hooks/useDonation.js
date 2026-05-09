@@ -179,11 +179,33 @@ const useDonation = () => {
     }
   };
 
+  // Delete a donation record (admin only)
+  const deleteDonation = async (id) => {
+    try {
+      return await PaymentService.deleteDonation(id);
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
+  // Manually mark a donation as completed (admin only)
+  const markDonationCompleted = async (id) => {
+    try {
+      return await PaymentService.markDonationCompleted(id);
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
   return {
     processDonation,
     verifyPayment,
     getDonationStats,
     getAllDonations,
+    deleteDonation,
+    markDonationCompleted,
     isProcessing,
     error,
     donationResult,

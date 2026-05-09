@@ -41,6 +41,7 @@ import CohortSettings from './pages/admin/CohortSettings';
 import OurTrainers from './pages/OurTrainers';
 import CohortManagement from './pages/admin/CohortManagement';
 import TestimonialsList from './pages/admin/TestimonialsList';
+import NewsletterSubscribers from './pages/admin/NewsletterSubscribers';
 import DonationDashboard from './pages/admin/DonationDashboard';
 import HireRequestDashboard from './pages/admin/HireRequestDashboard';
 import ProjectsByStud from './pages/OurImpact';
@@ -120,6 +121,7 @@ function App() {
                     <Route path="cohort-settings" element={<CohortSettings />} />
                     <Route path="cohort-management" element={<CohortManagement />} />
                     <Route path="testimonials" element={<TestimonialsList />} />
+                    <Route path="newsletter" element={<NewsletterSubscribers />} />
 
                   </Routes>
                 </AdminLayout>

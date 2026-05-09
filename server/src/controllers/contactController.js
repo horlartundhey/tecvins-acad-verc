@@ -1,4 +1,5 @@
 const Contact = require('../models/Contact');
+const { sendContactNotification } = require('../utils/emailService');
 
 // @desc    Submit a contact form
 // @route   POST /api/contact
@@ -31,6 +32,11 @@ const submitContact = async (req, res) => {
             phoneNumber: phoneNumber?.trim() || '',
             message: message?.trim() || ''
         });
+
+        // Send emails (non-blocking — don't fail the request if email fails)
+        sendContactNotification({ firstName, lastName, email, phoneNumber, message }).catch(err =>
+            console.error('Contact email error:', err.message)
+        );
 
         res.status(201).json({
             success: true,

@@ -37,7 +37,7 @@ const waitlistSchema = new mongoose.Schema({
     preferredCohort: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Cohort',
-        required: true
+        required: false
     },    status: {
         type: String,
         enum: ['pending', 'accepted', 'rejected', 'enrolled'],

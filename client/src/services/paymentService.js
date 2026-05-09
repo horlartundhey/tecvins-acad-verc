@@ -138,8 +138,8 @@ class PaymentService {
       
       // If no donations, return placeholder data
       const donations = response.data?.donations || [];
-      const totalPages = response.data?.totalPages || 1;
-      const totalCount = response.data?.totalCount || 0;
+      const totalPages = response.data?.pagination?.totalPages || 1;
+      const totalCount = response.data?.pagination?.totalDonations || 0;
 
       return {
         donations,
@@ -158,6 +158,18 @@ class PaymentService {
         currentPage: 1
       };
     }
+  }
+
+  // Delete a donation record (admin only)
+  static async deleteDonation(id) {
+    const response = await apiService.delete(`/donate/${id}`);
+    return response.data;
+  }
+
+  // Manually mark a donation as completed (admin only)
+  static async markDonationCompleted(id) {
+    const response = await apiService.patch(`/donate/${id}/complete`);
+    return response.data;
   }
 
   // Get donation statistics

@@ -15,7 +15,8 @@ import {
     Menu,
     X,
     Briefcase as BriefcaseIcon,
-    Star
+    Star,
+    Mail
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -91,6 +92,12 @@ const AdminLayout = ({ children }) => {
             name: 'Testimonials',             
             icon: <Star className="w-5 h-5" />,
             allowedRoles: ['admin', 'editor'] 
+        },
+        { 
+            path: '/admin/newsletter',
+            name: 'Newsletter Subscribers',             
+            icon: <Mail className="w-5 h-5" />,
+            allowedRoles: ['admin'] 
         }
     ];
 

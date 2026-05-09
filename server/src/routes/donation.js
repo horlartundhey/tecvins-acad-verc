@@ -7,7 +7,9 @@ const {
   getAllDonations,
   getDonationStats,
   handleStripeWebhook,
-  handlePaystackWebhook
+  handlePaystackWebhook,
+  deleteDonation,
+  markDonationCompleted
 } = require('../controllers/donationController');
 const { protect, checkRole } = require('../middleware/auth');
 
@@ -23,6 +25,8 @@ router.post('/webhooks/paystack', handlePaystackWebhook);
 // Protected routes (admin only)
 router.get('/all', protect, checkRole(['admin', 'editor']), getAllDonations);
 router.get('/stats', protect, checkRole(['admin', 'editor']), getDonationStats);
+router.delete('/:id', protect, checkRole(['admin']), deleteDonation);
+router.patch('/:id/complete', protect, checkRole(['admin']), markDonationCompleted);
 
 // Additional admin routes
 router.get('/export', protect, checkRole(['admin']), async (req, res) => {

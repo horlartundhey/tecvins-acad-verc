@@ -49,8 +49,8 @@ const Faq = () => {
       // Check if line starts with bullet point
       if (trimmedLine.startsWith('•')) {
         return (
-          <div key={lineIndex} className="flex items-start mb-2">
-            <span className="text-[#3B9790] mr-2 mt-1 flex-shrink-0">•</span>
+          <div key={lineIndex} className="flex items-baseline mb-2">
+            <span className="text-[#3B9790] mr-2 flex-shrink-0">•</span>
             <span>{trimmedLine.replace('•', '').trim()}</span>
           </div>
         );

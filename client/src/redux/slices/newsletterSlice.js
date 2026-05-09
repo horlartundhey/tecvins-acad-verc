@@ -25,10 +25,25 @@ export const unsubscribeFromNewsletter = createAsyncThunk(
     }
 );
 
+export const fetchSubscribers = createAsyncThunk(
+    'newsletter/fetchSubscribers',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await apiService.get('/newsletter/subscribers');
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || 'Failed to fetch subscribers');
+        }
+    }
+);
+
 const initialState = {
     isLoading: false,
     error: null,
-    successMessage: null
+    successMessage: null,
+    subscribers: [],
+    subscribersLoading: false,
+    subscribersError: null
 };
 
 const newsletterSlice = createSlice({
@@ -60,6 +75,18 @@ const newsletterSlice = createSlice({
             })
             .addCase(unsubscribeFromNewsletter.rejected, (state, action) => {
                 state.error = action.payload;
+            })
+            .addCase(fetchSubscribers.pending, (state) => {
+                state.subscribersLoading = true;
+                state.subscribersError = null;
+            })
+            .addCase(fetchSubscribers.fulfilled, (state, action) => {
+                state.subscribersLoading = false;
+                state.subscribers = action.payload.data || [];
+            })
+            .addCase(fetchSubscribers.rejected, (state, action) => {
+                state.subscribersLoading = false;
+                state.subscribersError = action.payload;
             });
     }
 });

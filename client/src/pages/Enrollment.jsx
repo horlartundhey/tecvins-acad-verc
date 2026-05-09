@@ -448,28 +448,26 @@ const Enrollment = () => {
           </div>
         </div>
       </div>      {/* Modal */}
-      {activeCohort && (
-        formType === 'waitlist' ? (
-          <WaitlistModal
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-            modalStep={modalStep}
-            setModalStep={setModalStep}
-            formData={formData}
-            handleInputChange={handleInputChange}
-            handleSubmit={handleSubmit}
-          />
-        ) : (
-          <ApplicationModal
-            isOpen={isModalOpen}
-            onClose={() => { setIsModalOpen(false); setModalStep("notice"); }}
-            formData={formData}
-            handleInputChange={handleInputChange}
-            onSubmit={handleSubmit}
-            formType={formType}
-            availableCourses={activeCohort?.courses || []}
-          />
-        )
+      {formType === 'waitlist' ? (
+        <WaitlistModal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          modalStep={modalStep}
+          setModalStep={setModalStep}
+          formData={formData}
+          handleInputChange={handleInputChange}
+          handleSubmit={handleSubmit}
+        />
+      ) : activeCohort && (
+        <ApplicationModal
+          isOpen={isModalOpen}
+          onClose={() => { setIsModalOpen(false); setModalStep("notice"); }}
+          formData={formData}
+          handleInputChange={handleInputChange}
+          onSubmit={handleSubmit}
+          formType={formType}
+          availableCourses={activeCohort?.courses || []}
+        />
       )}
     </>
   );

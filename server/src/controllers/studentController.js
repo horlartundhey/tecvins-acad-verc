@@ -1,5 +1,6 @@
 const StudentApplication = require('../models/StudentApplication');
 const Cohort = require('../models/Cohort');
+const { sendApplicationConfirmation, sendAdminNotification } = require('../utils/emailService');
 
 // @desc    Submit new student application
 // @route   POST /api/students/apply
@@ -29,6 +30,11 @@ const submitApplication = async (req, res) => {
         }
 
         const application = await StudentApplication.create(req.body);
+
+        // Send emails (non-blocking)
+        sendApplicationConfirmation(req.body).catch(err => console.error('App confirmation email error:', err.message));
+        sendAdminNotification('Student Application', req.body).catch(err => console.error('Admin notification email error:', err.message));
+
         res.status(201).json({
             message: 'Application submitted successfully',
             data: application

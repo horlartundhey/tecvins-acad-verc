@@ -22,6 +22,7 @@ const donationRoutes = require('./src/routes/donation');
 const hireRequestRoutes = require('./src/routes/hireRequest');
 const testimonialRoutes = require('./src/routes/testimonial');
 const settingsRoutes = require('./src/routes/settings');
+const startKeepAlive = require('./src/utils/dbKeepAlive');
 
 const app = express();
 
@@ -55,8 +56,8 @@ app.use(morgan('dev'));
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Connect to MongoDB
-connectDB();
+// Connect to MongoDB, then start keep-alive pinger
+connectDB().then(() => startKeepAlive());
 
 // Routes
 app.use('/api/auth', authRoutes);

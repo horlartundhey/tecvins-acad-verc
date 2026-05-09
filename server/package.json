@@ -26,7 +26,9 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.1",
     "morgan": "^1.10.0",
+    "node-cron": "^4.2.1",
     "paystack-api": "^2.0.6",
+    "resend": "^6.12.3",
     "stripe": "^18.3.0"
   }
 }

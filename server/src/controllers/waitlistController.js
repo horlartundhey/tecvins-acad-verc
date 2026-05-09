@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Waitlist = require('../models/Waitlist');
 const Cohort = require('../models/Cohort');
 const logger = require('../utils/logger');
+const { sendWaitlistConfirmation, sendAdminNotification } = require('../utils/emailService');
 
 // Valid course types
 const validCourses = ['product-management', 'product-design', 'development', 'job-readiness'];
@@ -22,7 +23,7 @@ const submitWaitlist = async (req, res) => {
             bodyKeys: Object.keys(req.body || {}),
             body: req.body
         });        // Validate required fields
-        const requiredFields = ['firstName', 'lastName', 'email', 'phoneNumber', 'course', 'country', 'timeZone', 'reason', 'preferredCohort'];
+        const requiredFields = ['firstName', 'lastName', 'email', 'phoneNumber', 'course', 'country', 'timeZone', 'reason'];
         const missingFields = requiredFields.filter(field => !req.body[field]);
         
         if (missingFields.length > 0) {
@@ -84,51 +85,63 @@ const submitWaitlist = async (req, res) => {
 
         logger.info('Email validation passed', { email: req.body.email });
 
-        // Check if the cohort exists
-        logger.info('Checking cohort existence', { cohortId: req.body.preferredCohort });
-        const cohort = await Cohort.findById(req.body.preferredCohort);
-        if (!cohort) {
-            logger.error('Waitlist submission failed: Cohort not found', {
-                cohortId: req.body.preferredCohort,
-                timestamp: new Date().toISOString()
-            });
-            return res.status(404).json({
-                success: false,
-                message: 'Cohort not found'
-            });
-        }
-
-        logger.info('Cohort found', { 
-            cohortId: cohort._id,
-            cohortTitle: cohort.title,
-            isWaitlistEnabled: cohort.isWaitlistEnabled,
-            isAtCapacity: cohort.isAtCapacity
-        });        if (!cohort.isWaitlistEnabled && !cohort.isAtCapacity) {
-            logger.error('Waitlist submission failed: Cohort not accepting waitlist applications', {
+        // Check if the cohort exists (only if preferredCohort is provided)
+        let cohort = null;
+        if (req.body.preferredCohort) {
+            logger.info('Checking cohort existence', { cohortId: req.body.preferredCohort });
+            cohort = await Cohort.findById(req.body.preferredCohort);
+            if (!cohort) {
+                logger.error('Waitlist submission failed: Cohort not found', {
+                    cohortId: req.body.preferredCohort,
+                    timestamp: new Date().toISOString()
+                });
+                return res.status(404).json({
+                    success: false,
+                    message: 'Cohort not found'
+                });
+            }
+            logger.info('Cohort found', { 
                 cohortId: cohort._id,
                 cohortTitle: cohort.title,
                 isWaitlistEnabled: cohort.isWaitlistEnabled,
-                isAtCapacity: cohort.isAtCapacity,
-                timestamp: new Date().toISOString()
+                isAtCapacity: cohort.isAtCapacity
             });
-            return res.status(400).json({
-                success: false,
-                message: 'This cohort is currently accepting direct applications'
-            });
+            if (!cohort.isWaitlistEnabled && !cohort.isAtCapacity) {
+                logger.error('Waitlist submission failed: Cohort not accepting waitlist applications', {
+                    cohortId: cohort._id,
+                    timestamp: new Date().toISOString()
+                });
+                return res.status(400).json({
+                    success: false,
+                    message: 'This cohort is currently accepting direct applications'
+                });
+            }
+        } else {
+            logger.info('No preferredCohort provided — global waitlist submission');
         }
 
         logger.info('Creating waitlist application', { 
             applicationData: req.body,
-            cohortInfo: {
+            cohortInfo: cohort ? {
                 id: cohort._id,
                 title: cohort.title
-            }
+            } : 'global waitlist'
         });
 
-        const application = await Waitlist.create(req.body);
+        // Strip empty preferredCohort so Mongoose doesn't try to cast "" as ObjectId
+        const saveData = { ...req.body };
+        if (!saveData.preferredCohort) delete saveData.preferredCohort;
+        if (!saveData.cohortId) delete saveData.cohortId;
+
+        const application = await Waitlist.create(saveData);
+
+        // Send emails (non-blocking)
+        sendWaitlistConfirmation(saveData, cohort).catch(err => console.error('Waitlist confirmation email error:', err.message));
+        sendAdminNotification('Waitlist Application', saveData).catch(err => console.error('Admin waitlist email error:', err.message));
+
           logger.info('Waitlist application submitted successfully', {
             applicationId: application._id,
-            cohortId: cohort._id,
+            cohortId: cohort ? cohort._id : null,
             userEmail: application.email,
             timestamp: new Date().toISOString()
         });

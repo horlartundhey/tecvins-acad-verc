@@ -186,15 +186,22 @@ donationSchema.statics.getStats = async function() {
         _id: null,
         totalAmount: { $sum: '$amount' },
         totalDonors: { $sum: 1 },
-        averageDonation: { $avg: '$amount' },
-        currencyBreakdown: {
-          $push: {
-            currency: '$currency',
-            amount: '$amount'
-          }
-        }
+        averageDonation: { $avg: '$amount' }
       }
     }
+  ]);
+
+  // Per-currency totals (completed only)
+  const byCurrency = await this.aggregate([
+    { $match: { status: 'completed' } },
+    {
+      $group: {
+        _id: '$currency',
+        total: { $sum: '$amount' },
+        count: { $sum: 1 }
+      }
+    },
+    { $sort: { _id: 1 } }
   ]);
 
   // Get monthly stats
@@ -219,8 +226,7 @@ donationSchema.statics.getStats = async function() {
   const result = stats[0] || {
     totalAmount: 0,
     totalDonors: 0,
-    averageDonation: 0,
-    currencyBreakdown: []
+    averageDonation: 0
   };
 
   const monthly = monthlyStats[0] || {
@@ -230,7 +236,8 @@ donationSchema.statics.getStats = async function() {
 
   return {
     ...result,
-    ...monthly
+    ...monthly,
+    byCurrency
   };
 };
 
