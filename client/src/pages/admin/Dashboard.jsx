@@ -66,7 +66,7 @@ const Dashboard = () => {
             pending: stats?.contacts?.pending || 0,
             icon: <MessageSquare className="w-8 h-8 text-yellow-600" />,
             color: 'bg-yellow-50',
-            link: '/admin/contact'
+            link: '/admin/contacts'
         },
         {
             title: 'Partners',
@@ -74,7 +74,7 @@ const Dashboard = () => {
             pending: stats?.partners?.pending || 0,
             icon: <Handshake className="w-8 h-8 text-red-600" />,
             color: 'bg-red-50',
-            link: '/admin/partnerships'
+            link: '/admin/partners'
         },
         {
             title: 'Hire Requests',
@@ -91,7 +91,7 @@ const Dashboard = () => {
             editors: stats?.users?.editors || 0,
             icon: <Users className="w-8 h-8 text-indigo-600" />,
             color: 'bg-indigo-50',
-            link: '/admin/users'
+            link: '/admin/dashboard'
         }
     ];
 

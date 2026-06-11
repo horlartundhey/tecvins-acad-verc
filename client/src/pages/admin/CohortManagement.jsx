@@ -354,7 +354,24 @@ const CohortManagement = () => {
                                 <input
                                     type="number"
                                     value={formData.maxStudents}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, maxStudents: e.target.value }))}
+                                    min={1}
+                                    step={1}
+                                    onKeyDown={(e) => {
+                                        if (['e', 'E', '.', '-', '+'].includes(e.key)) e.preventDefault();
+                                    }}
+                                    onPaste={(e) => {
+                                        const text = e.clipboardData.getData('text');
+                                        if (!/^\d+$/.test(text)) e.preventDefault();
+                                    }}
+                                    onChange={(e) => {
+                                        const raw = e.target.value;
+                                        if (raw === '') {
+                                            setFormData(prev => ({ ...prev, maxStudents: '' }));
+                                            return;
+                                        }
+                                        const n = Math.floor(Number(raw));
+                                        if (n >= 1) setFormData(prev => ({ ...prev, maxStudents: n }));
+                                    }}
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500"
                                     required
                                 />

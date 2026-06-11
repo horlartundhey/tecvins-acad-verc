@@ -52,7 +52,11 @@ export const updateWaitlistStatus = createAsyncThunk(
             const response = await api.put(`/waitlist/${id}`, { status, notifyStudent });
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || error.message);
+            return rejectWithValue(
+                error.response?.data?.message ||
+                error.response?.data?.error ||
+                error.message
+            );
         }
     }
 );

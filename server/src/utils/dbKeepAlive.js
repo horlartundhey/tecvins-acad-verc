@@ -7,8 +7,8 @@ const mongoose = require('mongoose');
  * Atlas free-tier clusters from going dormant and pausing activity.
  */
 const startKeepAlive = () => {
-    // Every 10 minutes: "0,10,20,30,40,50 * * * *"
-    cron.schedule('*/10 * * * *', async () => {
+    // Once a day at noon (UTC)
+    cron.schedule('0 12 * * *', async () => {
         try {
             if (mongoose.connection.readyState !== 1) {
                 console.log('[KeepAlive] DB not connected — skipping ping');
@@ -22,7 +22,7 @@ const startKeepAlive = () => {
         }
     });
 
-    console.log('[KeepAlive] Scheduled — pinging DB every 10 minutes');
+    console.log('[KeepAlive] Scheduled — pinging DB once a day at 12:00 UTC');
 };
 
 module.exports = startKeepAlive;

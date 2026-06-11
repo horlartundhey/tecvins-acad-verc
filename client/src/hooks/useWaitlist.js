@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useCallback } from 'react';
 import { submitWaitlist, getWaitlist, updateWaitlistStatus } from '../redux/slices/waitlistSlice';
+import { getWaitlistErrorMessage } from '../utils/waitlistError';
 
 // Map frontend course names to backend enum values
 const mapCourseToBackend = (course) => {
@@ -28,9 +29,9 @@ export const useWaitlist = () => {
             return { success: true };
         } catch (error) {
             console.error('Failed to load waitlist entries:', error);
-            return { 
-                success: false, 
-                error: error.message || 'Failed to load waitlist entries'
+            return {
+                success: false,
+                error: getWaitlistErrorMessage(error) || 'Failed to load waitlist entries'
             };
         }
     }, [dispatch]);    const handleSubmitWaitlist = async (data) => {
@@ -103,7 +104,7 @@ export const useWaitlist = () => {
             console.error('Failed to update waitlist entry:', error);
             return {
                 success: false,
-                error: error.message || 'Failed to update waitlist entry'
+                error: getWaitlistErrorMessage(error)
             };
         }
     }, [dispatch]);

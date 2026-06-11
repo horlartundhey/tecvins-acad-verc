@@ -14,6 +14,8 @@ const DonationDashboard = () => {
   const [refreshTick, setRefreshTick] = useState(0);
   const [selected, setSelected] = useState([]);
   const [bulkDeleting, setBulkDeleting] = useState(false);
+  const [loadError, setLoadError] = useState(null);
+  const [actionError, setActionError] = useState(null);
 
   // Keep stable refs to the hook functions so they don't trigger re-runs
   const getAllDonationsRef = useRef(getAllDonations);
@@ -24,6 +26,7 @@ const DonationDashboard = () => {
   useEffect(() => {
     let cancelled = false;
     const loadData = async () => {
+      setLoadError(null);
       try {
         const [donationsResult, statsResult] = await Promise.all([
           getAllDonationsRef.current(currentPage, 10, statusFilter),
@@ -33,9 +36,9 @@ const DonationDashboard = () => {
         setDonations(donationsResult.donations || []);
         setTotalPages(donationsResult.totalPages || 1);
         setStats(statsResult);
-        setSelected([]); // clear selection on reload
+        setSelected([]);
       } catch (err) {
-        console.error('Failed to load data:', err);
+        if (!cancelled) setLoadError(err?.message || 'Failed to load donation data');
       }
     };
     loadData();
@@ -61,11 +64,12 @@ const DonationDashboard = () => {
     if (selected.length === 0) return;
     if (!window.confirm(`Delete ${selected.length} selected record(s)? This cannot be undone.`)) return;
     setBulkDeleting(true);
+    setActionError(null);
     try {
       await Promise.all(selected.map(id => deleteDonation(id)));
       loadData();
     } catch (err) {
-      console.error('Bulk delete failed:', err);
+      setActionError(err?.message || 'Bulk delete failed');
     } finally {
       setBulkDeleting(false);
     }
@@ -74,11 +78,12 @@ const DonationDashboard = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this donation record? This cannot be undone.')) return;
     setDeleting(id);
+    setActionError(null);
     try {
       await deleteDonation(id);
       loadData();
     } catch (err) {
-      console.error('Delete failed:', err);
+      setActionError(err?.message || 'Failed to delete donation');
     } finally {
       setDeleting(null);
     }
@@ -87,11 +92,12 @@ const DonationDashboard = () => {
   const handleMarkCompleted = async (id) => {
     if (!window.confirm('Mark this donation as completed? This will include it in the stats.')) return;
     setCompleting(id);
+    setActionError(null);
     try {
       await markDonationCompleted(id);
       loadData();
     } catch (err) {
-      console.error('Mark completed failed:', err);
+      setActionError(err?.message || 'Failed to mark donation as completed');
     } finally {
       setCompleting(null);
     }
@@ -124,14 +130,6 @@ const DonationDashboard = () => {
     );
   };
 
-  if (error) {
-    return (
-      <div className="bg-red-50 border border-red-200 rounded-md p-4">
-        <p className="text-red-800">Error loading donations: {error}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -139,6 +137,22 @@ const DonationDashboard = () => {
         <h1 className="text-2xl font-bold text-gray-900">Donation Management</h1>
         <p className="text-gray-600">Track and manage donations to Tecvinson Academy</p>
       </div>
+
+      {/* Load error banner */}
+      {loadError && (
+        <div className="bg-red-50 border border-red-200 rounded-md p-4 flex items-center justify-between">
+          <p className="text-red-800 text-sm">Failed to load donations: {loadError}</p>
+          <button onClick={loadData} className="ml-4 text-sm text-red-700 underline hover:text-red-900">Retry</button>
+        </div>
+      )}
+
+      {/* Action error banner */}
+      {actionError && (
+        <div className="bg-red-50 border border-red-200 rounded-md p-4 flex items-center justify-between">
+          <p className="text-red-800 text-sm">{actionError}</p>
+          <button onClick={() => setActionError(null)} className="ml-4 text-sm text-red-700 underline hover:text-red-900">Dismiss</button>
+        </div>
+      )}
 
       {/* Stats Cards */}
       {stats && (

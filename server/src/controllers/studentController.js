@@ -1,6 +1,6 @@
 const StudentApplication = require('../models/StudentApplication');
 const Cohort = require('../models/Cohort');
-const { sendApplicationConfirmation, sendAdminNotification } = require('../utils/emailService');
+const { sendApplicationConfirmation, sendAdminNotification, sendStatusUpdateEmail } = require('../utils/emailService');
 
 // @desc    Submit new student application
 // @route   POST /api/students/apply
@@ -120,17 +120,22 @@ const updateApplicationStatus = async (req, res) => {
         // Update cohort enrollment count when approval status changes
         if (application.cohortId) {
             if (status === 'approved' && previousStatus !== 'approved') {
-                // New approval — increment enrollment
                 await Cohort.findByIdAndUpdate(application.cohortId, {
                     $inc: { currentEnrollment: 1 }
                 });
             } else if (previousStatus === 'approved' && status !== 'approved') {
-                // Revoked approval — decrement enrollment (never go below 0)
                 await Cohort.findByIdAndUpdate(application.cohortId, {
                     $inc: { currentEnrollment: -1 },
                     $max: { currentEnrollment: 0 }
                 });
             }
+        }
+
+        // Send status notification email (non-blocking)
+        if (['approved', 'rejected'].includes(status) && status !== previousStatus) {
+            sendStatusUpdateEmail(application, status).catch(err =>
+                console.error('Application status email failed:', err.message)
+            );
         }
 
         res.json(updatedApplication);

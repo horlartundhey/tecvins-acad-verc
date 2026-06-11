@@ -7,12 +7,19 @@ const API_URL = 'https://tecvins-acad-verc-server.vercel.app';
 
 const Blog = () => {
   useEffect(() => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      }, []);
-      
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }, []);
+
+  const stripHtml = (value = '') =>
+    String(value)
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
   const { blogs, isLoading, error, loadBlogs } = useBlog();
 
   useEffect(() => {
@@ -53,21 +60,25 @@ const Blog = () => {
         <p className="text-gray-600">No blog posts available at the moment.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {blogs.map((blog) => (
-            <article 
-              key={blog._id} 
-              className="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow"
-            >              {blog.featuredImage?.url && (
-                <img 
-                  src={blog.featuredImage.url}
-                  alt={blog.title} 
-                  className="w-full h-48 object-cover"
-                />
-              )}              <div className="p-6">
-                <h2 className="text-xl font-bold text-gray-900 mb-2">{blog.title}</h2>
-                <p className="text-gray-600 mb-4 line-clamp-3">
-                  {blog.content.replace(/<[^>]*>/g, '').substring(0, 150)}...
-                </p>
+          {blogs.map((blog) => {
+            const excerpt = stripHtml(blog.content);
+            const preview = excerpt.length > 160 ? `${excerpt.slice(0, 160)}...` : excerpt || 'No preview available yet.';
+
+            return (
+              <article
+                key={blog._id}
+                className="h-full flex flex-col bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+              >
+                {blog.featuredImage?.url && (
+                  <img
+                    src={blog.featuredImage.url}
+                    alt={blog.title}
+                    className="w-full aspect-[16/10] object-cover"
+                  />
+                )}
+                <div className="p-6 flex flex-1 flex-col">
+                  <h2 className="text-xl font-bold text-gray-900 mb-2">{blog.title}</h2>
+                  <p className="text-gray-600 mb-4 line-clamp-3 flex-1">{preview}</p>
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-sm text-gray-500">
                     {new Date(blog.createdAt).toLocaleDateString('en-US', {
@@ -76,9 +87,6 @@ const Blog = () => {
                       day: 'numeric'
                     })}
                   </span>
-                  {blog.author && (
-                    <span className="text-sm text-teal-600">By {blog.author.name}</span>
-                  )}
                 </div>
                 
                 {/* Tags */}
@@ -99,16 +107,17 @@ const Blog = () => {
                 )}
 
                 {/* Read More Button */}
-                <Link
-                  to={`/blog/${blog.slug}`}
-                  className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium transition-colors group"
-                >
-                  Read More
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </article>
-          ))}
+                  <Link
+                    to={`/blog/${blog.slug}`}
+                    className="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium transition-colors group mt-auto"
+                  >
+                    Read More
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
         </div>
       )}
     </div>

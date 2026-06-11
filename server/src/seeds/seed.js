@@ -14,8 +14,8 @@ const TrainerApplication = require('../models/TrainerApplication');
 const users = [
     {
         name: 'Admin User',
-        email: 'admin@tecvinson.com',
-        password: 'admin123',
+        email: 'admin@tecvinsonacademy.com',
+        password: 'U5ufrpQp_BdUoSSD9g',
         role: 'admin'
     },
     {

@@ -2,12 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Save, ArrowLeft, Upload, Loader2, X } from 'lucide-react';
 import { useBlog } from '../../hooks/useBlog';
-import { Editor } from '@tinymce/tinymce-react';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 const BlogForm = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const { createBlog, updateBlog, blogs, loadBlogs } = useBlog();
+
+    const hasMeaningfulContent = (content) => {
+        if (typeof content !== 'string') return false;
+
+        const normalized = content
+            .replace(/<[^>]*>/g, ' ')
+            .replace(/&nbsp;/gi, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        return normalized.length > 0;
+    };
     const [isLoading, setIsLoading] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -96,12 +109,12 @@ const BlogForm = () => {
 
     const validateForm = () => {
         const errors = [];
-        
+
         if (!formData.title?.trim()) {
             errors.push('Title is required');
         }
-        
-        if (!formData.content?.trim() || formData.content.trim() === '<p></p>') {
+
+        if (!hasMeaningfulContent(formData.content)) {
             errors.push('Content is required');
         }
         
@@ -228,30 +241,27 @@ const BlogForm = () => {
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Content *
                             </label>
-                            <div className="border border-gray-300 rounded-lg overflow-hidden">
-                                <Editor
-                                    tinymceScriptSrc="/tinymce/tinymce.min.js"
+                            <div className="border border-gray-300 rounded-xl overflow-hidden bg-white shadow-sm">
+                                <ReactQuill
+                                    theme="snow"
                                     value={formData.content}
-                                    onEditorChange={handleEditorChange}
-                                    init={{
-                                        height: 400,
-                                        menubar: false,
-                                        plugins: [
-                                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap',
-                                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                                            'insertdatetime', 'media', 'table', 'preview', 'help', 'wordcount'
-                                        ],
-                                        toolbar: 'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-                                        content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; line-height: 1.6; }',
-                                        branding: false,
-                                        promotion: false,
-                                        statusbar: true,
-                                        resize: true,
-                                        paste_data_images: true,
-                                        automatic_uploads: false
+                                    onChange={handleEditorChange}
+                                    placeholder="Write your blog content here..."
+                                    className="min-h-[520px]"
+                                    modules={{
+                                        toolbar: [
+                                            [{ header: [1, 2, 3, false] }],
+                                            ['bold', 'italic', 'underline'],
+                                            [{ list: 'ordered' }, { list: 'bullet' }],
+                                            ['link'],
+                                            ['clean']
+                                        ]
                                     }}
+                                    formats={['header', 'bold', 'italic', 'underline', 'list', 'bullet', 'link']}
+                                    style={{ minHeight: '520px' }}
                                 />
                             </div>
+                            <p className="text-xs text-gray-500 mt-2">Use the toolbar to format your blog content.</p>
                         </div>
                     </div>
 

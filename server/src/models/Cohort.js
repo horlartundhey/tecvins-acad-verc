@@ -24,7 +24,12 @@ const cohortSchema = new mongoose.Schema({
     }],
     maxStudents: {
         type: Number,
-        required: true
+        required: true,
+        min: [1, 'Maximum students must be at least 1'],
+        validate: {
+            validator: Number.isInteger,
+            message: 'Maximum students must be a whole number'
+        }
     },
     currentEnrollment: {
         type: Number,

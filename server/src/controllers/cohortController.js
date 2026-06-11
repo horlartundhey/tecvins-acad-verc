@@ -4,8 +4,20 @@ const logger = require('../utils/logger');
 // @desc    Create a new cohort
 // @route   POST /api/cohorts
 // @access  Private (Admin)
+const validateMaxStudents = (value) => {
+    const n = Number(value);
+    return Number.isInteger(n) && n >= 1;
+};
+
 const createCohort = async (req, res) => {
     try {
+        if (req.body.maxStudents !== undefined && !validateMaxStudents(req.body.maxStudents)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Maximum students must be a whole number of at least 1'
+            });
+        }
+
         const cohort = await Cohort.create(req.body);
         logger.info('New cohort created', {
             adminId: req.user._id,
@@ -96,6 +108,13 @@ const getCohort = async (req, res) => {
 // @access  Private (Admin)
 const updateCohort = async (req, res) => {
     try {
+        if (req.body.maxStudents !== undefined && !validateMaxStudents(req.body.maxStudents)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Maximum students must be a whole number of at least 1'
+            });
+        }
+
         // If current enrollment is being updated, validate against max students
         if (req.body.currentEnrollment !== undefined) {
             const cohort = await Cohort.findById(req.params.id);

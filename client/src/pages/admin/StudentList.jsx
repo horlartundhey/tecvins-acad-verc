@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { 
-    FileText, 
-    MoreVertical,
+import {
+    FileText,
     Eye,
-    Edit,
     Trash2,
     Search,
     Filter,
     X,
-    ListPlus
+    ListPlus,
+    Download
 } from 'lucide-react';
 import { useStudentApplications } from '../../hooks/useStudentApplications';
 import WaitlistManager from '../../components/WaitlistManager';
+import { formatStatusLabel, getStatusStyles } from '../../utils/studentStatus';
 
 const StudentList = () => {
     const [activeTab, setActiveTab] = useState('applications'); // 'applications' or 'waitlist'
@@ -49,6 +49,10 @@ const StudentList = () => {
     const handleStatusChange = async (id, newStatus) => {
         await updateApplication(id, { status: newStatus });
         loadApplications();
+        // Keep modal in sync if it's open for this application
+        if (selectedStudent?._id === id) {
+            setSelectedStudent(prev => ({ ...prev, status: newStatus }));
+        }
     };
 
     const handleDelete = async (id) => {
@@ -56,6 +60,34 @@ const StudentList = () => {
             await deleteApplication(id);
             loadApplications();
         }
+    };
+
+    const handleExportApplications = () => {
+        const rows = filteredApplications.map((app) => ({
+            firstName: app.firstName || '',
+            lastName: app.lastName || '',
+            email: app.email || '',
+            course: app.course || '',
+            status: formatStatusLabel(app.status),
+            createdAt: app.createdAt ? new Date(app.createdAt).toLocaleDateString() : ''
+        }));
+
+        const csvContent = [
+            ['First Name', 'Last Name', 'Email', 'Course', 'Status', 'Date'],
+            ...rows.map((row) => [row.firstName, row.lastName, row.email, row.course, row.status, row.createdAt])
+        ]
+            .map((row) => row.map((value) => `"${String(value).replaceAll('"', '""')}"`).join(','))
+            .join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'student-applications.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     };
 
     if (isLoading) {
@@ -119,8 +151,8 @@ const StudentList = () => {
             {activeTab === 'applications' ? (
                 <>
                     {/* Filters */}
-                    <div className="flex gap-4 items-center">
-                        <div className="flex-1 relative">
+                    <div className="flex flex-wrap gap-4 items-center">
+                        <div className="flex-1 min-w-[260px] relative">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                             <input
                                 type="text"
@@ -140,9 +172,19 @@ const StudentList = () => {
                                 <option value="all">All Status</option>
                                 <option value="pending">Pending</option>
                                 <option value="approved">Approved</option>
+                                <option value="accepted">Accepted</option>
+                                <option value="enrolled">Enrolled</option>
                                 <option value="rejected">Rejected</option>
                             </select>
                         </div>
+                        <button
+                            type="button"
+                            onClick={handleExportApplications}
+                            className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+                        >
+                            <Download className="h-4 w-4" />
+                            Export CSV
+                        </button>
                     </div>
 
                     {/* Applications Table */}
@@ -176,14 +218,9 @@ const StudentList = () => {
                                                 <div className="text-sm text-gray-900">{app.course}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${
-                                                    app.status === 'approved' 
-                                                        ? 'bg-green-100 text-green-800'
-                                                        : app.status === 'rejected'
-                                                        ? 'bg-red-100 text-red-800'
-                                                        : 'bg-yellow-100 text-yellow-800'
-                                                }`}>
-                                                    {app.status}
+                                                <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold leading-5 ${getStatusStyles(app.status).badge}`}>
+                                                    <span className={`h-2 w-2 rounded-full ${getStatusStyles(app.status).dot}`} />
+                                                    {formatStatusLabel(app.status)}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

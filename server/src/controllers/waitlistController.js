@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Waitlist = require('../models/Waitlist');
 const Cohort = require('../models/Cohort');
 const logger = require('../utils/logger');
-const { sendWaitlistConfirmation, sendAdminNotification } = require('../utils/emailService');
+const { sendWaitlistConfirmation, sendAdminNotification, sendStatusUpdateEmail } = require('../utils/emailService');
 
 // Valid course types
 const validCourses = ['product-management', 'product-design', 'development', 'job-readiness'];
@@ -239,9 +239,23 @@ const updateWaitlistStatus = async (req, res) => {
 
         // If enrolling, check cohort capacity
         if (status === 'enrolled') {
+            if (!waitlistEntry.preferredCohort) {
+                await session.abortTransaction();
+                session.endSession();
+                return res.status(400).json({
+                    success: false,
+                    message: 'Cannot enroll: this entry has no associated cohort. Assign a cohort first.'
+                });
+            }
+
             const cohort = await Cohort.findById(waitlistEntry.preferredCohort);
             if (!cohort) {
-                throw new Error('Associated cohort not found');
+                await session.abortTransaction();
+                session.endSession();
+                return res.status(400).json({
+                    success: false,
+                    message: 'Cannot enroll: the associated cohort no longer exists.'
+                });
             }
 
             if (cohort.currentEnrollment >= cohort.maxStudents) {
@@ -280,7 +294,14 @@ const updateWaitlistStatus = async (req, res) => {
         );
 
         await session.commitTransaction();
-        
+
+        // Send status notification email after commit (non-blocking)
+        if (notifyStudent && ['accepted', 'rejected', 'enrolled'].includes(status)) {
+            sendStatusUpdateEmail(waitlistEntry, status).catch(err =>
+                logger.error('Waitlist status email failed', { error: err.message, entryId: req.params.id })
+            );
+        }
+
         // If enrolled successfully, check if we can disable waitlist
         if (status === 'enrolled') {
             const cohort = await Cohort.findById(waitlistEntry.preferredCohort);

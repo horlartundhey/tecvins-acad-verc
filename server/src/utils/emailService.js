@@ -261,6 +261,11 @@ const sendStatusUpdateEmail = async (applicantData, newStatus, additionalMessage
             subject: '🎊 Spot Available! Accept Your Place — Tecvinson Academy',
             title: 'Your Waitlist Spot is Ready!', color: '#28a745',
             message: "Great news! A spot has opened up in your preferred cohort. You have <strong>48 hours</strong> to accept your place."
+        },
+        enrolled: {
+            subject: '🎓 You Are Officially Enrolled — Tecvinson Academy',
+            title: 'Enrollment Confirmed!', color: '#3B9790',
+            message: "Congratulations! You have been officially enrolled in your cohort at Tecvinson Academy. We look forward to welcoming you to class — keep an eye on your inbox for onboarding details."
         }
     };
     const config = statusConfig[newStatus] || statusConfig.approved;

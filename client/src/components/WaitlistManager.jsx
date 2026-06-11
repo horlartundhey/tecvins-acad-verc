@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useWaitlist } from '../hooks/useWaitlist';
-import { useCohort } from '../hooks/useCohort';
 import { toast } from 'react-toastify';
 
 const WaitlistManager = ({ cohortId }) => {
     const { entries, isLoading: isWaitlistLoading, error: waitlistError, loadWaitlistEntries, updateWaitlistEntry } = useWaitlist();
-    const { updateEnrollmentCount, error: cohortError, isLoading: isCohortLoading } = useCohort();
     const [selectedEntry, setSelectedEntry] = useState(null);
     const [sendNotification, setSendNotification] = useState(true);
     const [isProcessing, setIsProcessing] = useState(false);
@@ -26,23 +24,8 @@ const WaitlistManager = ({ cohortId }) => {
         
         setIsProcessing(true);
         try {
-            if (newStatus === 'enrolled') {
-                // First try to update the enrollment count
-                const enrollmentResult = await updateEnrollmentCount(entry.preferredCohort, 1);
-                if (!enrollmentResult.success) {
-                    toast.error(enrollmentResult.message || 'Failed to update enrollment count. The cohort might be at capacity.', {
-                        position: "top-right",
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true
-                    });
-                    return;
-                }
-            }
-
             const result = await updateWaitlistEntry(entry._id, newStatus, sendNotification);
+
             if (result.success) {
                 if (newStatus === 'enrolled') {
                     toast.success('Student successfully enrolled', {
@@ -66,7 +49,7 @@ const WaitlistManager = ({ cohortId }) => {
                 // Refresh the list
                 loadWaitlistEntries();
             } else {
-                toast.error(result.message || 'Failed to update status', {
+                toast.error(result.error || result.message || 'Failed to update status. Please try again.', {
                     position: "top-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -74,13 +57,9 @@ const WaitlistManager = ({ cohortId }) => {
                     pauseOnHover: true,
                     draggable: true
                 });
-                // If enrollment failed, revert the enrollment count
-                if (newStatus === 'enrolled') {
-                    await updateEnrollmentCount(entry.preferredCohort, -1);
-                }
             }
         } catch (error) {
-            toast.error('An unexpected error occurred', {
+            toast.error(error?.message || 'An unexpected error occurred while updating the waitlist entry.', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -94,7 +73,7 @@ const WaitlistManager = ({ cohortId }) => {
         }
     };
 
-    if (isWaitlistLoading || isCohortLoading) {
+    if (isWaitlistLoading) {
         return (
             <div className="p-4 flex items-center justify-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-teal-600"></div>
@@ -103,13 +82,15 @@ const WaitlistManager = ({ cohortId }) => {
         );
     }
 
-    if (waitlistError || cohortError) {
+    if (waitlistError) {
         return (
             <div className="p-4 text-red-500 bg-red-50 border border-red-200 rounded">
-                Error: {waitlistError || cohortError}
+                Error: {waitlistError}
             </div>
         );
-    }    // Filter entries for current cohort if cohortId is provided
+    }
+
+    // Filter entries for current cohort if cohortId is provided
     const filteredEntries = Array.isArray(entries) 
         ? (cohortId 
             ? entries.filter(entry => entry.preferredCohort === cohortId)
@@ -199,7 +180,9 @@ const WaitlistManager = ({ cohortId }) => {
                                                 <option value="pending">Pending</option>
                                                 <option value="accepted">Accept</option>
                                                 <option value="rejected">Reject</option>
-                                                <option value="enrolled">Enroll</option>
+                                                <option value="enrolled" disabled={!entry.preferredCohort} title={!entry.preferredCohort ? 'No cohort assigned — cannot enroll' : ''}>
+                                                    Enroll{!entry.preferredCohort ? ' (no cohort)' : ''}
+                                                </option>
                                             </select>
                                         </div>
                                     </td>

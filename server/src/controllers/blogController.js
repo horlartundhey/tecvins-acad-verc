@@ -2,6 +2,20 @@ const Blog = require('../models/Blog');
 const { deleteFromCloudinary } = require('../utils/cloudinary');
 const logger = require('../utils/logger');
 
+const hasMeaningfulContent = (content) => {
+    if (typeof content !== 'string') {
+        return false;
+    }
+
+    const normalized = content
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&nbsp;/gi, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+    return normalized.length > 0;
+};
+
 // Helper function to generate a unique slug
 const generateUniqueSlug = async (baseSlug) => {
     // Try the base slug first
@@ -28,9 +42,14 @@ const createBlog = async (req, res) => {
 
         const { title, content, tags, status, featuredImage } = req.body;
 
-        if (!title) {
+        if (!title || !title.trim()) {
             logger.error('Blog creation failed - Title missing', { body: req.body });
             return res.status(400).json({ message: 'Title is required' });
+        }
+
+        if (!hasMeaningfulContent(content)) {
+            logger.error('Blog creation failed - Content missing', { body: req.body });
+            return res.status(400).json({ message: 'Content is required' });
         }
 
         // Generate base slug from title
@@ -170,6 +189,10 @@ const updateBlog = async (req, res) => {
         if (blog.author.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
             return res.status(403).json({ message: 'Not authorized to update this blog' });
         }        const { title, content, tags, status, featuredImage } = req.body;
+
+        if (Object.prototype.hasOwnProperty.call(req.body, 'content') && !hasMeaningfulContent(content)) {
+            return res.status(400).json({ message: 'Content is required' });
+        }
 
         // Update basic fields
         if (title) {
