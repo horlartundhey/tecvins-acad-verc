@@ -25,10 +25,14 @@ exports.createHireRequest = async (req, res) => {
 exports.getAllHireRequests = async (req, res) => {
   try {
     const { page = 1, limit = 10, status, requestType } = req.query;
-    
+
     const query = {};
-    if (status) query.status = status;
-    if (requestType) query.requestType = requestType;
+    // The dashboard's "All Status" filter sends the literal string "all" to mean
+    // "no filter" - without this check it was querying for status: "all", which
+    // doesn't match any real document (the schema only allows pending/reviewed/
+    // contacted/closed), so the table always came back empty.
+    if (status && status !== 'all') query.status = status;
+    if (requestType && requestType !== 'all') query.requestType = requestType;
 
     const hireRequests = await HireRequest.find(query)
       .sort({ submittedAt: -1 })
