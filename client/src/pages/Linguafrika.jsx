@@ -48,7 +48,7 @@ const teamMembers = {
             </Link>
             <span className="hidden sm:inline mx-2 text-gray-500">/</span>
             <span className="text-gray-600 break-words text-xs sm:text-sm lg:text-base">
-              Language Learning App – LinguAfrika
+              Language Learning App - LinguAfrika
             </span>
           </nav>
 
@@ -64,7 +64,7 @@ const teamMembers = {
             {/* Content */}
             <div className="relative z-10 mx-auto mb-4 sm:mb-6 lg:mb-8">
               <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 leading-tight">
-                Language Learning App – LinguAfrika
+                Language Learning App - LinguAfrika
               </h1>
             </div>
           </div>
@@ -76,7 +76,7 @@ const teamMembers = {
             <div className="flex flex-col lg:grid lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 items-center">
               <div className="space-y-2 sm:space-y-3 lg:space-y-4 order-2 lg:order-1">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#0F2624]">Project Description</h2>
-                <p className="text-gray-600 text-sm sm:text-base lg:text-lg xl:text-xl font-normal leading-5 sm:leading-6 lg:leading-7 xl:leading-8">
+                <p className="text-gray-600 text-sm sm:text-base font-normal leading-5 sm:leading-6 lg:leading-7 xl:leading-8">
                   LinguAfrika is a platform dedicated to teaching African languages through AI-personalized lessons. It
                   enables users to engage with languages like Yoruba, Igbo, Swahili, and Zulu in interactive, gamified,
                   and culturally rich formats.
@@ -106,7 +106,7 @@ const teamMembers = {
               </div>
               <div className="space-y-2 sm:space-y-3 lg:space-y-4 lg:order-2">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#0F2624]">Problem It Solves</h2>
-                <ul className="list-disc list-inside space-y-1 sm:space-y-2 text-[#5E5E5E] text-sm sm:text-base lg:text-lg xl:text-xl font-normal leading-5 sm:leading-6 lg:leading-7 xl:leading-8 pl-2">
+                <ul className="list-disc list-inside space-y-1 sm:space-y-2 text-[#5E5E5E] text-sm sm:text-base font-normal leading-5 sm:leading-6 lg:leading-7 xl:leading-8 pl-2">
                   <li>Dwindling use of African languages</li>
                   <li>Lack of structured, scalable tools to learn African languages</li>
                   <li>Scarcity of localized and engaging language content</li>
@@ -122,13 +122,13 @@ const teamMembers = {
             <div className="flex flex-col lg:grid lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 items-center">
               <div className="space-y-2 sm:space-y-3 lg:space-y-4 order-2 lg:order-1">
                 <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold">Tools/Technologies Used</h2>
-                <p className="text-[#5E5E5E] text-sm sm:text-base lg:text-lg xl:text-xl font-normal leading-5 sm:leading-6 lg:leading-7 xl:leading-8">
+                <p className="text-[#5E5E5E] text-sm sm:text-base font-normal leading-5 sm:leading-6 lg:leading-7 xl:leading-8">
                   Jira, Confluence, Miro, Microsoft Teams, Slack, GitHub, Figma
                 </p>
-                <p className="text-[#5E5E5E] text-sm sm:text-base lg:text-lg xl:text-xl font-semibold">
+                <p className="text-[#5E5E5E] text-sm sm:text-base font-semibold">
                   <strong>Tech Stack:</strong>
                 </p>
-                <ul className="list-disc list-inside ml-2 sm:ml-4 space-y-1 sm:space-y-2 text-[#5E5E5E] text-sm sm:text-base lg:text-lg xl:text-xl">
+                <ul className="list-disc list-inside ml-2 sm:ml-4 space-y-1 sm:space-y-2 text-[#5E5E5E] text-sm sm:text-base">
                   <li>Frontend: React</li>
                   <li>Backend: Python</li>
                   <li>AI: GenAI integration for dynamic content</li>
@@ -253,13 +253,13 @@ const teamMembers = {
       {/* Action Buttons */}
       <div className="px-4 sm:px-6 lg:px-8 pb-6 sm:pb-8 lg:pb-11">
         <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 max-w-2xl mx-auto">
-          <Link href="/support" className="w-full sm:w-auto order-2 sm:order-1">
+          <Link to="/support" className="w-full sm:w-auto order-2 sm:order-1">
             <button className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl border border-gray-300 text-[#3B9790] font-semibold hover:bg-gray-50 transition-colors text-base sm:text-lg">
               Support Us
             </button>
           </Link>
 
-          <Link href="/courses" className="w-full sm:w-auto order-1 sm:order-2">
+          <Link to="/courses" className="w-full sm:w-auto order-1 sm:order-2">
             <button className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-xl bg-[#3B9790] text-white hover:bg-teal-700 transition-colors flex items-center justify-center font-semibold text-base sm:text-lg">
               Begin your learning journey
               <HiOutlineRocketLaunch className="ml-2 h-4 w-4" />

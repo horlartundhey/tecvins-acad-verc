@@ -89,7 +89,7 @@ const ProjectsByStudents = () => {
           <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
             Ideas to Execution: See What Our Students Are Building
           </h1>
-          <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-none lg:max-w-6xl leading-relaxed">
+          <p className="text-sm sm:text-base text-gray-600 max-w-none lg:max-w-6xl leading-relaxed">
             At Tecvinson Academy, our students don't just learn, they build. Through hands-on learning and real-world
             challenges, they develop practical, impactful solutions that address everyday problems across industries.
             This page showcases the remarkable work being created by our learners across Product Design, Development,
@@ -99,10 +99,10 @@ const ProjectsByStudents = () => {
       </div>
 
       {/* Featured Projects Section */}
-      <div className="py-8 sm:py-12 lg:py-16 font-montserrat">
+      <div className="py-8 sm:py-12 lg:py-16">
         <div className="w-full mx-auto">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-[32px] sm:text-3xl font-semibold text-gray-900 mb-8 sm:mb-12 lg:mb-20">Featured Projects</h2>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900 mb-8 sm:mb-12 lg:mb-20">Featured Projects</h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -121,7 +121,7 @@ const ProjectsByStudents = () => {
 
                   {/* Project Description */}
                   {project.description && (
-                    <p className="text-[#5E5E5E] text-base sm:text-lg lg:text-xl font-normal leading-6 sm:leading-7 mb-6 sm:mb-8 lg:mb-12">
+                    <p className="text-[#5E5E5E] text-sm sm:text-base font-normal leading-6 sm:leading-7 mb-6 sm:mb-8 lg:mb-12">
                       {project.description}
                     </p>
                   )}
@@ -170,12 +170,12 @@ const ProjectsByStudents = () => {
       {/* Bottom CTA Section */}
       <div className="px-4 sm:px-6 lg:px-8 pb-8 sm:pb-11">
         <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 max-w-2xl mx-auto">
-          <Link href="/support" className="w-full sm:w-auto order-2 sm:order-1">
+          <Link to="/support" className="w-full sm:w-auto order-2 sm:order-1">
             <button className="w-full px-4 sm:px-6 py-3 sm:py-[1.3rem] rounded-xl border border-gray-300 text-[#3B9790] font-semibold hover:bg-gray-50 transition-colors text-base sm:text-lg">
               Support Us
             </button>
           </Link>
-          <Link href="/courses" className="w-full sm:w-auto order-1 sm:order-2">
+          <Link to="/courses" className="w-full sm:w-auto order-1 sm:order-2">
             <button className="w-full px-4 sm:px-6 py-3 sm:py-[1.3rem] rounded-xl bg-[#3B9790] text-white hover:bg-teal-700 transition-colors flex items-center justify-center font-semibold text-base sm:text-lg">
               Begin your learning journey
               <HiOutlineRocketLaunch className="ml-2 h-4 w-4 flex-shrink-0" />
