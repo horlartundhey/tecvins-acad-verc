@@ -15,11 +15,11 @@ const Impactvi = () => {
   };
   return (
     <>
-    <div className='relative py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 overflow-hidden container mx-auto font-montserrat'>
+    <div className='relative py-8 sm:py-12 lg:py-16 px-4 sm:px-6 lg:px-8 overflow-hidden container mx-auto'>
     <div className=''>    
         {/* Heading */}
       <div className="mb-16">
-        <p className="text-[32px] text-[#0F2624] font-semibold">
+        <p className="text-xl sm:text-2xl lg:text-3xl text-[#0F2624] font-semibold">
           Watch this short video to see our journey, the impact so far, and why your contribution matters.
         </p>
       </div>
@@ -60,7 +60,7 @@ const Impactvi = () => {
       </div>
 
       <div>
-        <h2 className="text-[32px] font-semibold text-[#0F2624] mb-6">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#0F2624] mb-6">
         2026 Cohort: The Ask (what we’ll do with your funding)
       </h2>
 
@@ -77,11 +77,11 @@ const Impactvi = () => {
           </div>
           {/* Text panel */}
           <div className="bg-white p-6 flex-1">
-            <h3 className="font-semibold text-[24px] mb-4 text-[#1E4C48]">
+            <h3 className="font-semibold text-xl sm:text-2xl mb-4 text-[#1E4C48]">
               At a glance
             </h3>
             <ul className="list-disc list-inside space-y-2 text-[#1E4C48]">
-              <li>Train <span className="font-semibold">500 learners</span>  across <span className="font-semibold">14 tracks </span>(8–9 months)</li>
+              <li>Train <span className="font-semibold">500 learners</span>  across <span className="font-semibold">14 tracks </span>(8-9 months)</li>
               <li><span className="font-semibold">≤ 1:15 </span>mentor ratio</li>
               <li><span className="font-semibold">≥ 45% </span>women</li>
               <li>Need-based <span className="font-semibold">laptops/data</span></li>
@@ -100,13 +100,13 @@ const Impactvi = () => {
           </div>
           {/* Text panel */}
           <div className="bg-white p-6 flex-1">
-            <h3 className="font-semibold text-[24px] mb-4 text-[#875400]">
+            <h3 className="font-semibold text-xl sm:text-2xl mb-4 text-[#875400]">
               KPIs we commit to
             </h3>
             <ul className="list-disc list-inside space-y-2 text-[#875400]">
-              <li>Retention ≥ <span className="font-semibold">80%</span> (S1–2),<span className="font-semibold"> ≥ 70% </span> (S2–3), ≥ <span className="font-semibold"> 60%</span> graduate</li>
+              <li>Retention ≥ <span className="font-semibold">80%</span> (S1-2),<span className="font-semibold"> ≥ 70% </span> (S2-3), ≥ <span className="font-semibold"> 60%</span> graduate</li>
               <li><span className="font-semibold">60+ </span> capstone projects (demo/POC)</li>
-              <li><span className="font-semibold">150+ </span> internships/job offers within <span className="font-semibold">6–12 months</span></li>
+              <li><span className="font-semibold">150+ </span> internships/job offers within <span className="font-semibold">6-12 months</span></li>
               <li>NPS ≥ <span className="font-semibold">60</span></li>
               <li>≥ <span className="font-semibold">45%</span> women participation</li>
             </ul>
@@ -128,8 +128,8 @@ const Impactvi = () => {
         </div>
         {/* Text panel */}
         <div className="bg-white p-6 flex-1">
-          <h3 className="font-semibold text-[24px] mb-4 text-[#040093]">
-            Budget (USD) — total: $271,800
+          <h3 className="font-semibold text-xl sm:text-2xl mb-4 text-[#040093]">
+            Budget (USD) - total: $271,800
           </h3>
           <ul className="list-disc list-inside space-y-1 text-[#040093]">
             <li>Instruction & mentors <span className="font-semibold">$100,800</span></li>
@@ -149,7 +149,7 @@ const Impactvi = () => {
       </div>
 
       <div className="mb-12 ">
-        <h3 className="text-[32px] font-bold text-[#0F2624] mb-8">Ways to Partner</h3>
+        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2624] mb-8">Ways to Partner</h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {/* Tier 1 */}

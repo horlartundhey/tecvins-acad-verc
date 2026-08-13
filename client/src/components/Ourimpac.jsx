@@ -8,23 +8,23 @@ import { PiArrowFatRightFill } from 'react-icons/pi'
 const Ourimpac = () => {
   return (
     <>
-    <div className=" font-montserrat">
+    <div>
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">Our Impact</h2>
-        <div className="text-[#5E5E5E] text-[16px] leading-relaxed space-y-2 mb-6">
+        <div className="text-[#5E5E5E] text-base leading-relaxed space-y-2 mb-6">
           <p>
             Tecvinson Academy delivers{" "}
             <span className="font-semibold text-[#5E5E5E]">free, career-focused tech training</span> with mentorship and
             real product builds. Since 2023,
           </p>
           <p>
-            we've engaged <span className="font-semibold text-[#5E5E5E]">400+ learners</span>, progressed{" "}
+            we've engaged <span className="font-semibold text-[#5E5E5E]">600+ learners</span>, progressed{" "}
             <span className="font-semibold text-[#5E5E5E]">223</span> into team projects, and shipped demo-ready
             products.
           </p>
           <p>
             In <span className="font-semibold text-[#5E5E5E]">2026</span>, we aim to train{" "}
             <span className="font-semibold text-[#5E5E5E]">500 learners</span> across{" "}
-            <span className="font-semibold text-[#5E5E5E]">14 tracks</span>, with need-based{" "}
+            <span className="font-semibold text-[#5E5E5E]">17 tracks</span>, with need-based{" "}
             <span className="font-semibold text-[#5E5E5E]">laptops/data</span> and strong internship pathways.
           </p>
         </div>
@@ -43,7 +43,7 @@ const Ourimpac = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1 font-montserrat">2 Cohorts</h3>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">3 Cohorts</h3>
                 <p className="text-[#1E4C48] text-base font-medium ">(2023, 2024)</p>
               </div>
             </div>
@@ -58,7 +58,7 @@ const Ourimpac = () => {
                     </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1 font-montserrat">400+ Learners</h3>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">600+ Learners</h3>
                 <p className="text-[#1E4C48] text-base font-medium">Engaged</p>
               </div>
             </div>
@@ -73,7 +73,7 @@ const Ourimpac = () => {
                     </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1 font-montserrat">223</h3>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">223</h3>
                 <p className="text-[#1E4C48] text-base font-medium ">Reached Stage 3 (2024)</p>
               </div>
             </div>
@@ -91,7 +91,7 @@ const Ourimpac = () => {
                     </svg>
                 </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1 font-montserrat">14</h3>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">17</h3>
                 <p className="text-[#1E4C48] text-base font-medium ">Tracks</p>
                 <a href="/courses" className="text-teal-600 hover:text-teal-700 underline text-sm">
                   Explore Our Courses
@@ -109,7 +109,7 @@ const Ourimpac = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1 font-montserrat">18</h3>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">18</h3>
                 <p className="text-[#1E4C48] text-base font-medium ">Teams</p>
               </div>
             </div>
@@ -124,7 +124,7 @@ const Ourimpac = () => {
                     </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1 font-montserrat">32</h3>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">32</h3>
                 <p className="text-[#1E4C48] text-base font-medium ">Mentors/Trainers</p>
                 <a href="/our-trainers" className="text-teal-600 hover:text-teal-700 underline text-sm">
                   Meet Our Trainers
@@ -142,7 +142,7 @@ const Ourimpac = () => {
                     </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1 font-montserrat">1,000+</h3>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">1,000+</h3>
                 <p className="text-[#1E4C48] text-base font-medium">Live instructions/Clinic hours</p>
               </div>
             </div>
@@ -158,7 +158,7 @@ const Ourimpac = () => {
                 </svg>
             </div>
             <div>
-              <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1 font-montserrat">4 Flagship Builds</h3>
+              <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">4 Flagship Builds</h3>
               <p className="text-[#1E4C48] text-base font-medium ">D'EventMatcha, LinguAfrica, Imovelle, Studat, AI Solutions</p>
               <a href="/Projects-built" className="text-teal-600 hover:text-teal-700 underline text-sm">
                 Explore Projects by Our Students
@@ -185,8 +185,8 @@ const Ourimpac = () => {
       </div>
 
       {/* Results (2023-2024) section */}
-      <div className="mb-12 font-montserrat">
-        <h3 className="text-[32px] font-semibold text-[#0F2624] mb-8">Results (2023-2024)</h3>
+      <div className="mb-12">
+        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#0F2624] mb-8">Results (2023-2024)</h3>
 
         {/* Model Flow */}
         <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
@@ -199,7 +199,7 @@ const Ourimpac = () => {
 
           {/* Flow */}
           <div className="p-6 " style={{ backgroundColor: "#fff0ee" }}>
-            <div className="flex flex-wrap items-center justify-center gap-4 text-[28px]">
+            <div className="flex flex-wrap items-center justify-center gap-4 text-lg sm:text-xl lg:text-2xl">
               <span className="font-medium" style={{ color: "#B95F45" }}>
                 Foundations
               </span>
@@ -220,12 +220,12 @@ const Ourimpac = () => {
         </div>
       </div>
       {/* Cohort Metrics section */}
-      <div className="mb-12  font-montserrat">
-        <h3 className="text-[28px] font-semibold text-[#0F2624] mb-8">Cohort Metrics</h3>
+      <div className="mb-12">
+        <h3 className="text-2xl sm:text-3xl font-semibold text-[#0F2624] mb-8">Cohort Metrics</h3>
 
         <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
-            <table className="w-full text-xl">
+            <table className="w-full text-base">
               <thead>
                 <tr className="border-b border-gray-200 ">
                   <th className="text-left py-4 px-6 font-semibold text-[#0F2624]">METRIC</th>

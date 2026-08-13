@@ -101,7 +101,7 @@ const OurImpact = () => {
       </div>
 
       {/* Featured Projects Section */}
-      <div className=" font-montserrat">
+      <div>
         <div className="w-full mx-auto">
           <div className="container mx-auto px-4 sm:px-2 lg:px-8">
             <h2 className="text-[32px] sm:text-3xl font-semibold text-gray-900 mb-8 sm:mb-12 lg:mb-20">Projects & Stories</h2>
@@ -123,7 +123,7 @@ const OurImpact = () => {
 
                   {/* Project Description */}
                   {project.description && (
-                    <p className="text-[#5E5E5E] text-base sm:text-lg lg:text-xl font-normal leading-6 sm:leading-7 mb-6 sm:mb-8 lg:mb-12">
+                    <p className="text-[#5E5E5E] text-sm sm:text-base font-normal leading-6 sm:leading-7 mb-6 sm:mb-8 lg:mb-12">
                       {project.description}
                     </p>
                   )}
@@ -165,7 +165,7 @@ const OurImpact = () => {
 
       <Impactvi />
 
-      <div className="mb-12 font-montserrat">
+      <div className="mb-12">
         <div className="bg-[#1E4C48] p-8 text-center">
           <h3 className="text-2xl sm:text-3xl font-semibold text-[#EDF8F7] mb-4">Support Us in Making Impact</h3>
           <p className="text-[#EDF8F7] mb-3 text-sm font-normal">Connect with us through any of these channels.</p>

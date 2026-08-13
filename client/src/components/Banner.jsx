@@ -1,27 +1,31 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { FaRegHandPointRight } from "react-icons/fa6"
 import { HiBell } from "react-icons/hi2"
+import BootcampApplyModal from "./BootcampApplyModal"
 
 const Banner = ({
-  title = "Tecvinson Academy 5-Month Frontend Training",
-  description = "HTML, CSS, JavaScript",
-  startDate = "Tue, 2nd Sept 2025",
-  schedule = "Tue & Thu (18:00-20:00 WAT)",
-  endDate = "2025-08-22T23:59:59Z", // Application deadline
+  title = "Mobile App Development Bootcamp - Screening Test",
+  description = "Check your email for your screening test link",
+  startDate = "Sat, 1 Aug 2026",
+  schedule = "Sat & Sun (2-3 hrs/session)",
+  endDate = "2026-07-25T18:00:00+01:00", // Screening test closes (WAT)
   onApply,
   onDismiss,
   dismissible = true,
+  onHeightChange,
   className = "",
 }) => {
   const [isVisible, setIsVisible] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   })
+  const containerRef = useRef(null)
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -47,6 +51,30 @@ const Banner = ({
     return () => clearInterval(timer)
   }, [endDate])
 
+  // Report our rendered height to the parent layout so it can offset the navbar/content
+  useEffect(() => {
+    if (!onHeightChange) return
+
+    if (!isVisible || !containerRef.current) {
+      onHeightChange(0)
+      return
+    }
+
+    const node = containerRef.current
+    const report = () => onHeightChange(node.offsetHeight)
+
+    report()
+    const resizeObserver = new ResizeObserver(report)
+    resizeObserver.observe(node)
+    window.addEventListener("resize", report)
+
+    return () => {
+      resizeObserver.disconnect()
+      window.removeEventListener("resize", report)
+      onHeightChange(0)
+    }
+  }, [isVisible, onHeightChange])
+
   const handleDismiss = () => {
     setIsVisible(false)
     if (onDismiss) {
@@ -55,9 +83,7 @@ const Banner = ({
   }
 
   const handleApply = () => {
-    // Open the application form in a new tab
-    window.open("https://forms.office.com/e/A5YFCVrNtT", "_blank")
-
+    setIsModalOpen(true)
     if (onApply) {
       onApply()
     }
@@ -68,57 +94,76 @@ const Banner = ({
   const formatTime = (value) => value.toString().padStart(2, "0")
 
   return (
-    <div className={`bg-[#B7E5E1] text-[#1E1E1E] pt-3 sm:py-4 shadow-sm border-b ${className}`}>
-      <div className="container mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-0 py-2 ">
-          <div className="flex items-start sm:items-center gap-3">
-            <div className="flex-shrink-0 mt-1 sm:mt-0">
-              <HiBell className="h-5 w-5 sm:h-4 sm:w-[14.68px] text-[#1E4C48]" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-sm sm:text-[14px] text-gray-800 font-inter">
-                <div className="font-medium mb-1 sm:mb-0 sm:inline">{title}</div>
-                <div className="flex flex-col sm:inline sm:space-x-0 space-y-1 sm:space-y-0">
-                  <span className="sm:hidden">📚 {description}</span>
-                  <span className="sm:hidden">📅 Starts: {startDate}</span>
-                  <span className="sm:hidden">⏰ {schedule}</span>
+    <>
+      <div
+        ref={containerRef}
+        className={`fixed top-0 left-0 w-full z-[60] bg-[#B7E5E1] text-[#1E1E1E] pt-3 sm:py-4 shadow-sm border-b ${className}`}
+      >
+        <div className="container mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-0 py-2 ">
+            <div className="flex items-start sm:items-center gap-3">
+              <div className="flex-shrink-0 mt-1 sm:mt-0">
+                <HiBell className="h-5 w-5 sm:h-4 sm:w-[14.68px] text-[#1E4C48]" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm sm:text-[14px] text-gray-800 font-inter">
+                  <div className="font-medium mb-1 sm:mb-0 sm:inline">{title}</div>
+                  <div className="flex flex-col sm:inline sm:space-x-0 space-y-1 sm:space-y-0">
+                    <span className="sm:hidden">📚 {description}</span>
+                    <span className="sm:hidden">📅 Starts: {startDate}</span>
+                    <span className="sm:hidden">⏰ {schedule}</span>
 
-                  <span className="hidden sm:inline">
-                    <span className="mx-2">|</span>
-                    <span>{description}</span>
-                    <span className="mx-2">|</span>
-                    <span>Starts: {startDate}</span>
-                    <span className="mx-2">|</span>
-                    <span>{schedule}</span>
-                  </span>
+                    <span className="hidden sm:inline">
+                      <span className="mx-2">|</span>
+                      <span>{description}</span>
+                      <span className="mx-2">|</span>
+                      <span>Starts: {startDate}</span>
+                      <span className="mx-2">|</span>
+                      <span>{schedule}</span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
-            <div className="border-2 border-[#4ABDB4] rounded-lg px-3 py-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-2">
-              <div className="flex items-center gap-2 justify-center sm:justify-start">
-                <span className="text-xs sm:text-xs text-[#1E1E1E] font-medium font-inter">Application ends in</span>
-                <FaRegHandPointRight className="h-4 w-4 text-[#1E1E1E]" />
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+              <div className="border-2 border-[#4ABDB4] rounded-lg px-3 py-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-2">
+                <div className="flex items-center gap-2 justify-center sm:justify-start">
+                  <span className="text-xs sm:text-xs text-[#1E1E1E] font-medium font-inter">Screening test closes in</span>
+                  <FaRegHandPointRight className="h-4 w-4 text-[#1E1E1E]" />
+                </div>
+
+                <div className="bg-teal-50 px-3 py-2 sm:px-2 sm:py-1 rounded text-lg sm:text-xl font-inter font-bold text-[#0F2624] text-center">
+                  {formatTime(timeLeft.days)}d:{formatTime(timeLeft.hours)}h:{formatTime(timeLeft.minutes)}m:
+                  {formatTime(timeLeft.seconds)}s
+                </div>
               </div>
 
-              <div className="bg-teal-50 px-3 py-2 sm:px-2 sm:py-1 rounded text-lg sm:text-xl font-inter font-bold text-[#0F2624] text-center">
-                {formatTime(timeLeft.days)}d:{formatTime(timeLeft.hours)}h:{formatTime(timeLeft.minutes)}m:
-                {formatTime(timeLeft.seconds)}s
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleApply}
+                  className="bg-white text-[#3B9790] hover:bg-gray-50 active:bg-gray-100 border border-[#C8C8C8] px-6 py-3 sm:px-4 sm:py-2 rounded-[16px] text-sm sm:text-[14px] font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#3B9790] focus:ring-offset-2 flex-1 sm:flex-none min-h-[44px] sm:min-h-0"
+                >
+                  Screening Test Info
+                </button>
+
+                {dismissible && (
+                  <button
+                    onClick={handleDismiss}
+                    aria-label="Dismiss banner"
+                    className="text-[#1E4C48] hover:text-[#0F2624] transition-colors p-2 flex-shrink-0"
+                  >
+                    ✕
+                  </button>
+                )}
               </div>
             </div>
-
-            <button
-              onClick={handleApply}
-              className="bg-white text-[#3B9790] hover:bg-gray-50 active:bg-gray-100 border border-[#C8C8C8] px-6 py-3 sm:px-4 sm:py-2 rounded-[16px] text-sm sm:text-[14px] font-semibold font-montserrat transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#3B9790] focus:ring-offset-2 w-full sm:w-auto min-h-[44px] sm:min-h-0"
-            >
-              Apply Now
-            </button>
           </div>
         </div>
       </div>
-    </div>
+
+      <BootcampApplyModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   )
 }
 
