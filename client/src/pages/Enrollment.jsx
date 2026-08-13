@@ -1,5 +1,5 @@
 import { Info, Rocket, Plus, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ApplicationModal from "../components/ApplicationModal";
 import WaitlistModal from "../components/WaitlistModal";
 import { HiArrowLongDown } from "react-icons/hi2";
@@ -9,6 +9,7 @@ import api from "../services/api";
 
 const Enrollment = () => {
   const [expandedStage, setExpandedStage] = useState(null);
+  const stageRefs = useRef({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalStep, setModalStep] = useState("notice"); // notice, form, success
   const [formType, setFormType] = useState('application');  const [formData, setFormData] = useState({
@@ -62,9 +63,19 @@ const Enrollment = () => {
   const toggleStage = (stageNumber) => {
     if (expandedStage === stageNumber) {
       setExpandedStage(null);
-    } else {
-      setExpandedStage(stageNumber);
+      return;
     }
+    setExpandedStage(stageNumber);
+    // Only one stage is expanded at a time, and the stages vary hugely in length
+    // (Stage 1/3 run 13-15 items, Stage 2/4 only 4-6). Collapsing a long stage
+    // while expanding a short one can shrink the page by thousands of pixels in
+    // one render, and if the scroll position was inside the collapsing content,
+    // the browser has nowhere to put it but the new bottom of the page - which
+    // reads as "expanding jumped me to the end." Scroll the newly-expanded
+    // stage into view instead of leaving the landing spot to chance.
+    requestAnimationFrame(() => {
+      stageRefs.current[stageNumber]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   };
 
   const handleInputChange = (e) => {
@@ -189,7 +200,7 @@ const Enrollment = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="bg-gradient-to-br from-gray-50 to-pink-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-10">Apply to Tecvinson Academy</h1>
 
@@ -345,7 +356,11 @@ const Enrollment = () => {
             {/* Timeline Stages */}
             <div className="space-y-2 sm:space-y-4">
               {timelineStages.map((stage) => (
-                <div key={stage.number} className="relative">
+                <div
+                  key={stage.number}
+                  ref={(el) => { stageRefs.current[stage.number] = el; }}
+                  className="relative"
+                >
                   {/* Stage Circle */}
                   <div className="absolute left-1 sm:left-2 transform -translate-x-1/2 top-2 sm:top-2">
                     <div className="w-4 sm:w-6 h-4 sm:h-6 bg-white rounded-full border-2 sm:border-4 border-teal-100 flex items-center justify-center"></div>
