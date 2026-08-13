@@ -22,7 +22,7 @@ const faqData = {
     {
       question: "What makes Tecvinson Academy different from other training platforms?",
       answer:
-        "• 💯 Completely Free – No tuition or hidden fees.\n• 🛠 Hands-On Learning – Real-world projects, live mentorship, and teamwork.\n• 📈 Up-to-Date Curriculum – Constantly aligned with industry trends.\n• 🚀 Career Support – CV writing, interview prep, and LinkedIn optimization.\n• 📅 Structured & Disciplined – Strong commitment and attendance required.\n• 🌍 Fully Online – Accessible globally with the right tools.",
+        "• 💯 Completely Free - No tuition or hidden fees.\n• 🛠 Hands-On Learning - Real-world projects, live mentorship, and teamwork.\n• 📈 Up-to-Date Curriculum - Constantly aligned with industry trends.\n• 🚀 Career Support - CV writing, interview prep, and LinkedIn optimization.\n• 📅 Structured & Disciplined - Strong commitment and attendance required.\n• 🌍 Fully Online - Accessible globally with the right tools.",
     },
     {
       question: "How is the training structured?",
@@ -37,14 +37,14 @@ const faqData = {
     {
       question: "How long are the courses at Tecvinson Academy?",
       answer:
-        "Course duration varies depending on the program. Our bootcamp-style courses typically run 12-24 weeks, while specialized workshops can be completed in 2-6 weeks. Self-paced online courses allow you to learn at your own speed.",
+        "Course duration varies depending on the program. Our bootcamp-style courses typically run 12-24 weeks, while specialized workshops can be completed in 6-12 weeks. Self-paced online courses allow you to learn at your own speed.",
     },
   ],
   courses: [
     {
       question: "What courses are available?",
       answer:
-        "We offer 15+ job-focused courses across four key areas:\n\n🧭 Product Management\n• Product Management\n• Product Owner\n• Business Analysis\n\n🎨 Product Design\n• UI/UX Design\n\n💻 Product Development\n• Frontend Development\n• Backend Development\n• Mobile Development\n• Data Science & Machine Learning\n\n💼 Career Readiness & Freelancing\n• Career Coaching & Interview Prep",
+        "We offer 15+ job-focused courses across four key areas:\n\n🧭 Product Management\n• Product Management\n• Product Owner\n• Business Analysis\n\n🎨 Product Design\n• UI/UX Design\n• Graphics Design\n\n💻 Product Development\n• Frontend Development\n• Backend Development\n• Mobile Development\n• Data Science & Machine Learning\n\n💼 Career Readiness & Freelancing\n• Career Coaching & Interview Prep",
     },
     {
       question: "What programming languages do you teach?",
