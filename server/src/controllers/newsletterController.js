@@ -5,11 +5,18 @@ const Newsletter = require('../models/Newsletter');
 // @access  Public
 const subscribe = async (req, res) => {
     try {
-        const { email } = req.body;
+        const email = String(req.body.email || '').trim().toLowerCase();
+
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Please enter a valid email address.'
+            });
+        }
 
         // Check if already subscribed
         let subscriber = await Newsletter.findOne({ email });
-        
+
         if (subscriber) {
             if (subscriber.isSubscribed) {
                 return res.status(400).json({
@@ -34,6 +41,14 @@ const subscribe = async (req, res) => {
             data: subscriber
         });
     } catch (error) {
+        // Unique-index race: two requests for the same address at once
+        if (error.code === 11000) {
+            return res.status(400).json({
+                success: false,
+                message: 'Email is already subscribed to our newsletter.'
+            });
+        }
+
         res.status(500).json({
             success: false,
             message: 'Failed to subscribe. Please try again.',
