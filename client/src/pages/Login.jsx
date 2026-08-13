@@ -52,7 +52,7 @@ const Login = () => {
         );
     }
 
-    // Already authenticated — render nothing while redirect fires
+    // Already authenticated - render nothing while redirect fires
     if (isAuthenticated && user) return null;
 
     return (

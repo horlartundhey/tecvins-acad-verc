@@ -71,7 +71,7 @@ const authSlice = createSlice({
     extraReducers: (builder) => {
         builder
             // When redux-persist rehydrates the store, reset isInitializing
-            // based on whether there's a token — we always need to verify it
+            // based on whether there's a token - we always need to verify it
             .addCase('persist/REHYDRATE', (state, action) => {
                 const token = action.payload?.auth?.token || localStorage.getItem('token');
                 if (token) {

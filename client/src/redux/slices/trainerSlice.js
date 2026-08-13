@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiService from '../services/apiService';
+import { getApiErrorMessage } from '../../utils/apiError';
 
 export const submitTrainerApplication = createAsyncThunk(
     'trainers/submit',
@@ -9,7 +10,7 @@ export const submitTrainerApplication = createAsyncThunk(
             const response = await apiService.post('/trainers/apply', applicationData);
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to submit application. Please try again.'));
         }
     }
 );
@@ -21,7 +22,7 @@ export const getAllTrainerApplications = createAsyncThunk(
             const response = await apiService.get('/trainers/applications', { params: filters });
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to load applications'));
         }
     }
 );
@@ -33,7 +34,7 @@ export const updateTrainerApplicationStatus = createAsyncThunk(
             const response = await apiService.put(`/trainers/applications/${id}`, { status });
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to update application status'));
         }
     }
 );

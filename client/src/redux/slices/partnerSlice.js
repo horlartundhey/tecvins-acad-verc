@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiService from '../services/apiService';
+import { getApiErrorMessage } from '../../utils/apiError';
 
 export const submitPartnership = createAsyncThunk(
     'partners/submit',
@@ -8,7 +9,7 @@ export const submitPartnership = createAsyncThunk(
             const response = await apiService.post('/partners', formData);
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to submit partnership request. Please try again.'));
         }
     }
 );
@@ -20,7 +21,7 @@ export const getAllPartnerships = createAsyncThunk(
             const response = await apiService.get('/partners', { params: filters });
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to load partnership requests'));
         }
     }
 );
@@ -32,7 +33,7 @@ export const updatePartnershipStatus = createAsyncThunk(
             const response = await apiService.put(`/partners/${id}`, { status });
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to update partnership status'));
         }
     }
 );
@@ -44,7 +45,7 @@ export const deletePartnership = createAsyncThunk(
             const response = await apiService.delete(`/partners/${id}`);
             return { id, ...response.data };
         } catch (error) {
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to delete partnership request'));
         }
     }
 );
@@ -56,7 +57,7 @@ export const exportPartnerships = createAsyncThunk(
             const response = await apiService.get('/partners/export');
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to export partnership requests'));
         }
     }
 );

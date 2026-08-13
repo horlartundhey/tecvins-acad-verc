@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { normalizeApiError } from '../../utils/normalizeApiError';
 
 // Global flag to prevent API calls after auth failure
 let isAuthenticating = false;
 
-// Smart URL detection — matches same logic as api.js
+// Smart URL detection - matches same logic as api.js
 const getApiUrl = () => {
     const hostname = window.location.hostname;
     if (hostname === 'localhost' || hostname === '127.0.0.1') {
@@ -106,13 +107,8 @@ apiService.interceptors.response.use(
             return Promise.reject(new Error('Authentication failed - API disabled'));
         }
 
-        // Handle other HTTP errors
-        if (error.response) {
-            return Promise.reject(error.response.data || error.response);
-        }
-
-        // Handle network errors
-        return Promise.reject(error);
+        // Handle all other HTTP and network errors
+        return Promise.reject(normalizeApiError(error));
     }
 );
 

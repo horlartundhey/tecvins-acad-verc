@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiService from '../services/apiService';
+import { getApiErrorMessage } from '../../utils/apiError';
 
 export const subscribeToNewsletter = createAsyncThunk(
     'newsletter/subscribe',
@@ -8,7 +9,7 @@ export const subscribeToNewsletter = createAsyncThunk(
             const response = await apiService.post('/newsletter/subscribe', { email });
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to subscribe. Please try again.'));
         }
     }
 );
@@ -20,7 +21,7 @@ export const unsubscribeFromNewsletter = createAsyncThunk(
             const response = await apiService.post('/newsletter/unsubscribe', { email });
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to unsubscribe. Please try again.'));
         }
     }
 );
@@ -32,7 +33,7 @@ export const fetchSubscribers = createAsyncThunk(
             const response = await apiService.get('/newsletter/subscribers');
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Failed to fetch subscribers');
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to fetch subscribers'));
         }
     }
 );
@@ -68,13 +69,15 @@ const newsletterSlice = createSlice({
             })
             .addCase(subscribeToNewsletter.rejected, (state, action) => {
                 state.isLoading = false;
-                state.error = action.payload;
+                // Never leave the user with a silent failure, even if the thunk
+                // rejected without a payload (e.g. an unexpected throw)
+                state.error = action.payload || action.error?.message || 'Failed to subscribe. Please try again.';
             })
             .addCase(unsubscribeFromNewsletter.fulfilled, (state, action) => {
                 state.successMessage = action.payload.message;
             })
             .addCase(unsubscribeFromNewsletter.rejected, (state, action) => {
-                state.error = action.payload;
+                state.error = action.payload || action.error?.message || 'Failed to unsubscribe. Please try again.';
             })
             .addCase(fetchSubscribers.pending, (state) => {
                 state.subscribersLoading = true;
