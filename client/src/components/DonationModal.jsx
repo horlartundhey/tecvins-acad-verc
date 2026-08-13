@@ -332,6 +332,15 @@ const DonationModal = ({ isOpen, onClose }) => {
                 name="amount"
                 value={formData.amount}
                 onChange={handleInputChange}
+                onKeyDown={(e) => {
+                  // Digits and a single decimal point only - no exponent notation or negatives
+                  if (['e', 'E', '-', '+'].includes(e.key)) { e.preventDefault(); return; }
+                  if (e.key === '.' && e.target.value.includes('.')) e.preventDefault();
+                }}
+                onPaste={(e) => {
+                  const text = e.clipboardData.getData('text');
+                  if (!/^\d+(\.\d+)?$/.test(text)) e.preventDefault();
+                }}
                 placeholder="0.00"
                 min="0"
                 step="0.01"

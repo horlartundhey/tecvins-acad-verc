@@ -362,6 +362,15 @@ const CohortSettings = ({ id }) => {
                     type="number"
                     name="maxStudents"
                     value={cohort.maxStudents}
+                    min={1}
+                    step={1}
+                    onKeyDown={(e) => {
+                      if (['e', 'E', '.', '-', '+'].includes(e.key)) e.preventDefault();
+                    }}
+                    onPaste={(e) => {
+                      const text = e.clipboardData.getData('text');
+                      if (!/^\d+$/.test(text)) e.preventDefault();
+                    }}
                     onChange={handleInputChange}
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                     required
@@ -460,6 +469,15 @@ const CohortSettings = ({ id }) => {
                       type="number"
                       name="currentEnrollment"
                       value={cohort.currentEnrollment}
+                      min={0}
+                      step={1}
+                      onKeyDown={(e) => {
+                        if (['e', 'E', '.', '-', '+'].includes(e.key)) e.preventDefault();
+                      }}
+                      onPaste={(e) => {
+                        const text = e.clipboardData.getData('text');
+                        if (!/^\d+$/.test(text)) e.preventDefault();
+                      }}
                       onChange={handleInputChange}
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm"
                       required
