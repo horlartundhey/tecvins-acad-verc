@@ -1,5 +1,5 @@
 "use client"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { HiArrowLongRight, HiGlobeAlt, HiOutlineRocketLaunch } from "react-icons/hi2"
 import { TbChartPieFilled } from "react-icons/tb"
 import { Link } from "react-router-dom"
@@ -11,8 +11,11 @@ import binoc from "../assets/images/binoc.png"
 import road from "../assets/images/road.png"
 import OurPartners from "../components/OurPartners"
 import Testimonials from "../components/Testimonials"
+import TestimonialModal from "../components/TesimonialModal"
 
 const OurJourney = () => {
+  const [isTestimonialModalOpen, setIsTestimonialModalOpen] = useState(false)
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -31,7 +34,7 @@ const OurJourney = () => {
         {/* Three Column Layout */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 sm:mt-8">
           {/* Content Grid - Responsive Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 relative mb-16 sm:mb-32">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 relative mb-8 sm:mb-12">
             {/* First Image */}
             <div className="lg:col-span-1 order-1">
               <div className="rounded-lg overflow-hidden shadow-lg h-48 sm:h-64 lg:h-80">
@@ -66,9 +69,9 @@ const OurJourney = () => {
           </div>
 
           {/* Milestones Timeline Section */}
-          <section className="py-16 px-4">
+          <section className="pt-4 pb-16 px-4">
             <div className="max-w-7xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold mb-16 text-gray-900 text-center">Milestones</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900 text-center">Milestones</h2>
 
               <div className="relative w-full h-[800px] mx-auto">
                 {/* SVG Container for the curved path and connection lines */}
@@ -122,7 +125,8 @@ const OurJourney = () => {
                           Individual tutoring in Software Development and Quality
                         </h4>
                         <p className="text-xs text-gray-600 leading-relaxed">
-                          This is a placeholder supporting text copy to replace the read more expanded state.
+                          Founder Vincent Oke began training people one on one, helping them acquire tech skills and
+                          laying the foundation for what would become Tecvinson Academy.
                         </p>
                       </div>
                     </div>
@@ -142,7 +146,7 @@ const OurJourney = () => {
                           Tecvinson Limited opens in London, United Kingdom
                         </h4>
                         <p className="text-xs text-gray-600 leading-relaxed">
-                          This is a placeholder supporting text copy to replace the read more expanded state.
+                          The growing training practice takes on a formal home in the United Kingdom.
                         </p>
                       </div>
                     </div>
@@ -161,7 +165,8 @@ const OurJourney = () => {
                           Tecvinson Ltd. opens in Marina, Lagos, Nigeria
                         </h4>
                         <p className="text-xs text-gray-600 leading-relaxed">
-                          This is a placeholder supporting text copy to replace the read more expanded state.
+                          A second office opens in Marina, Lagos, extending our reach into the West African tech
+                          community.
                         </p>
                       </div>
                     </div>
@@ -180,7 +185,8 @@ const OurJourney = () => {
                           Tecvinson Academy opens in Sweden. 6-month bootcamp started.
                         </h4>
                         <p className="text-xs text-gray-600 leading-relaxed">
-                          This is a placeholder supporting text copy to replace the read more expanded state.
+                          Free tech education begins. Our first bootcamp, a comprehensive C# programming course, drew 90
+                          motivated learners from Asia, Europe, the Americas and Africa.
                         </p>
                       </div>
                     </div>
@@ -199,7 +205,7 @@ const OurJourney = () => {
                           Significant expansion - 11 month intensive bootcamp
                         </h4>
                         <p className="text-xs text-gray-600 leading-relaxed">
-                          This is a placeholder supporting text copy to replace the read more expanded state.
+                          Building on the first cohort's success, the programme grew to 400 students from 16 countries.
                         </p>
                       </div>
                     </div>
@@ -208,7 +214,10 @@ const OurJourney = () => {
               </div>
 
               <div className="text-center mt-12">
-                <button className="text-[#3B9790] bg-[#FAFAFA] border-2 border-[#3B9790] rounded-lg px-6 py-3 hover:bg-[#3B9790] hover:text-white transition-colors flex items-center mx-auto">
+                <button
+                  onClick={() => setIsTestimonialModalOpen(true)}
+                  className="text-[#3B9790] bg-[#FAFAFA] border-2 border-[#3B9790] rounded-lg px-6 py-3 hover:bg-[#3B9790] hover:text-white transition-colors flex items-center mx-auto"
+                >
                   Discover our Graduates' Success Stories <HiArrowLongRight className="ml-2 h-6 w-6" />
                 </button>
               </div>
@@ -253,7 +262,10 @@ const OurJourney = () => {
           </div>
           {/* Centered Button */}
           <div className="text-center mt-12">
-            <button className="inline-flex items-center px-4 py-3 border border-white text-white rounded-lg hover:bg-white hover:text-orange-600 transition-colors duration-300">
+            <button
+              onClick={() => setIsTestimonialModalOpen(true)}
+              className="inline-flex items-center px-4 py-3 border border-white text-white rounded-lg hover:bg-white hover:text-orange-600 transition-colors duration-300"
+            >
               Discover our Graduates' Success Stories
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -280,7 +292,7 @@ const OurJourney = () => {
             <div className="md:col-span-2 space-y-6 text-[#0F2624] leading-relaxed">
               <p>
                 Tecvinson Academy started on the scene with a mission-driven purpose. From day one, our focus was on
-                helping people acquire the right skills for securing jobs in the tech world. Founder Vincent Obi puts it
+                helping people acquire the right skills for securing jobs in the tech world. Founder Vincent Oke puts it
                 this way: "We did not just want to end up being another classroom or training center but aspired to make
                 a difference in the tech world by serving as a growth catalyst that makes it possible for individuals to
                 restart their careers in digital space."
@@ -351,7 +363,7 @@ const OurJourney = () => {
               <p className="text-gray-700 leading-relaxed">
                 In 2023, Tecvinson Academy made the transformative decision to enable possibilities for more aspiring
                 tech professionals, by offering free tech education. We launched our initiative with our first free boot
-                camp – a comprehensive C# programming training for software development was announced and 90 highly
+                camp - a comprehensive C# programming training for software development was announced and 90 highly
                 motivated learners from Asia, Europe, the Americas, and Africa attended the intense 6-month virtual boot
                 camp.
               </p>
@@ -457,6 +469,14 @@ const OurJourney = () => {
       </section>
 
       <Testimonials />
+
+      {/* One instance for the page - both "Discover our Graduates' Success
+          Stories" buttons above open this */}
+      <TestimonialModal
+        isOpen={isTestimonialModalOpen}
+        onClose={() => setIsTestimonialModalOpen(false)}
+        title="Our Graduates' Success Stories"
+      />
     </div>
   )
 }

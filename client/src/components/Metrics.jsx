@@ -59,7 +59,7 @@ const Metrics = () => {
           {/* Text with arrow - hidden on mobile, shown on desktop */}
           <div className="hidden md:flex items-center justify-between">
             <div className="flex items-center text-white">
-              <p className="text-xl font-medium">Numbers don't lie—be a part of our success story!</p>
+              <p className="text-xl font-medium">Numbers don't lie, be a part of our success story!</p>
               <HiArrowLongRight className="w-9 h-9 ml-5" />
             </div>
             <div className="flex gap-4 font-semibold">
@@ -84,7 +84,7 @@ const Metrics = () => {
             {/* Text section for mobile */}
             <div className="text-center mb-6">
               <p className="text-lg font-medium text-white leading-relaxed">
-                Numbers don't lie—be a part of our success story!
+                Numbers don't lie, be a part of our success story!
               </p>
             </div>
             

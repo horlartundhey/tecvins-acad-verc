@@ -1,6 +1,7 @@
 import React from 'react';
 import { HiOutlineRocketLaunch } from "react-icons/hi2";
 import { Link } from 'react-router-dom';
+import SdgList from './SdgList';
 
 const SustainableG = () => {
   return (
@@ -35,20 +36,9 @@ const SustainableG = () => {
               Our mission aligns with the United Nations Sustainable Development Goals (SDGs), particularly:
             </p>
             
-            <ul className="space-y-2 mb-4">
-              <li className="flex items-start">
-                <span className="inline-block w-2 h-2 bg-white rounded-full mt-2 mr-2"></span>
-                <span><strong>SDG 4 (Quality Education);</strong></span>
-              </li>
-              <li className="flex items-start">
-                <span className="inline-block w-2 h-2 bg-white rounded-full mt-2 mr-2"></span>
-                <span><strong>SDG 5 (Gender Equality);</strong> and</span>
-              </li>
-              <li className="flex items-start">
-                <span className="inline-block w-2 h-2 bg-white rounded-full mt-2 mr-2"></span>
-                <span><strong>SDG 8 (Decent Work and Economic Growth).</strong></span>
-              </li>
-            </ul>
+            {/* Left at the inherited 16px on purpose: at 18px "SDG 8: Decent
+                Work & Economic Growth" no longer fits the third-width card */}
+            <SdgList />
             
             <p className='text-white text-[16px] sm:text-[18px] font-normal leading-relaxed'>
               Here's how we're making a difference...🌎

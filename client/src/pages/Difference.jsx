@@ -72,7 +72,7 @@ const RocketIcon = () => (
       icon: BsFillLaptopFill,
       title: "Practical, Hands-On Learning",
       description:
-        "Our students don't just learn theory—they build real-world projects, collaborate in teams, and solve real challenges.",
+        "Our students don't just learn theory - they build real-world projects, collaborate in teams, and solve real challenges.",
     },
     {
       icon: StarBadge,
@@ -84,7 +84,7 @@ const RocketIcon = () => (
       icon: HiGlobeAlt,
       title: "Global Access, Local Impact",
       description:
-        "Whether you're in Sweden, Nepal, India, or anywhere else—if you have a laptop and internet, you can join.",
+        "Whether you're in Sweden, Nepal, India, or anywhere else - if you have a laptop and internet, you can join.",
     },
     {
       icon: StarBadgeWithArrow,

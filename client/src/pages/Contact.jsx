@@ -117,36 +117,44 @@ const Contact = () => {
               <div className="flex space-x-3">
                 {/* LinkedIn */}
                 <a
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/company/tecvinson-academy/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-white rounded-full p-2.5 flex items-center justify-center hover:bg-gray-100 transition-colors"
-                  aria-label="LinkedIn"
+                  aria-label="LinkedIn (opens in a new tab)"
                 >
                   <SiLinkedin className="h-5 w-5 text-[#3B9790]" />
                 </a>
 
                 {/* Twitter/X */}
                 <a
-                  href="https://x.com"
+                  href="https://x.com/tecvinsonac"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-white rounded-full p-2.5 flex items-center justify-center hover:bg-gray-100 transition-colors"
-                  aria-label="Twitter/X"
+                  aria-label="Twitter/X (opens in a new tab)"
                 >
                   <RiTwitterXFill className="h-5 w-5 text-[#3B9790]" />
                 </a>
 
                 {/* Facebook */}
                 <a
-                  href="https://facebook.com"
+                  href="https://www.facebook.com/tecvinsonac/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-white rounded-full p-2.5 flex items-center justify-center hover:bg-gray-100 transition-colors"
-                  aria-label="Facebook"
+                  aria-label="Facebook (opens in a new tab)"
                 >
                   <SiFacebook className="h-5 w-5 text-[#3B9790]" />
                 </a>
 
                 {/* Instagram */}
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/tecvinsonac/"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="bg-white rounded-full p-2.5 flex items-center justify-center hover:bg-gray-100 transition-colors"
-                  aria-label="Instagram"
+                  aria-label="Instagram (opens in a new tab)"
                 >
                   <RiInstagramFill className="h-5 w-5 text-[#3B9790]" />
                 </a>

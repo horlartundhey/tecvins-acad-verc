@@ -1,92 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { HiPlay, HiRocketLaunch, HiArrowLongRight, HiXMark } from 'react-icons/hi2';
 import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 import { Link } from 'react-router-dom';
-import api from '../services/api';
+import { useTestimonials, isYouTubeUrl, getEmbedUrl, toParagraphs } from '../hooks/useTestimonials';
 
-// Fallback data used while loading or if API is unavailable
-const FALLBACK_TESTIMONIALS = [
-  {
-    _id: 'fallback-1',
-    image: "https://res.cloudinary.com/dwgyu7pr9/image/upload/v1749836961/gloria_pon7wq.png",
-    quote: [
-      "The hands-on approach at Tecvinson Academy gave me practical skills that I use every day.",
-      "The curriculum is up-to-date with industry standards, and the career support helped me connect with top employers in the field."
-    ],
-    name: "Gloria Ondieki",
-    title: "Graduate, Web Development Program",
-    videoUrl: "https://res.cloudinary.com/dwgyu7pr9/video/upload/v1749835087/Tecvinson_Academy_Gloria_Ondieki_szuhrc.mp4"
-  },
-  {
-    _id: 'fallback-2',
-    image: "https://res.cloudinary.com/dwgyu7pr9/image/upload/v1749836961/clifford_yifuaq.png",
-    quote: [
-      "Enrolling at Tecvinson Academy was one of the best decisions I've ever made! The instructors were incredibly knowledgeable and always willing to help, making the learning experience truly enjoyable."
-    ],
-    name: "Clifford Tochi",
-    title: "Student at Tecvinson Academy",
-    videoUrl: "https://res.cloudinary.com/dwgyu7pr9/video/upload/v1749835078/Tecvinson_Academy_Clifford_Tochi_jb9lx9.mp4"
-  },
-    // {
-    //   id: 3,
-    //   image: "/student3.jpg",
-    //   quote: ["Tecvinson Academy's flexible learning options allowed me to balance my full-time job while acquiring new skills. The instructors provided individualized attention that made complex concepts easy to understand. Within two months of graduation, I received three job offers!"],
-    //   name: "Sarah Johnson",
-    //   title: "Graduate, Data Science Program",
-    //   videoUrl: "https://www.youtube.com/watch?v=another-youtube-id" // YouTube video
-    // },
-    // {
-    //   id: 4,
-    //   image: "/student4.jpg",
-    //   quote: ["As someone transitioning careers, I was nervous about entering tech without prior experience. Tecvinson Academy created a supportive environment where I could learn at my own pace. Now I'm working as a full-stack developer at a startup I admire!"],
-    //   name: "Michael Adeyemi",
-    //   title: "Graduate, Software Engineering Program",
-    //   videoUrl: "https://res.cloudinary.com/your-cloud-name/video/upload/v1234567890/testimonial4.mp4" // Cloudinary video URL
-    // },
-    // {
-    //   id: 5,
-    //   image: "/student5.jpg",
-    //   quote: ["The project-based curriculum at Tecvinson Academy helped me build an impressive portfolio that got me noticed by employers. The career counseling and interview preparation were invaluable in landing my dream role."],
-    //   name: "Priya Sharma",
-    //   title: "Graduate, Digital Marketing Program",
-    //   videoUrl: "https://www.youtube.com/watch?v=another-youtube-id-2" // YouTube video
-    // }
-];
 
 export default function Testimonials() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const { testimonials, currentSlide, nextSlide, prevSlide, goToSlide } = useTestimonials();
   const [showVideoModal, setShowVideoModal] = useState(false);
-  const [testimonials, setTestimonials] = useState(FALLBACK_TESTIMONIALS);
-
-  // Fetch testimonials from API; fall back to hardcoded data on error
-  useEffect(() => {
-    const fetchTestimonials = async () => {
-      try {
-        const res = await api.get('/testimonials');
-        const data = res.data.data;
-        if (Array.isArray(data) && data.length > 0) {
-          setTestimonials(data);
-          setCurrentSlide(0);
-        }
-      } catch {
-        // Keep fallback data — no visible error needed on public page
-      }
-    };
-    fetchTestimonials();
-  }, []);
-
-  // Functions to navigate slides
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1));
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1));
-  };
-
-  const goToSlide = (index) => {
-    setCurrentSlide(index);
-  };
 
   const openVideoModal = () => {
     setShowVideoModal(true);
@@ -94,28 +15,6 @@ export default function Testimonials() {
 
   const closeVideoModal = () => {
     setShowVideoModal(false);
-  };
-
-  // Function to extract YouTube video ID
-  const getYouTubeVideoId = (url) => {
-    if (!url) return null;
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-  };
-
-  // Function to check if URL is a YouTube URL
-  const isYouTubeUrl = (url) => {
-    return url?.includes('youtube.com') || url?.includes('youtu.be');
-  };
-
-  // Function to get embed URL
-  const getEmbedUrl = (url) => {
-    if (isYouTubeUrl(url)) {
-      const videoId = getYouTubeVideoId(url);
-      return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : url;
-    }
-    return url;
   };
 
   // Function to render video player based on URL type
@@ -197,20 +96,20 @@ export default function Testimonials() {
               </svg>
             </div>
             <div className="text-gray-700 space-y-4 md:space-y-6">
-              {testimonials[currentSlide].quote.map((paragraph, index) => (
-                <p key={index} className="text-base md:text-lg leading-relaxed">
+              {toParagraphs(testimonials[currentSlide].quote).map((paragraph, index) => (
+                <p key={index} className="text-sm sm:text-base leading-relaxed">
                   {paragraph}
                 </p>
               ))}
             </div>
             <div className="pt-4 md:pt-6">
-              <p className="font-medium text-gray-900 text-sm md:text-base">— {testimonials[currentSlide].name}</p>
+              <p className="font-medium text-gray-900 text-sm md:text-base">- {testimonials[currentSlide].name}</p>
               <p className="text-gray-600 text-sm md:text-base">{testimonials[currentSlide].title}</p>
             </div>
           </div>
         </div>
 
-        {/* Navigation arrows — desktop only (absolute) */}
+        {/* Navigation arrows - desktop only (absolute) */}
         <button 
           onClick={prevSlide} 
           className="hidden md:flex absolute top-1/2 left-0 transform -translate-y-1/2 md:-translate-x-20 bg-white rounded-full shadow-lg p-3 hover:bg-gray-100 focus:outline-none"
@@ -257,7 +156,7 @@ export default function Testimonials() {
           </button>
         </div>
 
-        {/* Dot indicators — desktop only */}
+        {/* Dot indicators - desktop only */}
         <div className="hidden md:flex justify-center gap-2 mt-4">
           {testimonials.map((_, index) => (
             <button

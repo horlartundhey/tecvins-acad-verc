@@ -61,7 +61,7 @@ const Support = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
           <h1 className="text-3xl font-bold text-gray-800">
             Support Tecvinson Academy
-            <span className="text-gray-600 font-semibold ml-2 text-xl">—Transform Lives with IT Education</span>
+            <span className="text-gray-600 font-semibold ml-2 text-xl">- Transform Lives with IT Education</span>
           </h1>
         </div>
 

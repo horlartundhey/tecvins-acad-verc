@@ -4,7 +4,7 @@ import logo from '../../assets/tecvinson-logo-one.png';
 import { HiOutlineMenuAlt1 } from 'react-icons/hi';
 import { HiOutlineRocketLaunch, HiRocketLaunch, HiChevronDown } from 'react-icons/hi2';
 
-const Navbar = () => {
+const Navbar = ({ topOffset = 0 }) => {
  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isDesktopDropdownOpen, setIsDesktopDropdownOpen] = useState(false);
@@ -90,7 +90,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`bg-white py-7 fixed w-full top-0 z-50 transition-shadow ${scrolled ? 'shadow-md' : 'shadow-sm'}`}>
+    <nav
+      style={{ top: topOffset }}
+      className={`bg-white py-7 fixed w-full z-50 transition-shadow transition-[top] duration-200 ${scrolled ? 'shadow-md' : 'shadow-sm'}`}
+    >
       <div className="container mx-auto flex justify-between items-center px-4">
         {/* Logo */}
         <Link to="/" className="flex items-center">

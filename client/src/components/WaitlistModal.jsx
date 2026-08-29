@@ -139,7 +139,7 @@ const WaitlistModal = ({
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-4">JOIN THE WAITLIST</h2>
               <h3 className="text-lg font-semibold text-yellow-600">
-                IMPORTANT NOTICE – PLEASE READ BEFORE JOINING WAITLIST
+                IMPORTANT NOTICE - PLEASE READ BEFORE JOINING WAITLIST
               </h3>
             </div>
           )}

@@ -13,7 +13,7 @@ const Faq = () => {
     },
     {
       question: "What makes Tecvinson Academy different from other training platforms?",
-      answer: "• 💯 Completely Free – No tuition or hidden fees.\n• 🛠 Hands-On Learning – Real-world projects, live mentorship, and teamwork.\n• 📈 Up-to-Date Curriculum – Constantly aligned with industry trends.\n• 🚀 Career Support – CV writing, interview prep, and LinkedIn optimization.\n• 📅 Structured & Disciplined – Strong commitment and attendance required.\n• 🌍 Fully Online – Accessible globally with the right tools."
+      answer: "• 💯 Completely Free - No tuition or hidden fees.\n• 🛠 Hands-On Learning - Real-world projects, live mentorship, and teamwork.\n• 📈 Up-to-Date Curriculum - Constantly aligned with industry trends.\n• 🚀 Career Support - CV writing, interview prep, and LinkedIn optimization.\n• 📅 Structured & Disciplined - Strong commitment and attendance required.\n• 🌍 Fully Online - Accessible globally with the right tools."
     },
     {
       question: "Who can apply?",
