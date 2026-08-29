@@ -50,11 +50,11 @@ const teamMembers = {
         {/* Breadcrumb Navigation */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10">
           <nav className="flex flex-wrap items-center mb-6 sm:mb-10 text-sm sm:text-base">
-            <Link href="/projects-by-students" className="text-teal-600 hover:text-teal-800 underline">
+            <Link to="/projects-by-students" className="text-teal-600 hover:text-teal-800 underline">
               Projects by Tecvinson Students
             </Link>
             <span className="mx-2 text-gray-500">/</span>
-            <span className="text-gray-600 break-words">Learning Management System – Studat</span>
+            <span className="text-gray-600 break-words">Learning Management System - Studat</span>
           </nav>
 
           {/* Hero Section with Background */}
@@ -69,7 +69,7 @@ const teamMembers = {
             {/* Content */}
             <div className="relative z-10 mx-auto mb-8 sm:mb-10">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                Learning Management System – Studat
+                Learning Management System - Studat
               </h1>
             </div>
           </div>
@@ -83,7 +83,7 @@ const teamMembers = {
                 <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-semibold text-[#0F2624]">
                   Project Description
                 </h2>
-                <p className="text-gray-600 text-base sm:text-lg lg:text-xl font-normal leading-6 sm:leading-7 lg:leading-8">
+                <p className="text-gray-600 text-sm sm:text-base font-normal leading-6 sm:leading-7 lg:leading-8">
                   Studat is an LMS built for schools across Nigeria, allowing educators to manage classes, assignments,
                   and resources while enabling students to learn at their own pace. It supports both online and blended
                   learning modes.
@@ -117,10 +117,10 @@ const teamMembers = {
               </div>
               <div className="space-y-4">
                 <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-semibold text-[#0F2624]">Problem It Solves</h2>
-                <ul className="list-disc list-inside space-y-2 text-[#5E5E5E] text-base sm:text-lg lg:text-xl font-normal leading-6 sm:leading-7 lg:leading-8">
+                <ul className="list-disc list-inside space-y-2 text-[#5E5E5E] text-sm sm:text-base font-normal leading-6 sm:leading-7 lg:leading-8">
                   <li>Lack of structured digital learning environments in many schools</li>
                   <li>Poor classroom engagement and tracking tools</li>
-                  <li>No unified system for student–teacher collaboration</li>
+                  <li>No unified system for student-teacher collaboration</li>
                 </ul>
               </div>
             </div>
@@ -133,13 +133,13 @@ const teamMembers = {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-center">
               <div className="space-y-4 order-2 lg:order-1">
                 <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-semibold">Tools/Technologies Used</h2>
-                <p className="text-[#5E5E5E] text-base sm:text-lg lg:text-xl font-normal leading-6 sm:leading-7 lg:leading-8">
+                <p className="text-[#5E5E5E] text-sm sm:text-base font-normal leading-6 sm:leading-7 lg:leading-8">
                   Microsoft Teams, Confluence, Jira, Miro, Google Workspace, GitHub
                 </p>
-                <p className="text-[#5E5E5E] text-base sm:text-lg lg:text-xl font-semibold">
+                <p className="text-[#5E5E5E] text-sm sm:text-base font-semibold">
                   <strong>Tech Stack:</strong>
                 </p>
-                <ul className="list-disc list-inside ml-4 space-y-1 text-[#5E5E5E] text-base sm:text-lg lg:text-xl">
+                <ul className="list-disc list-inside ml-4 space-y-1 text-[#5E5E5E] text-sm sm:text-base">
                   <li>Frontend: React</li>
                   <li>Backend: Python</li>
                   <li>Framework: Django</li>
@@ -271,13 +271,13 @@ const teamMembers = {
       {/* Bottom Action Buttons */}
       <div className="px-4 sm:px-6 lg:px-8 pb-8 sm:pb-11">
         <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
-          <Link href="/support" className="w-full sm:w-auto">
+          <Link to="/support" className="w-full sm:w-auto">
             <button className="w-full px-4 sm:px-6 py-3 sm:py-[1.3rem] rounded-xl border border-gray-300 text-[#3B9790] font-semibold hover:bg-gray-50 transition-colors text-base sm:text-lg">
               Support Us
             </button>
           </Link>
 
-          <Link href="/courses" className="w-full sm:w-auto">
+          <Link to="/courses" className="w-full sm:w-auto">
             <button className="w-full px-4 sm:px-6 py-3 sm:py-[1.3rem] rounded-xl bg-[#3B9790] text-white hover:bg-teal-700 transition-colors flex items-center justify-center font-semibold text-base sm:text-lg">
               Begin your learning journey
               <HiOutlineRocketLaunch className="ml-2 h-4 w-4" />

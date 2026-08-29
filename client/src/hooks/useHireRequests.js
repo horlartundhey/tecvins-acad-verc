@@ -29,12 +29,13 @@ const useHireRequests = () => {
       const response = await api.get('/hire-requests', {
         params: { page, limit, status }
       });
-      
+
       setIsLoading(false);
+      // Backend returns pagination: { current, pages, total } - not totalPages/totalItems.
       return {
         requests: response.data.data,
-        totalPages: response.data.pagination.totalPages,
-        totalItems: response.data.pagination.totalItems
+        totalPages: response.data.pagination.pages,
+        totalItems: response.data.pagination.total
       };
     } catch (err) {
       const errorMessage = err.response?.data?.message || 'Failed to fetch hire requests';
@@ -51,7 +52,10 @@ const useHireRequests = () => {
     try {
       const response = await api.get('/hire-requests/stats');
       setIsLoading(false);
-      return response.data;
+      // Unwrap the { success, data } envelope, same as getAllHireRequests already
+      // does - callers get { statusStats, requestTypeStats, totalRequests,
+      // recentRequests } directly instead of having to reach through .data.data.
+      return response.data.data;
     } catch (err) {
       const errorMessage = err.response?.data?.message || 'Failed to fetch hire request stats';
       setError(errorMessage);

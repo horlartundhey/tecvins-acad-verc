@@ -9,7 +9,9 @@ const Journey = () => {
       {/* Top Section - Three Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column - Humble Beginnings */}
-        <div className="bg-[#FFE6E4] border-8 border-[#FFDBD8] p-4 rounded-2xl">
+        {/* flex + items-center: the grid row is as tall as the centre image, so
+            centring splits the leftover space instead of pooling it at the bottom */}
+        <div className="bg-[#FFE6E4] border-8 border-[#FFDBD8] p-4 rounded-2xl flex items-center">
           <p className="text-[#1E1E1E] text-base lg:text-lg leading-relaxed">
             Our humble beginnings can be traced back to 2007, an interesting time in the global digital transformation
             journey. A quick throwback to that period brings back memories of consumer led demands for more convenient
@@ -23,14 +25,13 @@ const Journey = () => {
           <img
             src={journ}
             alt="Silhouette of person against sunset sky"
-            fill
-            className="object-cover"
+            className="w-full h-full object-cover"
             crossOrigin="anonymous"
           />
         </div>
 
         {/* Right Column - Business Agility */}
-        <div className="bg-[#FFE6E4] border-8 border-[#FFDBD8] p-4 rounded-2xl">
+        <div className="bg-[#FFE6E4] border-8 border-[#FFDBD8] p-4 rounded-2xl flex items-center">
           <p className="text-[#1E1E1E] text-base lg:text-lg leading-relaxed">
             For most businesses, being agile meant focusing on key priorities like R&D as well as attracting and
             retaining a highly skilled tech workforce. This was such a bright strategy, until HR departments had to

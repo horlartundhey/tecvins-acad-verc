@@ -19,6 +19,7 @@ const HireTalent = () => {
     message: "",
     engagementTypes: [],
     selectedTracks: [],
+    resourcesNeeded: "",
   });
 
   const [detailedFormData, setDetailedFormData] = useState({
@@ -33,7 +34,6 @@ const HireTalent = () => {
     contactEmail: "",
     preferredContactMethod: "",
     engagementType: "",
-    projectBased: false,
     workModality: "",
     startDate: undefined,
     duration: "",
@@ -64,7 +64,7 @@ const HireTalent = () => {
     if (isLoading) return; // Prevent double submission
 
     // Prepare data based on form type
-    const requestData = {
+    const rawRequestData = {
       requestType: formType,
       companyName: formType === "quick" ? quickFormData.companyName : detailedFormData.companyName,
       contactName: formType === "quick" ? quickFormData.fullName : detailedFormData.contactName,
@@ -77,11 +77,10 @@ const HireTalent = () => {
       preferredContactMethod: detailedFormData.preferredContactMethod,
       engagementTypes: formType === "quick" ? quickFormData.engagementTypes : [],
       engagementType: detailedFormData.engagementType,
-      projectBased: detailedFormData.projectBased,
       workModality: detailedFormData.workModality,
       startDate: detailedFormData.startDate,
       duration: detailedFormData.duration,
-      resourcesNeeded: detailedFormData.resourcesNeeded,
+      resourcesNeeded: formType === "quick" ? quickFormData.resourcesNeeded : detailedFormData.resourcesNeeded,
       selectedTracks: formType === "quick" ? quickFormData.selectedTracks : detailedFormData.selectedTracks,
       skillLevel: detailedFormData.skillLevel,
       jobDescription: detailedFormData.jobDescription,
@@ -94,6 +93,16 @@ const HireTalent = () => {
       additionalInformation: detailedFormData.additionalInformation,
       acknowledgment: formType === "detailed" ? detailedFormData.acknowledgment : true
     };
+
+    // The backend schema's enum fields (preferredContactMethod, engagementType,
+    // workModality, etc.) reject an explicit empty string - only an omitted/
+    // undefined field counts as "not set". The Quick form never populates most
+    // of these (they're detailed-form-only inputs), so it always sent '' for
+    // all of them and the submission 500'd every time. Strip empty strings so
+    // an unanswered field is simply left out instead of failing validation.
+    const requestData = Object.fromEntries(
+      Object.entries(rawRequestData).filter(([, value]) => value !== '')
+    );
 
     const result = await submitHireRequest(requestData);
     
@@ -116,6 +125,7 @@ const HireTalent = () => {
       message: "",
       engagementTypes: [],
       selectedTracks: [],
+      resourcesNeeded: "",
     });
     setDetailedFormData({
       companyName: "",
@@ -129,7 +139,6 @@ const HireTalent = () => {
       contactEmail: "",
       preferredContactMethod: "",
       engagementType: "",
-      projectBased: false,
       workModality: "",
       startDate: undefined,
       duration: "",
@@ -175,8 +184,8 @@ const HireTalent = () => {
   return (
     <div>
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">Looking to Hire Talented Tech Talent?</h2>
-        <p className="text-xl text-[#1E1E1E] mb-8 mx-auto max-w-3xl">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-4">Looking to Hire Talented Tech Talent?</h2>
+        <p className="text-sm sm:text-base text-[#1E1E1E] mb-8 mx-auto max-w-3xl">
           Our students are trained, creative, and ready to deliver. If you're impressed by the projects showcased here and
           would like to hire a Tecvinson Academy student for an internship, freelance role, or full-time position, we'd
           love to hear from you.
@@ -473,17 +482,6 @@ const HireTalent = () => {
                             </div>
                           </div>
 
-                          <div className="flex items-center space-x-2">
-                            <input
-                              type="checkbox"
-                              id="project-based"
-                              className="h-4 w-4 text-[#3B9790] focus:ring-[#3B9790] border-gray-300 rounded"
-                            />
-                            <label htmlFor="project-based" className="text-sm text-gray-700">
-                              Project based
-                            </label>
-                          </div>
-
                           <div className="space-y-3">
                             <label className="text-sm font-medium text-gray-700 block mb-1">Work Modality</label>
                             <div className="flex space-x-6">
@@ -540,29 +538,48 @@ const HireTalent = () => {
                                 id="resourcesNeeded"
                                 type="number"
                                 placeholder="e.g., 2"
+                                value={quickFormData.resourcesNeeded}
+                                min={0}
+                                step={1}
+                                onKeyDown={(e) => {
+                                  if (['e', 'E', '.', '-', '+'].includes(e.key)) e.preventDefault();
+                                }}
+                                onPaste={(e) => {
+                                  const text = e.clipboardData.getData('text');
+                                  if (!/^\d+$/.test(text)) e.preventDefault();
+                                }}
+                                onChange={(e) => {
+                                  const digitsOnly = e.target.value.replace(/\D/g, '');
+                                  handleQuickInputChange("resourcesNeeded", digitsOnly);
+                                }}
                                 className="w-full h-11 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#3B9790] focus:border-transparent"
                               />
                             </div>
                             <div className="space-y-2">
-                              <label htmlFor="courseTrack" className="text-sm font-medium text-gray-700 block mb-1">
+                              <label className="text-sm font-medium text-gray-700 block mb-1">
                                 Preferred Course Track/Role
                               </label>
-                              <div className="relative">
-                                <select
-                                  multiple
-                                  value={quickFormData.selectedTracks}
-                                  onChange={(e) => {
-                                    const options = Array.from(e.target.selectedOptions, (option) => option.value);
-                                    handleQuickInputChange("selectedTracks", options);
-                                  }}
-                                  className="w-full h-11 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#3B9790] focus:border-transparent"
-                                >
-                                  {tracks.map((track) => (
-                                    <option key={track} value={track}>
+                              <div className="border border-gray-300 rounded-md p-3 max-h-48 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                {tracks.map((track) => (
+                                  <div key={track} className="flex items-center space-x-2">
+                                    <input
+                                      type="checkbox"
+                                      id={`track-${track}`}
+                                      checked={quickFormData.selectedTracks?.includes(track)}
+                                      onChange={(e) => {
+                                        const currentTracks = quickFormData.selectedTracks || [];
+                                        const newTracks = e.target.checked
+                                          ? [...currentTracks, track]
+                                          : currentTracks.filter((t) => t !== track);
+                                        handleQuickInputChange("selectedTracks", newTracks);
+                                      }}
+                                      className="h-4 w-4 text-[#3B9790] focus:ring-[#3B9790] border-gray-300 rounded"
+                                    />
+                                    <label htmlFor={`track-${track}`} className="text-sm text-gray-700">
                                       {track}
-                                    </option>
-                                  ))}
-                                </select>
+                                    </label>
+                                  </div>
+                                ))}
                               </div>
                               {quickFormData.selectedTracks && quickFormData.selectedTracks.length > 0 && (
                                 <div className="flex flex-wrap gap-2 mt-2">
@@ -739,9 +756,20 @@ const HireTalent = () => {
                                 <input
                                   id="d-website"
                                   type="url"
-                                  placeholder="www.companywebsite.com"
+                                  placeholder="https://www.companywebsite.com"
                                   value={detailedFormData.companyWebsite}
                                   onChange={(e) => handleDetailedInputChange("companyWebsite", e.target.value)}
+                                  onBlur={(e) => {
+                                    // type="url" only accepts an absolute URL, but the placeholder used to
+                                    // model "www.companywebsite.com" with no scheme - exactly what it then
+                                    // rejected. Add https:// automatically for anyone who typed a bare
+                                    // domain, instead of leaving them to decode the browser's generic
+                                    // "Please enter a URL" message on their own.
+                                    const trimmed = e.target.value.trim();
+                                    if (trimmed && !/^https?:\/\//i.test(trimmed)) {
+                                      handleDetailedInputChange("companyWebsite", `https://${trimmed}`);
+                                    }
+                                  }}
                                   className="w-full h-11 pl-10 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#3B9790] focus:border-transparent"
                                 />
                               </div>
@@ -1017,19 +1045,6 @@ const HireTalent = () => {
                               </div>
                             </div>
 
-                            <div className="flex items-center space-x-2">
-                              <input
-                                type="checkbox"
-                                id="d-project-based"
-                                checked={detailedFormData.projectBased}
-                                onChange={(e) => handleDetailedInputChange("projectBased", e.target.checked)}
-                                className="h-4 w-4 text-[#3B9790] focus:ring-[#3B9790] border-gray-300 rounded"
-                              />
-                              <label htmlFor="d-project-based" className="text-sm text-gray-700">
-                                Project-based
-                              </label>
-                            </div>
-
                             <div className="space-y-3">
                               <label className="text-sm font-medium text-gray-700 block mb-1">Work Modality</label>
                               <div className="flex space-x-6">
@@ -1152,31 +1167,48 @@ const HireTalent = () => {
                                   type="number"
                                   placeholder="0"
                                   value={detailedFormData.resourcesNeeded}
-                                  onChange={(e) => handleDetailedInputChange("resourcesNeeded", e.target.value)}
+                                  min={0}
+                                  step={1}
+                                  onKeyDown={(e) => {
+                                    if (['e', 'E', '.', '-', '+'].includes(e.key)) e.preventDefault();
+                                  }}
+                                  onPaste={(e) => {
+                                    const text = e.clipboardData.getData('text');
+                                    if (!/^\d+$/.test(text)) e.preventDefault();
+                                  }}
+                                  onChange={(e) => {
+                                    const digitsOnly = e.target.value.replace(/\D/g, '');
+                                    handleDetailedInputChange("resourcesNeeded", digitsOnly);
+                                  }}
                                   className="w-full h-11 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#3B9790] focus:border-transparent"
                                 />
                               </div>
 
                               <div className="space-y-2">
-                                <label htmlFor="d-courseTrack" className="text-sm font-medium text-gray-700 block mb-1">
+                                <label className="text-sm font-medium text-gray-700 block mb-1">
                                   Preferred Course Track/Role
                                 </label>
-                                <div className="relative">
-                                  <select
-                                    multiple
-                                    value={detailedFormData.selectedTracks}
-                                    onChange={(e) => {
-                                      const options = Array.from(e.target.selectedOptions, (option) => option.value);
-                                      handleDetailedInputChange("selectedTracks", options);
-                                    }}
-                                    className="w-full h-11 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#3B9790] focus:border-transparent"
-                                  >
-                                    {tracks.map((track) => (
-                                      <option key={track} value={track}>
+                                <div className="border border-gray-300 rounded-md p-3 max-h-48 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                  {tracks.map((track) => (
+                                    <div key={track} className="flex items-center space-x-2">
+                                      <input
+                                        type="checkbox"
+                                        id={`d-track-${track}`}
+                                        checked={detailedFormData.selectedTracks?.includes(track)}
+                                        onChange={(e) => {
+                                          const currentTracks = detailedFormData.selectedTracks || [];
+                                          const newTracks = e.target.checked
+                                            ? [...currentTracks, track]
+                                            : currentTracks.filter((t) => t !== track);
+                                          handleDetailedInputChange("selectedTracks", newTracks);
+                                        }}
+                                        className="h-4 w-4 text-[#3B9790] focus:ring-[#3B9790] border-gray-300 rounded"
+                                      />
+                                      <label htmlFor={`d-track-${track}`} className="text-sm text-gray-700">
                                         {track}
-                                      </option>
-                                    ))}
-                                  </select>
+                                      </label>
+                                    </div>
+                                  ))}
                                 </div>
                                 {detailedFormData.selectedTracks && detailedFormData.selectedTracks.length > 0 && (
                                   <div className="flex flex-wrap gap-2 mt-2">
@@ -1461,7 +1493,7 @@ const HireTalent = () => {
       <div className="text-center">
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-[#3B9790] hover:bg-teal-700 text-white font-semibold px-8 py-[1.3rem] rounded-xl transition-colors text-lg"
+          className="bg-[#3B9790] hover:bg-teal-700 text-white font-semibold px-8 py-[1.3rem] rounded-xl transition-colors text-base sm:text-lg"
         >
           Hire a Tecvinson Talent
         </button>

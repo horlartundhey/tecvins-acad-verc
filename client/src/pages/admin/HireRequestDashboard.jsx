@@ -29,6 +29,20 @@ const HireRequestDashboard = () => {
     search: ''
   });
 
+  // The stats endpoint returns aggregate counts grouped by requestType/status
+  // ({ requestTypeStats: [{ _id: 'quick', count }, ...], statusStats: [...] }),
+  // not flat quickRequests/detailedRequests/pendingRequests fields - derive the
+  // numbers the cards actually display from those groups.
+  const normalizeStats = (raw) => {
+    const countFor = (groups, id) => (groups || []).find((entry) => entry._id === id)?.count || 0;
+    return {
+      totalRequests: raw?.totalRequests || 0,
+      quickRequests: countFor(raw?.requestTypeStats, 'quick'),
+      detailedRequests: countFor(raw?.requestTypeStats, 'detailed'),
+      pendingRequests: countFor(raw?.statusStats, 'pending'),
+    };
+  };
+
   useEffect(() => {
     // Prevent duplicate calls
     if (hasInitialized.current) return;
@@ -40,13 +54,16 @@ const HireRequestDashboard = () => {
           getAllHireRequests(currentPage, 10, filters.status),
           getHireRequestStats()
         ]);
-        
+
         setRequests(requestsResult.requests || []);
         setTotalPages(requestsResult.totalPages || 1);
-        setStats(statsResult);
+        setStats(normalizeStats(statsResult));
+        setError(null);
       } catch (err) {
         console.error('Failed to load data:', err);
-        // Set placeholder data on error
+        // Surface the failure instead of silently showing an empty, seemingly-
+        // successful dashboard - that's what made this bug invisible before.
+        setError(err.message || 'Failed to load hire requests');
         setRequests([]);
         setStats({
           totalRequests: 0,
@@ -65,8 +82,10 @@ const HireRequestDashboard = () => {
       const result = await getAllHireRequests(currentPage, 10, filters.status);
       setRequests(result.requests || []);
       setTotalPages(result.totalPages || 1);
+      setError(null);
     } catch (err) {
       console.error('Failed to load hire requests:', err);
+      setError(err.message || 'Failed to load hire requests');
     }
   };
 
@@ -262,12 +281,12 @@ const HireRequestDashboard = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm text-gray-900">
-                        {request.isQuickRequest ? 'Quick' : 'Detailed'}
+                        {request.requestType === 'quick' ? 'Quick' : 'Detailed'}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">{request.email}</div>
-                      <div className="text-sm text-gray-500">{request.phone}</div>
+                      <div className="text-sm text-gray-900">{request.contactEmail}</div>
+                      <div className="text-sm text-gray-500">{request.contactPhone}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {getStatusBadge(request.status)}
@@ -384,22 +403,24 @@ const HireRequestDashboard = () => {
                 <h4 className="font-semibold text-gray-700 mb-2">Company Information</h4>
                 <p><strong>Company:</strong> {selectedRequest.companyName}</p>
                 <p><strong>Contact:</strong> {selectedRequest.contactName}</p>
-                <p><strong>Email:</strong> {selectedRequest.email}</p>
-                <p><strong>Phone:</strong> {selectedRequest.phone}</p>
+                <p><strong>Email:</strong> {selectedRequest.contactEmail}</p>
+                <p><strong>Phone:</strong> {selectedRequest.contactPhone}</p>
               </div>
-              
+
               <div>
                 <h4 className="font-semibold text-gray-700 mb-2">Request Details</h4>
-                <p><strong>Type:</strong> {selectedRequest.isQuickRequest ? 'Quick' : 'Detailed'}</p>
+                <p><strong>Type:</strong> {selectedRequest.requestType === 'quick' ? 'Quick' : 'Detailed'}</p>
                 <p><strong>Status:</strong> {getStatusBadge(selectedRequest.status)}</p>
                 <p><strong>Submitted:</strong> {formatDate(selectedRequest.createdAt)}</p>
               </div>
             </div>
 
-            {selectedRequest.description && (
+            {(selectedRequest.jobDescription || selectedRequest.message) && (
               <div className="mt-4">
-                <h4 className="font-semibold text-gray-700 mb-2">Description</h4>
-                <p className="text-gray-600">{selectedRequest.description}</p>
+                <h4 className="font-semibold text-gray-700 mb-2">
+                  {selectedRequest.jobDescription ? 'Job Description' : 'Message'}
+                </h4>
+                <p className="text-gray-600">{selectedRequest.jobDescription || selectedRequest.message}</p>
               </div>
             )}
 

@@ -115,7 +115,7 @@ const CohortManagement = () => {
                 isWaitlistEnabled: !cohort.isWaitlistEnabled
             });
             // Redux updateCohort.fulfilled already updates state and sets successMessage
-            // which the useEffect below handles — no need for a duplicate toast or refetch
+            // which the useEffect below handles - no need for a duplicate toast or refetch
         } catch (error) {
             toast.error('Failed to update waitlist status');
             console.error('Error updating waitlist status:', error);

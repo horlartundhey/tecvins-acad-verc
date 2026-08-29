@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { normalizeApiError } from '../utils/normalizeApiError';
 
 // Global flag to prevent API calls after auth failure
 let isAuthenticating = false;
@@ -28,32 +29,44 @@ const api = axios.create({
     }
 });
 
-// Public routes that don't require authentication
+// Public routes that don't require authentication.
+// Requests through this instance carry the RELATIVE path in config.url (e.g.
+// "/hire-requests"), not the "/api/..." form these entries used to be written
+// with - that mismatch meant isPublicRoute() never matched anything, so every
+// anonymous visitor submitting a public form (no token in localStorage) got
+// silently rejected client-side before the request ever reached the network.
+//
+// Entries are method-aware because several of these paths are shared with
+// admin-only endpoints: "/hire-requests", "/waitlist" and "/partners" are
+// public to CREATE (POST) but their GET/PUT/PATCH/DELETE siblings are the
+// admin dashboard managing those submissions and must keep requiring a
+// token. "/blogs" and "/cohorts" are the other way round - public to READ.
 const PUBLIC_ROUTES = [
-    '/api/auth/login',
-    '/api/auth/register',
-    '/api/blogs',
-    '/api/cohorts',
-    '/api/students/apply',
-    '/api/trainers/apply',
-    '/api/waitlist',
-    '/api/contact',
-    '/api/partners',
-    '/api/newsletter',
-    '/api/donate',
-    '/api/hire-requests'
+    { method: 'post', path: '/auth/login' },
+    { method: 'get', path: '/blogs' },
+    { method: 'get', path: '/cohorts' },
+    { method: 'post', path: '/students/apply' },
+    { method: 'post', path: '/trainers/apply' },
+    { method: 'post', path: '/waitlist' },
+    { method: 'post', path: '/contact' },
+    { method: 'post', path: '/partners' },
+    { method: 'post', path: '/newsletter' },
+    { method: 'post', path: '/donate' },
+    { method: 'post', path: '/hire-requests' },
 ];
 
-// Check if a URL is a public route
-const isPublicRoute = (url) => {
-    return PUBLIC_ROUTES.some(route => url?.includes(route));
+// Check if a URL+method combination is a public route
+const isPublicRoute = (url, method) => {
+    if (!url || !method) return false;
+    const normalizedMethod = method.toLowerCase();
+    return PUBLIC_ROUTES.some(route => route.method === normalizedMethod && url.includes(route.path));
 };
 
 // Request interceptor for adding auth token
 api.interceptors.request.use(
     (config) => {
         // Allow public routes without token
-        if (isPublicRoute(config.url)) {
+        if (isPublicRoute(config.url, config.method)) {
             return config;
         }
         
@@ -109,12 +122,11 @@ api.interceptors.response.use(
             
             // Handle 403 Forbidden responses
             if (error.response.status === 403) {
-                console.error('Access denied:', error.response.data.message);
+                console.error('Access denied:', error.response.data?.message);
             }
-
-            return Promise.reject(error.response.data);
         }
-        return Promise.reject(error);
+
+        return Promise.reject(normalizeApiError(error));
     }
 );
 

@@ -5,6 +5,7 @@ import {
     updateStudentApplicationStatus,
     deleteStudentApplication
 } from '../redux/slices/studentSlice';
+import { getApiErrorMessage } from '../utils/apiError';
 
 export const useStudentApplications = () => {
     const dispatch = useDispatch();
@@ -20,16 +21,7 @@ export const useStudentApplications = () => {
             return result;
         } catch (error) {
             // error may be an axios error, a rejectWithValue string, or a plain Error
-            if (error?.response?.data?.message) {
-                throw new Error(error.response.data.message);
-            }
-            if (typeof error === 'string') {
-                throw new Error(error);
-            }
-            if (error?.message) {
-                throw new Error(error.message);
-            }
-            throw new Error('Failed to submit application. Please try again later.');
+            throw new Error(getApiErrorMessage(error, 'Failed to submit application. Please try again later.'));
         }
     };
 
@@ -37,7 +29,7 @@ export const useStudentApplications = () => {
         try {
             await dispatch(getAllStudentApplications(filters)).unwrap();
             return true;
-        } catch (error) {
+        } catch {
             return false;
         }
     };
@@ -46,7 +38,7 @@ export const useStudentApplications = () => {
         try {
             await dispatch(updateStudentApplicationStatus({ id, ...updateData })).unwrap();
             return true;
-        } catch (error) {
+        } catch {
             return false;
         }
     };
@@ -55,7 +47,7 @@ export const useStudentApplications = () => {
         try {
             await dispatch(deleteStudentApplication(id)).unwrap();
             return true;
-        } catch (error) {
+        } catch {
             return false;
         }
     };

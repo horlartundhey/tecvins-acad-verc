@@ -157,7 +157,7 @@ const DonationDashboard = () => {
       {/* Stats Cards */}
       {stats && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Total Raised — per-currency breakdown */}
+          {/* Total Raised - per-currency breakdown */}
           <div className="bg-white p-6 rounded-lg shadow">
             <div className="flex items-center mb-3">
               <div className="p-2 bg-green-100 rounded-lg">
@@ -174,7 +174,7 @@ const DonationDashboard = () => {
                 ))}
               </div>
             ) : (
-              <p className="text-2xl font-bold text-gray-900">—</p>
+              <p className="text-2xl font-bold text-gray-900">-</p>
             )}
             <p className="text-xs text-gray-400 mt-1">Completed only</p>
           </div>
@@ -320,7 +320,7 @@ const DonationDashboard = () => {
                       {formatDate(donation.createdAt)}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
-                      {donation.message || '—'}
+                      {donation.message || '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-3">

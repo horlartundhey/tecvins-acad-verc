@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiService from '../services/apiService';
+import { getApiErrorMessage } from '../../utils/apiError';
 
 export const submitStudentApplication = createAsyncThunk(
     'students/submit',
@@ -8,7 +9,7 @@ export const submitStudentApplication = createAsyncThunk(
             const response = await apiService.post('/students/apply', applicationData);
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to submit application. Please try again.'));
         }
     }
 );
@@ -20,7 +21,7 @@ export const getAllStudentApplications = createAsyncThunk(
             const response = await apiService.get('/students/applications', { params: filters });
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to load applications'));
         }
     }
 );
@@ -32,7 +33,7 @@ export const updateStudentApplicationStatus = createAsyncThunk(
             const response = await apiService.put(`/students/applications/${id}`, { status });
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data.message);
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to update application status'));
         }
     }
 );
@@ -44,7 +45,7 @@ export const deleteStudentApplication = createAsyncThunk(
             await apiService.delete(`/students/applications/${id}`);
             return id;
         } catch (error) {
-            return rejectWithValue(error.response?.data?.message || 'Failed to delete application');
+            return rejectWithValue(getApiErrorMessage(error, 'Failed to delete application'));
         }
     }
 );

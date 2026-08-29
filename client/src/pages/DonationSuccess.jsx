@@ -180,7 +180,11 @@ const DonationSuccess = () => {
                   });
                 } else {
                   // Fallback to Twitter
-                  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(window.location.origin)}`);
+                  window.open(
+                    `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(window.location.origin)}`,
+                    '_blank',
+                    'noopener,noreferrer'
+                  );
                 }
               }}
               className="text-blue-600 hover:text-blue-700 font-medium"

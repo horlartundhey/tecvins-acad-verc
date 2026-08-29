@@ -14,25 +14,25 @@ const EventSystem = () => {
       }, []);
 
 const teamMembers = {
-    productDesign: [{ name: "Student Name", role: "UX/UI Designer" }],
+    productDesign: [{ name: "Ijeoma Mercy Seidlitz", role: "UI/UX Design" }],
     productDevelopment: [
-      { name: "Benjamin Isa", role: "Developer" },
-      { name: "Blessed Kemka", role: "Developer" },
-      { name: "Christian Ebokankwo", role: "Developer" },
-      { name: "Daniel Abraham", role: "Developer" },
-      { name: "Eseoghene Efenakpo", role: "Developer" },
-      { name: "Thomas Andor", role: "Developer" },
-      { name: "Nkereawanji Luke", role: "Developer" },
-      { name: "Sunday Amaka", role: "Developer" },
+      { name: "Benjamin Isa", role: "C#" },
+      { name: "Blessed Kemka", role: "DevOps" },
+      { name: "Christian Ezeokonkwo", role: "Cybersecurity" },
+      { name: "Daniel Abraham", role: "Cybersecurity" },
+      { name: "Eseoghene Efenakpo", role: "Cybersecurity" },
+      { name: "Thomas Andor", role: "C#" },
+      { name: "Nkereawaji Luke", role: "DevOps" },
+      { name: "Sunday Amoko", role: "Cybersecurity" },
+      { name: "Abiodun Samson Fajoye", role: "Software Quality" },
+      { name: "Odion Ehimiaghe", role: "Software Quality" },
     ],
     productManagement: [
-      { name: "Abiodun Samson Fagiye", role: "Software Quality" },
-      { name: "Ann Nkem", role: "Business Analyst" },
-      { name: "Ehighemesue Dobby Osayimwen", role: "Quality Analyst" },
-      { name: "Odilon Ehimiaghe", role: "Software Quality" },
-      { name: "Oke Odubunmi", role: "Business Analyst" },
+      { name: "Ann Nwosu", role: "Business Analysis" },
+      { name: "Ehigiamusoe Bobby Osayimwen", role: "Scrum Master" },
+      { name: "Oke Olorunda", role: "Business Analysis" },
       { name: "Oladele Olusegun Festus", role: "Scrum Master" },
-      { name: "Yusuff Aminat", role: "Business Analyst" },
+      { name: "Yusuff Aminat", role: "Business Analysis" },
     ],
 }
 
@@ -46,7 +46,7 @@ const teamMembers = {
               Projects by Tecvinson Students
             </Link>
             <span className="mx-2 text-gray-500">/</span>
-            <span className="text-gray-600 break-words">Event Management System – D'EventMatcha</span>
+            <span className="text-gray-600 break-words">Event Management System - D'EventMatcha</span>
           </nav>
 
           <div className="mt-5 mb-5 relative">
@@ -60,7 +60,7 @@ const teamMembers = {
             {/* Content */}
             <div className="relative z-10 mx-auto mb-6 sm:mb-10">
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-                Event Management System – D'EventMatcha
+                Event Management System - D'EventMatcha
               </h1>
             </div>
           </div>
@@ -74,7 +74,7 @@ const teamMembers = {
                 <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-semibold text-[#0F2624]">
                   Project Description
                 </h2>
-                <p className="text-gray-600 text-base sm:text-lg lg:text-xl font-normal leading-6 sm:leading-7 lg:leading-8">
+                <p className="text-gray-600 text-sm sm:text-base font-normal leading-6 sm:leading-7 lg:leading-8">
                   D'EventMatcha is an event service aggregation platform tailored to the Nigerian market. It helps users
                   discover event vendors, compare services, manage logistics, and streamline bookings. It provides a
                   one-stop digital solution to planning weddings, parties, and corporate functions.
@@ -108,7 +108,7 @@ const teamMembers = {
               </div>
               <div className="space-y-4 order-1 lg:order-2">
                 <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-semibold text-[#0F2624]">Problem It Solves</h2>
-                <ul className="list-disc list-inside space-y-2 text-[#5E5E5E] text-base sm:text-lg lg:text-xl font-normal leading-6 sm:leading-7 lg:leading-8">
+                <ul className="list-disc list-inside space-y-2 text-[#5E5E5E] text-sm sm:text-base font-normal leading-6 sm:leading-7 lg:leading-8">
                   <li>Lack of centralized vendor marketplace</li>
                   <li>Difficulty in finding reliable and verified vendors</li>
                   <li>Unstructured booking and payment processes</li>
@@ -125,13 +125,13 @@ const teamMembers = {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-center">
               <div className="space-y-4 order-2 lg:order-1">
                 <h2 className="text-[#5E5E5E] text-lg sm:text-xl font-semibold">Tools/Technologies Used</h2>
-                <p className="text-[#5E5E5E] text-base sm:text-lg lg:text-xl font-normal leading-6 sm:leading-7 lg:leading-8">
+                <p className="text-[#5E5E5E] text-sm sm:text-base font-normal leading-6 sm:leading-7 lg:leading-8">
                   Jira, Confluence, Miro, Microsoft Teams, Google Workspace, GitHub, Postman
                 </p>
-                <p className="text-[#5E5E5E] text-base sm:text-lg lg:text-xl font-semibold">
+                <p className="text-[#5E5E5E] text-sm sm:text-base font-semibold">
                   <strong>Tech Stack:</strong>
                 </p>
-                <ul className="list-disc list-inside ml-4 space-y-1 text-[#5E5E5E] text-base sm:text-lg lg:text-xl font-normal">
+                <ul className="list-disc list-inside ml-4 space-y-1 text-[#5E5E5E] text-sm sm:text-base font-normal">
                   <li>Frontend: React</li>
                   <li>Backend: C# (.NET)</li>
                   <li>Cloud: Azure</li>
@@ -262,13 +262,13 @@ const teamMembers = {
       {/* Footer Buttons */}
       <div className="px-4 sm:px-6 lg:px-8 pb-8 sm:pb-11">
         <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 max-w-2xl mx-auto">
-          <Link href="/support" className="w-full sm:w-auto order-2 sm:order-1">
+          <Link to="/support" className="w-full sm:w-auto order-2 sm:order-1">
             <button className="w-full px-4 sm:px-6 py-3 sm:py-[1.3rem] rounded-xl border border-gray-300 text-[#3B9790] font-semibold hover:bg-gray-50 transition-colors text-base sm:text-lg">
               Support Us
             </button>
           </Link>
 
-          <Link href="/courses" className="w-full sm:w-auto order-1 sm:order-2">
+          <Link to="/courses" className="w-full sm:w-auto order-1 sm:order-2">
             <button className="w-full px-4 sm:px-6 py-3 sm:py-[1.3rem] rounded-xl bg-[#3B9790] text-white hover:bg-teal-700 transition-colors flex items-center justify-center font-semibold text-base sm:text-lg">
               Begin your learning journey
               <HiRocketLaunch className="ml-2 h-4 w-4" />

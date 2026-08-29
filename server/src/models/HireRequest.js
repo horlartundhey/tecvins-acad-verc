@@ -62,10 +62,6 @@ const hireRequestSchema = new mongoose.Schema({
     type: String,
     enum: ['Internship', 'Contract', 'Full-Time', 'Part-Time', 'Volunteer']
   },
-  projectBased: {
-    type: Boolean,
-    default: false
-  },
   workModality: {
     type: String,
     enum: ['remote', 'hybrid', 'onsite']

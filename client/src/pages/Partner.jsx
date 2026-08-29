@@ -436,6 +436,36 @@ const Partner = () => {
                             {modalStep === 'individual' && (
                                 <form className="space-y-6">
                                     <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                                            Are you an individual or a corporate organisation? <span className="text-red-500">*</span>
+                                        </label>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <label className={`flex items-center justify-center p-3 border rounded-md cursor-pointer ${formData.userType === 'individual' ? 'border-teal-500 bg-teal-50' : 'border-gray-300'}`}>
+                                                <input
+                                                    type="radio"
+                                                    name="userType"
+                                                    value="individual"
+                                                    checked={formData.userType === 'individual'}
+                                                    onChange={() => setFormData(prev => ({ ...prev, userType: 'individual' }))}
+                                                    className="sr-only"
+                                                />
+                                                <span>Individual</span>
+                                            </label>
+                                            <label className={`flex items-center justify-center p-3 border rounded-md cursor-pointer ${formData.userType === 'corporate' ? 'border-teal-500 bg-teal-50' : 'border-gray-300'}`}>
+                                                <input
+                                                    type="radio"
+                                                    name="userType"
+                                                    value="corporate"
+                                                    checked={formData.userType === 'corporate'}
+                                                    onChange={() => setModalStep('corporate')}
+                                                    className="sr-only"
+                                                />
+                                                <span>Corporate Organization</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">
                                             First Name <span className="text-red-500">*</span>
                                         </label>
@@ -509,36 +539,6 @@ const Partner = () => {
                                                     <span>{method}</span>
                                                 </label>
                                             ))}
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Are you an individual or a corporate organisation? <span className="text-red-500">*</span>
-                                        </label>
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <label className={`flex items-center justify-center p-3 border rounded-md cursor-pointer ${formData.userType === 'individual' ? 'border-teal-500 bg-teal-50' : 'border-gray-300'}`}>
-                                                <input
-                                                    type="radio"
-                                                    name="userType"
-                                                    value="individual"
-                                                    checked={formData.userType === 'individual'}
-                                                    onChange={() => setFormData(prev => ({ ...prev, userType: 'individual' }))}
-                                                    className="sr-only"
-                                                />
-                                                <span>Individual</span>
-                                            </label>
-                                            <label className={`flex items-center justify-center p-3 border rounded-md cursor-pointer ${formData.userType === 'corporate' ? 'border-teal-500 bg-teal-50' : 'border-gray-300'}`}>
-                                                <input
-                                                    type="radio"
-                                                    name="userType"
-                                                    value="corporate"
-                                                    checked={formData.userType === 'corporate'}
-                                                    onChange={() => setModalStep('corporate')}
-                                                    className="sr-only"
-                                                />
-                                                <span>Corporate Organization</span>
-                                            </label>
                                         </div>
                                     </div>
 

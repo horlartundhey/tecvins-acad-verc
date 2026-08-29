@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { HiOutlineRocketLaunch, HiOutlinePlayCircle } from "react-icons/hi2";
 import { Link } from 'react-router-dom';
 import Metrics from '../components/Metrics';
+import SdgList from '../components/SdgList';
 import Testimonials from '../components/Testimonials';
 import TestimonialModal from '../components/TesimonialModal';
 
@@ -49,20 +50,7 @@ const Sdgs = () => {
                 Our mission aligns with the United Nations Sustainable Development Goals (SDGs), particularly:
               </p>
               
-              <ul className="space-y-2 mb-4">
-                <li className="flex items-start">
-                  <span className="inline-block w-2 h-2 bg-white rounded-full mt-2 mr-2"></span>
-                  <span><strong>SDG 4 (Quality Education);</strong></span>
-                </li>
-                <li className="flex items-start">
-                  <span className="inline-block w-2 h-2 bg-white rounded-full mt-2 mr-2"></span>
-                  <span><strong>SDG 5 (Gender Equality);</strong> and</span>
-                </li>
-                <li className="flex items-start">
-                  <span className="inline-block w-2 h-2 bg-white rounded-full mt-2 mr-2"></span>
-                  <span><strong>SDG 8 (Decent Work and Economic Growth).</strong></span>
-                </li>
-              </ul>
+              <SdgList className="text-sm sm:text-base" />
               
               <p className="text-white text-sm sm:text-base leading-relaxed">
                 Here's how we're making a difference...🌎
@@ -107,8 +95,8 @@ const Sdgs = () => {
               
               <div className="rounded-xl overflow-hidden h-64 sm:h-[346px]">
                 <img 
-                  src="/src/assets/images/sdg-education.png" 
-                  alt="Students collaborating around a table with books and learning materials" 
+                  src="https://res.cloudinary.com/kamisama/image/upload/v1785929334/sdg-education_kew28n.png"
+                  alt="Students collaborating around a table with books and learning materials"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -175,19 +163,13 @@ const Sdgs = () => {
               
               {/* Testimonial Button */}
               <div className="mt-6 sm:mt-8">
-                {/* <button 
+                <button
                   onClick={() => setIsTestimonialModalOpen(true)}
                   className="inline-flex items-center text-[#3B9790] font-semibold bg-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg border border-blue-300 hover:bg-blue-50 transition-colors"
                 >
                   <HiOutlinePlayCircle className="mr-2 w-5 h-5 text-[#3B9790]" />
                   Hear from some beneficiaries
-                </button> */}
-
-                {/* Testimonial Modal */}
-                <TestimonialModal 
-                  isOpen={isTestimonialModalOpen}
-                  onClose={() => setIsTestimonialModalOpen(false)}
-                />
+                </button>
               </div>
             </div>
           </div>
@@ -207,8 +189,8 @@ const Sdgs = () => {
               
               <div className="rounded-xl overflow-hidden h-64 sm:h-[346px]">
                 <img 
-                  src="/src/assets/images/gender-equali.png" 
-                  alt="Students collaborating around a table with books and learning materials" 
+                  src="https://res.cloudinary.com/kamisama/image/upload/v1785929344/gender-equali_do06lo.png"
+                  alt="Women learning and working together in technology"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -301,8 +283,8 @@ const Sdgs = () => {
               
               <div className="rounded-xl overflow-hidden h-32 sm:h-[120px]">
                 <img 
-                  src="/src/assets/images/economic.png" 
-                  alt="Students collaborating around a table with books and learning materials" 
+                  src="https://res.cloudinary.com/kamisama/image/upload/v1785929361/economic_spwhxh.png"
+                  alt="Graduates at work in decent, well-paid technology jobs"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -400,6 +382,13 @@ const Sdgs = () => {
 
       <Metrics />
       <Testimonials />
+
+      {/* One instance for the page - every "Hear from some beneficiaries"
+          button in the sections above opens this */}
+      <TestimonialModal
+        isOpen={isTestimonialModalOpen}
+        onClose={() => setIsTestimonialModalOpen(false)}
+      />
     </>
   );
 };

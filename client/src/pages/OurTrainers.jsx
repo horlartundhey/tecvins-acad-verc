@@ -35,8 +35,18 @@ import chibuike from "../assets/images/trainers/chibuike.png"
 import oladejo from "../assets/images/trainers/adesola.png"
 import olufunso from "../assets/images/trainers/olufunso.png"
 import vincent from "../assets/images/trainers/vincent.png"
+import garland from "../assets/images/trainers/garland.jpg"
 import { HiOutlineRocketLaunch } from "react-icons/hi2"
 import { useEffect } from "react"
+
+// First and last initial, for trainers who have no photo on file yet
+const getInitials = (name = "") => {
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return ""
+  const first = parts[0][0]
+  const last = parts.length > 1 ? parts[parts.length - 1][0] : ""
+  return `${first}${last}`.toUpperCase()
+}
 
 const trainers = [
   {
@@ -418,6 +428,17 @@ const trainers = [
     linkedinUrl: "https://www.linkedin.com/in/vincentoo/",
     imageUrl: vincent,
   },
+  {
+    id: "27",
+    name: "Garland Leo Unogwu",
+    email: "garland.unogwu@tecvinsonacademy.com",
+    location: "Nigeria",
+    specialization: ["Frontend Engineering", "Web Accessibility (WCAG a11y)"],
+    skills: ["Frontend Engineering", "Web Accessibility (WCAG a11y)"],
+    experience: ["<span style='font-weight: bold;'>3</span> years of experience"],
+    linkedinUrl: "https://www.linkedin.com/in/garland-leo-681112240",
+    imageUrl: garland,
+  },
 ]
 
 const OurTrainers = () => {
@@ -453,12 +474,20 @@ const OurTrainers = () => {
               <div className="bg-[#EDF8F7] px-8 py-10 rounded-xl m-3 text-center">
                 {/* Profile Image */}
                 <div className="flex justify-center mb-4">
-                  <div className="w-48 h-48 bg-gray-300 rounded-full flex items-center justify-center">
-                    <img
-                      src={trainer.imageUrl || "/placeholder.svg"}
-                      alt={trainer.name}
-                      className="w-full h-full object-cover rounded-full"
-                    />
+                  <div className="w-48 h-48 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
+                    {trainer.imageUrl ? (
+                      <img
+                        src={trainer.imageUrl}
+                        alt={trainer.name}
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : (
+                      /* No photo on file yet - initials read better than a
+                         broken image (there is no /placeholder.svg) */
+                      <span className="text-5xl font-semibold text-gray-600" aria-hidden="true">
+                        {getInitials(trainer.name)}
+                      </span>
+                    )}
                   </div>
                 </div>
 

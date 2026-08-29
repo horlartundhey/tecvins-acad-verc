@@ -84,7 +84,7 @@ const teamMembers = {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-center">
               <div className="space-y-3 sm:space-y-4 order-2 lg:order-1">
                 <h2 className="text-xl sm:text-2xl lg:text-[32px] font-semibold text-[#0F2624]">Project Description</h2>
-                <p className="text-gray-600 text-base sm:text-lg lg:text-xl font-normal leading-6 sm:leading-8">
+                <p className="text-gray-600 text-sm sm:text-base font-normal leading-6 sm:leading-8">
                   This suite includes GenAI chatbots, intelligent tutors, customer support bots, and data analysis tools
                   developed by students using modern AI tools.
                 </p>
@@ -117,7 +117,7 @@ const teamMembers = {
               </div>
               <div className="space-y-3 sm:space-y-4 order-1 lg:order-2">
                 <h2 className="text-xl sm:text-2xl lg:text-[32px] font-semibold text-[#0F2624]">Problem It Solves</h2>
-                <ul className="list-disc list-inside space-y-2 text-[#5E5E5E] text-base sm:text-lg lg:text-xl font-normal leading-6 sm:leading-8">
+                <ul className="list-disc list-inside space-y-2 text-[#5E5E5E] text-sm sm:text-base font-normal leading-6 sm:leading-8">
                   <li>Manual workloads in education and service delivery</li>
                   <li>Lack of AI exposure in local tech ecosystems</li>
                   <li>Inefficiency in repetitive and scalable problem-solving tasks</li>
@@ -133,13 +133,13 @@ const teamMembers = {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-center">
               <div className="space-y-3 sm:space-y-4 order-2 lg:order-1">
                 <h2 className="text-xl sm:text-2xl lg:text-[32px] font-semibold">Tools/Technologies Used</h2>
-                <p className="text-[#5E5E5E] text-base sm:text-lg lg:text-xl font-normal leading-6 sm:leading-8">
+                <p className="text-[#5E5E5E] text-sm sm:text-base font-normal leading-6 sm:leading-8">
                   GenAI APIs, Python, Node.js, React, Jira, GitHub, Figma
                 </p>
-                <p className="text-[#5E5E5E] text-base sm:text-lg lg:text-xl font-semibold">
+                <p className="text-[#5E5E5E] text-sm sm:text-base font-semibold">
                   <strong>Integrated tools:</strong>
                 </p>
-                <p className="text-[#5E5E5E] text-base sm:text-lg lg:text-xl font-normal leading-6 sm:leading-8">
+                <p className="text-[#5E5E5E] text-sm sm:text-base font-normal leading-6 sm:leading-8">
                   LangChain, OpenAI API, Firebase
                 </p>
               </div>
@@ -247,7 +247,7 @@ const teamMembers = {
       {/* Action buttons */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-11">
         <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
-          <Link href="/support" className="w-full sm:w-auto">
+          <Link to="/support" className="w-full sm:w-auto">
             <button
               variant="outline"
               className="w-full px-4 sm:px-6 py-3 sm:py-5 rounded-xl border-gray-300 text-[#3B9790] font-semibold hover:bg-gray-50 transition-colors text-sm sm:text-base bg-transparent"
@@ -256,7 +256,7 @@ const teamMembers = {
             </button>
           </Link>
 
-          <Link href="/courses" className="w-full sm:w-auto">
+          <Link to="/courses" className="w-full sm:w-auto">
             <button className="w-full px-4 sm:px-6 py-3 sm:py-[1.3rem] rounded-xl bg-[#3B9790] text-white hover:bg-teal-700 transition-colors flex items-center justify-center font-semibold text-base sm:text-lg">
               Begin your learning journey
               <HiOutlineRocketLaunch className="ml-2 h-4 w-4" />

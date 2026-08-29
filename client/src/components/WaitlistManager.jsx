@@ -180,7 +180,7 @@ const WaitlistManager = ({ cohortId }) => {
                                                 <option value="pending">Pending</option>
                                                 <option value="accepted">Accept</option>
                                                 <option value="rejected">Reject</option>
-                                                <option value="enrolled" disabled={!entry.preferredCohort} title={!entry.preferredCohort ? 'No cohort assigned — cannot enroll' : ''}>
+                                                <option value="enrolled" disabled={!entry.preferredCohort} title={!entry.preferredCohort ? 'No cohort assigned - cannot enroll' : ''}>
                                                     Enroll{!entry.preferredCohort ? ' (no cohort)' : ''}
                                                 </option>
                                             </select>
