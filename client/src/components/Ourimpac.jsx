@@ -1,5 +1,5 @@
 import React from 'react'
-import { Calendar, Users, GraduationCap, Code, Users2, Monitor, Clock, Flag, ArrowRight } from "lucide-react"
+import { Calendar, Users, GraduationCap, Code, Users2, Monitor, Clock, Flag, ArrowRight, Briefcase, Globe } from "lucide-react"
 import { HiOutlineRocketLaunch } from 'react-icons/hi2'
 import { Link } from 'react-router-dom'
 import { PiArrowFatRightFill } from 'react-icons/pi'
@@ -43,8 +43,9 @@ const Ourimpac = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">3 Cohorts</h3>
-                <p className="text-[#1E4C48] text-base font-medium ">(2023, 2024)</p>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">10+ Cohorts Completed</h3>
+                <p className="text-[#1E4C48] text-base font-medium ">(2023 – Present)</p>
+                <p className="text-sm text-[#5E5E5E] mt-1">Continuous bootcamps and courses delivered successfully.</p>
               </div>
             </div>
           </div>
@@ -58,8 +59,8 @@ const Ourimpac = () => {
                     </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">600+ Learners</h3>
-                <p className="text-[#1E4C48] text-base font-medium">Engaged</p>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">3,000+ Learners Trained</h3>
+                <p className="text-[#1E4C48] text-base font-medium">From 40+ countries across 5 continents</p>
               </div>
             </div>
           </div>
@@ -73,15 +74,16 @@ const Ourimpac = () => {
                     </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">223</h3>
-                <p className="text-[#1E4C48] text-base font-medium ">Reached Stage 3 (2024)</p>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">1,000+</h3>
+                <p className="text-[#1E4C48] text-base font-medium ">Graduates & Career Progression</p>
+                <p className="text-sm text-[#5E5E5E] mt-1">Learners have advanced to Stage 3, secured jobs, internships or started their own tech journey.</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Bottom Row Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           {/* 14 Tracks */}
           <div className="bg-white p-6 rounded-2xl shadow-sm">
             <div className="flex items-start gap-4">
@@ -91,8 +93,9 @@ const Ourimpac = () => {
                     </svg>
                 </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">17</h3>
-                <p className="text-[#1E4C48] text-base font-medium ">Tracks</p>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">25+</h3>
+                <p className="text-[#1E4C48] text-base font-medium ">Courses & Tracks</p>
+                <p className="text-sm text-[#5E5E5E] mt-1 mb-2">In-demand skills for today's tech opportunities.</p>
                 <a href="/courses" className="text-teal-600 hover:text-teal-700 underline text-sm">
                   Explore Our Courses
                 </a>
@@ -109,8 +112,9 @@ const Ourimpac = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">18</h3>
-                <p className="text-[#1E4C48] text-base font-medium ">Teams</p>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">50+</h3>
+                <p className="text-[#1E4C48] text-base font-medium ">Project Teams</p>
+                <p className="text-sm text-[#5E5E5E] mt-1">Learners collaborate in diverse teams to build and learn.</p>
               </div>
             </div>
           </div>
@@ -124,8 +128,9 @@ const Ourimpac = () => {
                     </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">32</h3>
-                <p className="text-[#1E4C48] text-base font-medium ">Mentors/Trainers</p>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">120+</h3>
+                <p className="text-[#1E4C48] text-base font-medium ">Mentors & Trainers</p>
+                <p className="text-sm text-[#5E5E5E] mt-1 mb-2">Industry professionals guiding, teaching and supporting learners.</p>
                 <a href="/our-trainers" className="text-teal-600 hover:text-teal-700 underline text-sm">
                   Meet Our Trainers
                 </a>
@@ -142,8 +147,37 @@ const Ourimpac = () => {
                     </svg>
               </div>
               <div>
-                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">1,000+</h3>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">5,000+</h3>
                 <p className="text-[#1E4C48] text-base font-medium">Live instructions/Clinic hours</p>
+                <p className="text-sm text-[#5E5E5E] mt-1">Hands-on learning, mentorship and problem solving.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* 500+ Internship Placements */}
+          <div className="bg-white p-6 rounded-2xl shadow-sm">
+            <div className="flex items-start gap-4">
+              <div className="p-3">
+                <Briefcase className="w-10 h-10" style={{ color: "#1E4C48" }} strokeWidth={1.75} />
+              </div>
+              <div>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">500+</h3>
+                <p className="text-[#1E4C48] text-base font-medium ">Internship Placements</p>
+                <p className="text-sm text-[#5E5E5E] mt-1">Connecting learners to real-world experience.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* 40+ Countries Reached */}
+          <div className="bg-white p-6 rounded-2xl shadow-sm">
+            <div className="flex items-start gap-4">
+              <div className="p-3">
+                <Globe className="w-10 h-10" style={{ color: "#1E4C48" }} strokeWidth={1.75} />
+              </div>
+              <div>
+                <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">40+</h3>
+                <p className="text-[#1E4C48] text-base font-medium ">Countries Reached</p>
+                <p className="text-sm text-[#5E5E5E] mt-1">A truly global learning community and impact.</p>
               </div>
             </div>
           </div>
@@ -158,8 +192,21 @@ const Ourimpac = () => {
                 </svg>
             </div>
             <div>
-              <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">4 Flagship Builds</h3>
-              <p className="text-[#1E4C48] text-base font-medium ">D'EventMatcha, LinguAfrica, Imovelle, Studat, AI Solutions</p>
+              <h3 className="text-2xl font-semibold text-[#1E4C48] mb-1">10+ In-House Products & Innovation Projects</h3>
+              <p className="text-sm text-[#5E5E5E] mt-1 mb-3">
+                Our learners work on real in-house products and innovation projects that solve meaningful problems in
+                education, community, events, logistics, AI and more.
+              </p>
+              <div className="flex flex-wrap gap-2 mb-3">
+                {["D'EventMatcha", "LinguAfrika", "Imovelle", "Studat", "AI Solutions", "Community Platforms", "& More"].map((item) => (
+                  <span
+                    key={item}
+                    className="bg-[#EDF8F7] text-[#1E4C48] text-sm font-medium px-3 py-1.5 rounded-full"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
               <a href="/Projects-built" className="text-teal-600 hover:text-teal-700 underline text-sm">
                 Explore Projects by Our Students
               </a>

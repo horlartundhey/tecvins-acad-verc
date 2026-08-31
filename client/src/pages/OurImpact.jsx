@@ -104,7 +104,7 @@ const OurImpact = () => {
       <div>
         <div className="w-full mx-auto">
           <div className="container mx-auto px-4 sm:px-2 lg:px-8">
-            <h2 className="text-[32px] sm:text-3xl font-semibold text-gray-900 mb-8 sm:mb-12 lg:mb-20">Projects & Stories</h2>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-gray-900 mb-8 sm:mb-12 lg:mb-20">Projects & Stories</h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2">
