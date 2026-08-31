@@ -238,6 +238,17 @@ const trainers = [
     imageUrl: joshua,
   },
   {
+    id: "27",
+    name: "Garland Leo Unogwu",
+    email: "garland.unogwu@tecvinsonacademy.com",
+    location: "Nigeria",
+    specialization: ["Frontend Engineering", "Web Accessibility (WCAG a11y)"],
+    skills: ["Frontend Engineering", "Web Accessibility (WCAG a11y)"],
+    experience: ["<span style='font-weight: bold;'>3</span> years of experience"],
+    linkedinUrl: "https://www.linkedin.com/in/garland-leo-681112240",
+    imageUrl: garland,
+  },
+  {
     id: "3",
     name: "Stanley Umeh",
     email: "stanley.umeh@tecvinsonacademy.com",
@@ -256,14 +267,8 @@ const trainers = [
     id: "4",
     name: "Thomas Fregene",
     email: "thomas.fregene@tecvinsonacademy.com",
-    location: "Nigerian living in Nigeria",
-    specialization: ["Software Development (Backend)"],
-    skills: ["Software Development (Backend)"],
-    experience: [
-      "<span style='font-weight: bold;'>3</span> years experience in Software Development",
-      "<span style='font-weight: bold;'>3</span> years experience Backend Development",
-    ],
-    linkedinUrl: "https://www.linkedin.com/in/fregene-thomas-ab86791a4/",
+    isMissing: true,
+    missingSince: "August 2024",
     imageUrl: thomas,
   },
   {
@@ -428,17 +433,6 @@ const trainers = [
     linkedinUrl: "https://www.linkedin.com/in/vincentoo/",
     imageUrl: vincent,
   },
-  {
-    id: "27",
-    name: "Garland Leo Unogwu",
-    email: "garland.unogwu@tecvinsonacademy.com",
-    location: "Nigeria",
-    specialization: ["Frontend Engineering", "Web Accessibility (WCAG a11y)"],
-    skills: ["Frontend Engineering", "Web Accessibility (WCAG a11y)"],
-    experience: ["<span style='font-weight: bold;'>3</span> years of experience"],
-    linkedinUrl: "https://www.linkedin.com/in/garland-leo-681112240",
-    imageUrl: garland,
-  },
 ]
 
 const OurTrainers = () => {
@@ -467,7 +461,7 @@ const OurTrainers = () => {
             <div
               key={trainer.id}
               className={`bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col max-w-sm mx-auto ${
-                trainer.isMemorial ? 'grayscale opacity-75' : ''
+                trainer.isMemorial || trainer.isMissing ? 'grayscale opacity-75' : ''
               }`}
             >
               {/* Top Section - Light Blue Background */}
@@ -515,7 +509,29 @@ const OurTrainers = () => {
 
                     {/* Disabled LinkedIn Button */}
                     <div className="mt-6 w-full">
-                      <button 
+                      <button
+                        disabled
+                        className="flex items-center justify-center w-full border border-gray-200 text-gray-400 text-sm font-medium py-3 px-4 rounded-full cursor-not-allowed"
+                      >
+                        <FaLinkedin className="w-5 h-5 mr-2 text-gray-300" />
+                        <span>Connect on LinkedIn</span>
+                        <ArrowUpRight className="w-4 h-4 ml-2 text-gray-300" />
+                      </button>
+                    </div>
+                  </div>
+                ) : trainer.isMissing ? (
+                  /* Missing Person Content */
+                  <div className="flex-1 flex flex-col items-center justify-center text-center space-y-6">
+                    <h4 className="text-lg font-semibold text-gray-600">Missing since {trainer.missingSince}</h4>
+                    <p className="text-sm text-gray-500 leading-relaxed">
+                      {trainer.name} has been missing since {trainer.missingSince}. During his time with Tecvinson Academy, he contributed greatly as a trainer, mentor, and valued member of our community.
+                      <br /><br />
+                      Although he is currently unable to be with us, he has not been forgotten. We continue to hold him and his family in our thoughts and remain hopeful for answers and his safe return.
+                    </p>
+
+                    {/* Disabled LinkedIn Button */}
+                    <div className="mt-6 w-full">
+                      <button
                         disabled
                         className="flex items-center justify-center w-full border border-gray-200 text-gray-400 text-sm font-medium py-3 px-4 rounded-full cursor-not-allowed"
                       >

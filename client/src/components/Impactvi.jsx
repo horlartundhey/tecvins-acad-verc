@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { HiOutlineRocketLaunch } from 'react-icons/hi2'
 import { Link } from 'react-router-dom'
+import { GraduationCap, Users, Wrench, Sparkles, TrendingUp, Globe2, CheckCircle2 } from 'lucide-react'
 
 const Impactvi = () => {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
@@ -60,7 +61,7 @@ const Impactvi = () => {
       </div>
 
       <div>
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#0F2624] mb-6">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-[#0F2624] mb-6">
         2026 Cohort: The Ask (what we’ll do with your funding)
       </h2>
 
@@ -81,11 +82,11 @@ const Impactvi = () => {
               At a glance
             </h3>
             <ul className="list-disc list-inside space-y-2 text-[#1E4C48]">
-              <li>Train <span className="font-semibold">500 learners</span>  across <span className="font-semibold">14 tracks </span>(8-9 months)</li>
-              <li><span className="font-semibold">≤ 1:15 </span>mentor ratio</li>
-              <li><span className="font-semibold">≥ 45% </span>women</li>
-              <li>Need-based <span className="font-semibold">laptops/data</span></li>
-              <li>Career support: mock interviews, portfolio/CV, employer sessions</li>
+              <li>Train <span className="font-semibold">1,500+ learners</span>  across <span className="font-semibold">25+ tracks </span>(8-12 months)</li>
+              <li><span className="font-semibold">≥ 1:15 </span>mentor to learner ratio</li>
+              <li><span className="font-semibold">≥ 50% </span>women participation</li>
+              <li>Need-based <span className="font-semibold">laptops & data support</span></li>
+              <li>Career support: mock interviews, portfolio/CV reviews, employer sessions & job placements</li>
             </ul>
           </div>
         </div>
@@ -108,7 +109,7 @@ const Impactvi = () => {
               <li><span className="font-semibold">60+ </span> capstone projects (demo/POC)</li>
               <li><span className="font-semibold">150+ </span> internships/job offers within <span className="font-semibold">6-12 months</span></li>
               <li>NPS ≥ <span className="font-semibold">60</span></li>
-              <li>≥ <span className="font-semibold">45%</span> women participation</li>
+              <li>≥ <span className="font-semibold">50%</span> women participation</li>
             </ul>
           </div>
         </div>
@@ -118,91 +119,184 @@ const Impactvi = () => {
        {/* Title */}
       
 
-      {/* Budget card */}
-      <div className="flex rounded-xl overflow-hidden shadow border-[#A9A7FF] border-4 mb-16">
-        {/* Icon panel */}
-        <div className="bg-purple-100 flex items-center justify-center w-[140px]">
-          <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M60.0422 26.8971C60.2523 23.9869 61.2134 21.1809 62.8317 18.753C64.4499 16.3251 66.6701 14.3583 69.2753 13.0446C71.8806 11.7309 74.782 11.1151 77.6963 11.2574C80.6106 11.3997 83.4382 12.2952 85.9031 13.8565C86.1849 14.0408 86.4119 14.2977 86.5601 14.6001C86.7084 14.9025 86.7724 15.2393 86.7456 15.575C86.7187 15.9107 86.6019 16.233 86.4075 16.5079C86.2131 16.7829 85.9482 17.0005 85.6406 17.1377C81.3557 19.0655 77.7184 22.1894 75.1657 26.1341C72.6129 30.0788 71.2533 34.6766 71.25 39.3752C71.25 39.9236 71.25 40.4721 71.3063 41.0111C71.3321 41.3519 71.2643 41.6932 71.1103 41.9982C70.9563 42.3032 70.7218 42.5603 70.4323 42.7418C70.1427 42.9232 69.8091 43.0221 69.4675 43.0277C69.1258 43.0333 68.7891 42.9455 68.4938 42.7736C65.7313 41.1935 63.4719 38.8644 61.9765 36.0552C60.4811 33.246 59.8105 30.0711 60.0422 26.8971ZM112.5 75.2861C112.507 77.429 111.913 79.5308 110.786 81.3535C109.66 83.1762 108.045 84.6468 106.125 85.5986L105.919 85.6924L87.7172 93.4455C87.5373 93.5247 87.3506 93.5875 87.1594 93.633L57.1594 101.133C56.8623 101.209 56.5568 101.249 56.25 101.25H7.5C5.51088 101.25 3.60322 100.46 2.1967 99.0535C0.790176 97.647 0 95.7393 0 93.7502V75.0002C0 73.0111 0.790176 71.1034 2.1967 69.6969C3.60322 68.2904 5.51088 67.5002 7.5 67.5002H20.9484L31.5516 56.8924C32.9419 55.4958 34.5952 54.3886 36.4159 53.6348C38.2367 52.8809 40.1887 52.4953 42.1594 52.5002H65.625C67.6058 52.5 69.561 52.9481 71.344 53.811C73.1269 54.6739 74.6915 55.9291 75.9204 57.4827C77.1492 59.0362 78.0105 60.8478 78.4397 62.7815C78.8688 64.7153 78.8547 66.7211 78.3984 68.6486L98.0109 64.1393C99.7183 63.6871 101.507 63.6331 103.238 63.9813C104.97 64.3295 106.598 65.0706 107.998 66.1476C109.398 67.2246 110.532 68.6086 111.313 70.193C112.093 71.7774 112.499 73.5199 112.5 75.2861ZM105 75.2861C104.999 74.6661 104.856 74.0545 104.581 73.4989C104.306 72.9433 103.906 72.4585 103.413 72.0822C102.921 71.7059 102.348 71.4482 101.739 71.3291C101.131 71.2101 100.503 71.2328 99.9047 71.3955L99.7594 71.433L68.3531 78.6565C68.0777 78.718 67.7963 78.7494 67.5141 78.7502H52.5C51.5054 78.7502 50.5516 78.3551 49.8484 77.6519C49.1451 76.9486 48.75 75.9948 48.75 75.0002C48.75 74.0056 49.1451 73.0518 49.8484 72.3486C50.5516 71.6453 51.5054 71.2502 52.5 71.2502H65.625C67.1168 71.2502 68.5476 70.6576 69.6025 69.6027C70.6574 68.5478 71.25 67.1171 71.25 65.6252C71.25 64.1334 70.6574 62.7026 69.6025 61.6477C68.5476 60.5928 67.1168 60.0002 65.625 60.0002H42.1594C41.1741 59.9971 40.198 60.1898 39.2879 60.5672C38.3778 60.9446 37.5517 61.4992 36.8578 62.1986L26.25 72.8018V93.7502H55.7813L85.0453 86.433L102.858 78.8486C103.506 78.5071 104.049 77.9945 104.426 77.3664C104.804 76.7384 105.002 76.019 105 75.2861ZM78.75 39.3752C78.75 42.7128 79.7397 45.9754 81.594 48.7505C83.4482 51.5255 86.0837 53.6884 89.1672 54.9657C92.2507 56.2429 95.6437 56.5771 98.9172 55.926C102.191 55.2748 105.197 53.6676 107.557 51.3076C109.917 48.9476 111.525 45.9408 112.176 42.6674C112.827 39.3939 112.493 36.0009 111.215 32.9174C109.938 29.8339 107.775 27.1984 105 25.3442C102.225 23.4899 98.9626 22.5002 95.625 22.5002C91.1495 22.5002 86.8573 24.2781 83.6926 27.4428C80.5279 30.6075 78.75 34.8997 78.75 39.3752Z" fill="#3F3ACB"/>
-            </svg>
+      {/* Budget cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+        {/* Bootcamp Tracks Budget */}
+        <div className="flex rounded-xl overflow-hidden shadow border-[#A9A7FF] border-4">
+          {/* Icon panel */}
+          <div className="bg-purple-100 flex items-center justify-center w-[140px]">
+            <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M60.0422 26.8971C60.2523 23.9869 61.2134 21.1809 62.8317 18.753C64.4499 16.3251 66.6701 14.3583 69.2753 13.0446C71.8806 11.7309 74.782 11.1151 77.6963 11.2574C80.6106 11.3997 83.4382 12.2952 85.9031 13.8565C86.1849 14.0408 86.4119 14.2977 86.5601 14.6001C86.7084 14.9025 86.7724 15.2393 86.7456 15.575C86.7187 15.9107 86.6019 16.233 86.4075 16.5079C86.2131 16.7829 85.9482 17.0005 85.6406 17.1377C81.3557 19.0655 77.7184 22.1894 75.1657 26.1341C72.6129 30.0788 71.2533 34.6766 71.25 39.3752C71.25 39.9236 71.25 40.4721 71.3063 41.0111C71.3321 41.3519 71.2643 41.6932 71.1103 41.9982C70.9563 42.3032 70.7218 42.5603 70.4323 42.7418C70.1427 42.9232 69.8091 43.0221 69.4675 43.0277C69.1258 43.0333 68.7891 42.9455 68.4938 42.7736C65.7313 41.1935 63.4719 38.8644 61.9765 36.0552C60.4811 33.246 59.8105 30.0711 60.0422 26.8971ZM112.5 75.2861C112.507 77.429 111.913 79.5308 110.786 81.3535C109.66 83.1762 108.045 84.6468 106.125 85.5986L105.919 85.6924L87.7172 93.4455C87.5373 93.5247 87.3506 93.5875 87.1594 93.633L57.1594 101.133C56.8623 101.209 56.5568 101.249 56.25 101.25H7.5C5.51088 101.25 3.60322 100.46 2.1967 99.0535C0.790176 97.647 0 95.7393 0 93.7502V75.0002C0 73.0111 0.790176 71.1034 2.1967 69.6969C3.60322 68.2904 5.51088 67.5002 7.5 67.5002H20.9484L31.5516 56.8924C32.9419 55.4958 34.5952 54.3886 36.4159 53.6348C38.2367 52.8809 40.1887 52.4953 42.1594 52.5002H65.625C67.6058 52.5 69.561 52.9481 71.344 53.811C73.1269 54.6739 74.6915 55.9291 75.9204 57.4827C77.1492 59.0362 78.0105 60.8478 78.4397 62.7815C78.8688 64.7153 78.8547 66.7211 78.3984 68.6486L98.0109 64.1393C99.7183 63.6871 101.507 63.6331 103.238 63.9813C104.97 64.3295 106.598 65.0706 107.998 66.1476C109.398 67.2246 110.532 68.6086 111.313 70.193C112.093 71.7774 112.499 73.5199 112.5 75.2861ZM105 75.2861C104.999 74.6661 104.856 74.0545 104.581 73.4989C104.306 72.9433 103.906 72.4585 103.413 72.0822C102.921 71.7059 102.348 71.4482 101.739 71.3291C101.131 71.2101 100.503 71.2328 99.9047 71.3955L99.7594 71.433L68.3531 78.6565C68.0777 78.718 67.7963 78.7494 67.5141 78.7502H52.5C51.5054 78.7502 50.5516 78.3551 49.8484 77.6519C49.1451 76.9486 48.75 75.9948 48.75 75.0002C48.75 74.0056 49.1451 73.0518 49.8484 72.3486C50.5516 71.6453 51.5054 71.2502 52.5 71.2502H65.625C67.1168 71.2502 68.5476 70.6576 69.6025 69.6027C70.6574 68.5478 71.25 67.1171 71.25 65.6252C71.25 64.1334 70.6574 62.7026 69.6025 61.6477C68.5476 60.5928 67.1168 60.0002 65.625 60.0002H42.1594C41.1741 59.9971 40.198 60.1898 39.2879 60.5672C38.3778 60.9446 37.5517 61.4992 36.8578 62.1986L26.25 72.8018V93.7502H55.7813L85.0453 86.433L102.858 78.8486C103.506 78.5071 104.049 77.9945 104.426 77.3664C104.804 76.7384 105.002 76.019 105 75.2861ZM78.75 39.3752C78.75 42.7128 79.7397 45.9754 81.594 48.7505C83.4482 51.5255 86.0837 53.6884 89.1672 54.9657C92.2507 56.2429 95.6437 56.5771 98.9172 55.926C102.191 55.2748 105.197 53.6676 107.557 51.3076C109.917 48.9476 111.525 45.9408 112.176 42.6674C112.827 39.3939 112.493 36.0009 111.215 32.9174C109.938 29.8339 107.775 27.1984 105 25.3442C102.225 23.4899 98.9626 22.5002 95.625 22.5002C91.1495 22.5002 86.8573 24.2781 83.6926 27.4428C80.5279 30.6075 78.75 34.8997 78.75 39.3752Z" fill="#3F3ACB"/>
+              </svg>
+          </div>
+          {/* Text panel */}
+          <div className="bg-white p-6 flex-1">
+            <h3 className="font-semibold text-xl sm:text-2xl mb-4 text-[#040093]">
+              Bootcamp Tracks Budget (USD) - Total: $362,400
+            </h3>
+            <ul className="list-disc list-inside space-y-1 text-[#040093]">
+              <li>Instruction & Mentors <span className="font-semibold">$150,000</span></li>
+              <li>Data Stipends <span className="font-semibold">$60,000</span></li>
+              <li>Laptops (need-based) <span className="font-semibold">$80,000</span></li>
+              <li>Platforms & Tools <span className="font-semibold">$20,000</span></li>
+              <li>Career Services & Employability <span className="font-semibold">$20,000</span></li>
+              <li>Operations & Community <span className="font-semibold">$20,000</span></li>
+              <li>M&E & Reporting <span className="font-semibold">$10,000</span></li>
+              <li>Contingency <span className="font-semibold">$22,400</span></li>
+            </ul>
+            <p className="mt-4 text-sm text-[#040093]">
+              <span className="font-semibold">Unit Economics: ≈ $362/learner</span> | ≈{" "}
+              <span className="font-semibold">$602/graduate</span> (60% graduate rate)
+            </p>
+          </div>
         </div>
-        {/* Text panel */}
-        <div className="bg-white p-6 flex-1">
-          <h3 className="font-semibold text-xl sm:text-2xl mb-4 text-[#040093]">
-            Budget (USD) - total: $271,800
-          </h3>
-          <ul className="list-disc list-inside space-y-1 text-[#040093]">
-            <li>Instruction & mentors <span className="font-semibold">$100,800</span></li>
-            <li>Data stipends <span className="font-semibold">$40,000</span></li>
-            <li>Laptops <span className="font-semibold">$45,000</span></li>
-            <li>Platforms <span className="font-semibold">$15,000</span></li>
-            <li>Career services <span className="font-semibold">$12,000</span></li>
-            <li>Ops <span className="font-semibold">$25,000</span></li>
-            <li>M&E <span className="font-semibold">$10,000</span></li>
-            <li>Contingency <span className="font-semibold">$24,000</span></li>
-          </ul>
-          <p className="mt-4 text-sm text-[#040093]">
-            <span className="font-semibold">Unit economics: ≈ $544/learner</span>, ≈{" "}
-            <span className="font-semibold">$906/graduate</span> (60%)
-          </p>
+
+        {/* Individual Track Courses Budget */}
+        <div className="flex rounded-xl overflow-hidden shadow border-[#8FB7FF] border-4">
+          {/* Icon panel */}
+          <div className="bg-blue-100 flex items-center justify-center w-[140px]">
+            <GraduationCap className="w-16 h-16" style={{ color: "#1D4ED8" }} strokeWidth={1.5} />
+          </div>
+          {/* Text panel */}
+          <div className="bg-white p-6 flex-1">
+            <h3 className="font-semibold text-xl sm:text-2xl mb-4 text-[#1D4ED8]">
+              Individual Track Courses Budget (USD) - Total: $92,000
+            </h3>
+            <ul className="list-disc list-inside space-y-1 text-[#1D4ED8]">
+              <li>Content Development & Instructors <span className="font-semibold">$35,000</span></li>
+              <li>Learning Platform & Tools <span className="font-semibold">$15,000</span></li>
+              <li>Marketing & Outreach <span className="font-semibold">$10,000</span></li>
+              <li>Learner Support & Assessment <span className="font-semibold">$10,000</span></li>
+              <li>Operations & Community <span className="font-semibold">$12,000</span></li>
+              <li>Contingency <span className="font-semibold">$10,000</span></li>
+            </ul>
+            <p className="mt-4 text-sm text-[#1D4ED8]">
+              <span className="font-semibold">Unit Economics: ≈ $25–$80 per learner</span> (varies by course)
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="mb-12 ">
-        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F2624] mb-8">Ways to Partner</h3>
+      {/* What this enables + Ways to Partner (left) / Why partner with us (right) */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-16">
+        {/* Left column: What this enables, then Ways to Partner */}
+        <div className="lg:col-span-3 flex flex-col gap-6">
+          {/* What this enables */}
+          <div className="bg-[#EDF8F7] border-4 border-[#4ABDB4] rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-6">
+            <div className="flex items-center gap-3 sm:flex-shrink-0">
+              <div className="w-12 h-12 rounded-full bg-[#1E4C48] flex items-center justify-center">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="font-semibold text-lg text-[#0F2624]">What this enables</h3>
+            </div>
+            <div className="hidden sm:block w-px self-stretch bg-[#4ABDB4]/50"></div>
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-x-6 gap-y-6 flex-1">
+              {[
+                { icon: Users, label: "More learners trained" },
+                { icon: Wrench, label: "Better tools and support" },
+                { icon: Sparkles, label: "Real-world projects and experience" },
+                { icon: TrendingUp, label: "Stronger pathways to opportunities" },
+                { icon: Globe2, label: "Lasting impact in communities worldwide" },
+              ].map(({ icon: ItemIcon, label }) => (
+                <div key={label} className="flex flex-col items-start gap-3">
+                  <div className="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center">
+                    <ItemIcon className="w-5 h-5 text-[#1E4C48]" />
+                  </div>
+                  <p className="text-sm text-[#0F2624] leading-snug">{label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {/* Ways to Partner */}
+          <div>
+            <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0F2624] mb-8">Ways to Partner</h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {/* Tier 1 */}
-          <div className="bg-white border-4 border-[#F1F1F1] rounded-2xl p-6 text-center shadow-sm">
+          <div className="bg-white border-4 border-[#F1F1F1] rounded-2xl p-6 text-center shadow-sm flex flex-col">
             <div className="w-12 h-12 bg-[#1E4C48] rounded-full flex items-center justify-center text-white font-semibold text-2xl mx-auto mb-4">
               1
             </div>
-            <div className="space-y-2">
-                <div className="text-xl font-semibold text-[#001533]">$5k
-                    <span className="font-normal"> data for</span><span className="font-semibold"> 100 <br /> learners</span>
+            <div className="space-y-2 flex-1">
+                <div className="text-xl font-semibold text-[#001533]">$10k
+                    <span className="font-normal"> Sponsor for</span><span className="font-semibold"> 50 <br /> learners</span>
                 </div>
               <div className="text-[#001533] text-xl">(1 month)</div>
+            </div>
+            <div className="mt-4 inline-block bg-[#EDF8F7] text-[#1E4C48] text-sm font-medium px-3 py-1.5 rounded-full">
+              Sustain learning & mentorship
             </div>
           </div>
 
           {/* Tier 2 */}
-          <div className="bg-white border-4 border-[#F1F1F1]  rounded-2xl p-6 text-center shadow-sm">
+          <div className="bg-white border-4 border-[#F1F1F1]  rounded-2xl p-6 text-center shadow-sm flex flex-col">
             <div className="w-12 h-12 bg-[#1E4C48] rounded-full flex items-center justify-center text-white font-semibold text-2xl mx-auto mb-4">
               2
             </div>
-            <div className="space-y-2">
-                <div className="text-xl font-semibold text-[#001533]">$25k              
-                    <span className="font-semibold"> 50 laptops</span>
+            <div className="space-y-2 flex-1">
+                <div className="text-xl font-semibold text-[#001533]">$25k
+                    <span className="font-semibold"> Sponsor for 20 laptops</span>
                 </div>
               <div className="text-[#001533] text-xl">(need-based)</div>
+            </div>
+            <div className="mt-4 inline-block bg-[#EDF8F7] text-[#1E4C48] text-sm font-medium px-3 py-1.5 rounded-full">
+              Equip learners to succeed
             </div>
           </div>
 
           {/* Tier 3 */}
-          <div className="bg-white border-4 border-[#F1F1F1] rounded-2xl p-6 text-center shadow-sm">
+          <div className="bg-white border-4 border-[#F1F1F1] rounded-2xl p-6 text-center shadow-sm flex flex-col">
             <div className="w-12 h-12 bg-[#1E4C48] rounded-full flex items-center justify-center text-white font-semibold text-2xl mx-auto mb-4">
               3
             </div>
-            <div className="space-y-2">
-              <div className="text-xl font-semibold text-[#001533]">$50k              
-                <span className="font-semibold"> Track sponsor</span>
+            <div className="space-y-2 flex-1">
+              <div className="text-xl font-semibold text-[#001533]">$50k
+                <span className="font-semibold"> Track Sponsor</span>
               </div>
-              <div className="text-[#001533] text-xl">(trainers, tooling, showcase)</div>
+              <div className="text-[#001533] text-xl">(trainers, tooling, showcase & projects)</div>
+            </div>
+            <div className="mt-4 inline-block bg-[#EDF8F7] text-[#1E4C48] text-sm font-medium px-3 py-1.5 rounded-full">
+              Power a full learning track
             </div>
           </div>
 
           {/* Tier 4 */}
-          <div className="bg-white border-4 border-[#F1F1F1] rounded-2xl p-6 text-center shadow-sm">
+          <div className="bg-white border-4 border-[#F1F1F1] rounded-2xl p-6 text-center shadow-sm flex flex-col">
             <div className="w-12 h-12 bg-[#1E4C48] rounded-full flex items-center justify-center text-white font-semibold text-2xl mx-auto mb-4">
               4
             </div>
-            <div className="space-y-2">
-              <div className="text-xl font-semibold text-[#001533]">$100k+              
-                <span className="font-semibold"> Title partner</span>
+            <div className="space-y-2 flex-1">
+              <div className="text-xl font-semibold text-[#001533]">$100k+
+                <span className="font-semibold"> Strategic Partner</span>
               </div>
               <div className="text-[#001533] text-xl">(named cohort, quarterly impact, talent pipeline)</div>
             </div>
+            <div className="mt-4 inline-block bg-[#EDF8F7] text-[#1E4C48] text-sm font-medium px-3 py-1.5 rounded-full">
+              Transform lives at scale
+            </div>
           </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right column: Why partner with us */}
+        <div className="lg:col-span-1 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col">
+          <h3 className="font-semibold text-lg text-[#0F2624] mb-4">Why partner with us?</h3>
+          <ul className="flex-1 flex flex-col justify-between gap-4">
+            {[
+              "Direct, measurable impact on underserved learners",
+              "Transparent reporting & real-time progress updates",
+              "Aligned with SDGs: Quality Education, Decent Work, Reduced Inequalities & Innovation",
+              "Building the next generation of ethical, problem-solvers",
+              "Long-term visibility & recognition for partners",
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2">
+                <CheckCircle2 className="w-5 h-5 text-[#00BC85] flex-shrink-0 mt-0.5" />
+                <span className="text-sm text-[#0F2624] leading-snug">{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
       {/* Bottom CTA Section */}
@@ -220,8 +314,11 @@ const Impactvi = () => {
             </button>
           </Link>
         </div>
+        <p className="text-center text-sm text-gray-500 mt-4">
+          Budgets cover the upcoming 8–12 month program cycle. All figures are in USD.
+        </p>
       </div>
-    </div>    
+    </div>
 
       {/* Video Modal */}
       {isVideoModalOpen && (
